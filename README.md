@@ -32,7 +32,7 @@
 进行一个简单CMS系统的数据库逻辑结构的设计，不要跟我说什么Code First有多么先进，DB First多么Outer。在结果导向上我更习惯使用设计工具对整个系统设计后，再进行相关的开发。
 1. *[.NET Core实战项目之CMS 第七章 设计篇-用户权限极简设计全过程](https://www.cnblogs.com/yilezhu/p/10056094.html)*
 2. *[.NET Core实战项目之CMS 第八章 设计篇-内容管理极简设计全过程](https://www.cnblogs.com/yilezhu/p/10073642.html)*
-3. .NET Core实战项目之CMS 第九章 设计篇-漫谈架构设计
+3. *[.NET Core实战项目之CMS 第九章 设计篇-白话架构设计](https://www.cnblogs.com/yilezhu/p/10080136.html)*
 待更新
 
 ### 开发篇
