@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.UI", "1.UI", "{B3C624C6-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Application", "2.Application", "{AF230497-3B8B-4226-82C4-F60BF94A58D3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Repositonry", "3.Repositonry", "{78246E24-FB1E-4E38-8EA5-70B711F5935F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Repository", "3.Repository", "{78246E24-FB1E-4E38-8EA5-70B711F5935F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.Infrastructure", "5.Infrastructure", "{A5C69751-CF8C-4D8B-9481-244B07AB0E05}"
 EndProject
@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Entity", "4.Entity", "{56
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Test", "6.Test", "{37A51F27-296D-4764-B28C-E76E9C1E219B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Czar.Cms.Test", "src\Czar.Cms.Test\Czar.Cms.Test.csproj", "{E4611F25-31C1-4FD3-9D8A-06B008185770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Test", "src\Czar.Cms.Test\Czar.Cms.Test.csproj", "{E4611F25-31C1-4FD3-9D8A-06B008185770}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
