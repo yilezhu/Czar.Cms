@@ -33,7 +33,7 @@
 1. *[.NET Core实战项目之CMS 第七章 设计篇-用户权限极简设计全过程](https://www.cnblogs.com/yilezhu/p/10056094.html)*
 2. *[.NET Core实战项目之CMS 第八章 设计篇-内容管理极简设计全过程](https://www.cnblogs.com/yilezhu/p/10073642.html)*
 3. *[.NET Core实战项目之CMS 第九章 设计篇-白话架构设计](https://www.cnblogs.com/yilezhu/p/10080136.html)*
-待更新
+4. *[.NET Core实战项目之CMS 第十章 设计篇-系统开发框架设计](https://www.cnblogs.com/yilezhu/p/10094357.html)*
 
 ### 开发篇
 顾名思义，带着大家按照我们设计的数据库进行相关功能的开发！
