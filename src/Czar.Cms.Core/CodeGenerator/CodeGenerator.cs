@@ -148,7 +148,6 @@ ORDER BY a.id, a.colorder";
             {
                 var tmp = GenerateEntityProperty(column);
                 sb.AppendLine(tmp);
-                sb.AppendLine();
             }
             var content = ReadTemplate("ModelTemplate.txt");
             content = content.Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))

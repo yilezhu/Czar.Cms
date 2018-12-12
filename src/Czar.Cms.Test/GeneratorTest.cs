@@ -22,6 +22,7 @@ namespace Czar.Cms.Test
             var serviceProvider= BuildServiceForSqlServer();
             var codeGenerator = serviceProvider.GetRequiredService<CodeGenerator>();
             codeGenerator.GenerateModelCodesFromDatabase();
+
             Assert.Equal(0,0);
 
         }
