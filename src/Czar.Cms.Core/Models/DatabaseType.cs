@@ -11,7 +11,7 @@ namespace Czar.Cms.Core.Models
     /// </summary>
     public enum DatabaseType
     {
-        MSSQL,
+        SqlServer,
         MySQL,
         PostgreSQL,
         SQLite,

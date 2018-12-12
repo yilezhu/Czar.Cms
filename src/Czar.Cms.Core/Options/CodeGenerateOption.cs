@@ -17,9 +17,9 @@ namespace Czar.Cms.Core.Options
         /// </summary>
         public string ConnectionString { get; set; }
         /// <summary>
-        /// 数据库连接字符串
+        /// 数据库类型
         /// </summary>
-        public DatabaseType DbType  { get; set; }
+        public string DbType  { get; set; }
         /// <summary>
         /// 作者
         /// </summary>
