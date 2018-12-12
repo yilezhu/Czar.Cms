@@ -53,7 +53,7 @@ namespace Czar.Cms.Core.CodeGenerator
         /// 根据数据库连接字符串生成数据库表对应的Model层代码
         /// </summary>
         /// <param name="isCoveredExsited">是否覆盖已存在的同名文件</param>
-        public void GenerateAllCodesFromDatabase(bool isCoveredExsited = true)
+        public void GenerateModelCodesFromDatabase(bool isCoveredExsited = true)
         {
             //TODO 从数据库获取表列表以及生成实体对象
             if (_options.DbType != DatabaseType.SqlServer.ToString())
@@ -132,7 +132,7 @@ ORDER BY a.id, a.colorder";
 
         private void GenerateEntity(DbTable table, bool isCoveredExsited = true)
         {
-            var modelPath = _options.OutputPath + Delimiter + "Models";
+            var modelPath = _options.OutputPath;
             if (!Directory.Exists(modelPath))
             {
                 Directory.CreateDirectory(modelPath);
