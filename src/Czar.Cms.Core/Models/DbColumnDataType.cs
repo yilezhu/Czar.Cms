@@ -26,21 +26,5 @@ namespace Czar.Cms.Core.Models
         public string CSharpType { get; set; }
     }
 
-    /// <summary>
-    /// 数据库类型
-    /// </summary>
-    public enum DatabaseType
-    {
-        MSSQL,
-        MySQL,
-        PostgreSQL,
-        SQLite,
-        InMemory,
-        Oracle,
-        MariaDB,
-        MyCat,
-        Firebird,
-        DB2,
-        Access
-    }
+   
 }

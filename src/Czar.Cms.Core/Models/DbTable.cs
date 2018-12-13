@@ -24,6 +24,6 @@ namespace Czar.Cms.Core.Models
         /// <summary>
         /// 字段集合
         /// </summary>
-        public virtual ICollection<DbTableColumn> Columns { get; set; } = new List<DbTableColumn>();
+        public virtual List<DbTableColumn> Columns { get; set; } = new List<DbTableColumn>();
     }
 }

@@ -1,0 +1,16 @@
+﻿// 本代码由代码生成器生成请勿随意改动
+// 生成时间  {GeneratorTime}
+using System;
+
+namespace {ModelsNamespace}
+{
+	/// <summary>
+	/// {Author}
+	/// {GeneratorTime}
+	/// {Comment}
+	/// </summary>
+	public class {ModelName}
+	{
+		{ModelProperties}
+	}
+}
