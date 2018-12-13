@@ -1,12 +1,12 @@
 // 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-12 23:06:30
+// 生成时间  2018-12-13 09:11:39
 using System;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-12 23:06:30
+	/// 2018-12-13 09:11:39
 	/// 文章分类
 	/// </summary>
 	public class ArticleCategory
