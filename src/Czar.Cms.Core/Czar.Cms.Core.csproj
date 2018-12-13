@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="MySql.Data" Version="8.0.13" />
+    <PackageReference Include="Npgsql" Version="4.0.4" />
   </ItemGroup>
 
   <ItemGroup>

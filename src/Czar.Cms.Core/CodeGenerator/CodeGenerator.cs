@@ -209,8 +209,8 @@ ORDER BY a.id, a.colorder";
         /// <summary>
         /// 写文件
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="content"></param>
+        /// <param name="fileName">文件完整路径</param>
+        /// <param name="content">内容</param>
         private static void WriteAndSave(string fileName, string content)
         {
             //实例化一个文件流--->与写入文件相关联
