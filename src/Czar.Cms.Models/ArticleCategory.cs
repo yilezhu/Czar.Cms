@@ -1,29 +1,35 @@
 // 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-13 10:10:20
+// 生成时间  2018-12-16 11:11:16
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-13 10:10:20
+	/// 2018-12-16 11:11:16
 	/// 文章分类
 	/// </summary>
+	[Table("ArticleCategory")]
 	public class ArticleCategory
 	{
-				/// <summary>
+		/// <summary>
 		/// 主键
 		/// </summary>
+		[Key]
 		public Int32 Id {get;set;}
 
 		/// <summary>
 		/// 分类标题
 		/// </summary>
+		[Required]
 		public String Title {get;set;}
 
 		/// <summary>
 		/// 父分类ID
 		/// </summary>
+		[Required]
 		public Int32 ParentId {get;set;}
 
 		/// <summary>
@@ -39,6 +45,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 排序
 		/// </summary>
+		[Required]
 		public Int32 Sort {get;set;}
 
 		/// <summary>
@@ -64,6 +71,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否删除
 		/// </summary>
+		[Required]
 		public Boolean IsDeleted {get;set;}
 
 

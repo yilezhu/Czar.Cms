@@ -1,44 +1,53 @@
 // 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-13 10:10:20
+// 生成时间  2018-12-16 11:11:16
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-13 10:10:20
+	/// 2018-12-16 11:11:16
 	/// 后台管理员角色
 	/// </summary>
+	[Table("ManagerRole")]
 	public class ManagerRole
 	{
-				/// <summary>
+		/// <summary>
 		/// 主键
 		/// </summary>
+		[Key]
 		public Int32 Id {get;set;}
 
 		/// <summary>
 		/// 角色名称
 		/// </summary>
+		[Required]
 		public String RoleName {get;set;}
 
 		/// <summary>
 		/// 角色类型1超管2系管
 		/// </summary>
+		[Required]
 		public Int32 RoleType {get;set;}
 
 		/// <summary>
 		/// 是否系统默认
 		/// </summary>
+		[Required]
 		public Boolean IsSystem {get;set;}
 
 		/// <summary>
 		/// 添加人
 		/// </summary>
+		[Required]
 		public Int32 AddManagerId {get;set;}
 
 		/// <summary>
 		/// 添加时间
 		/// </summary>
+		[Required]
 		public DateTime AddTime {get;set;}
 
 		/// <summary>
@@ -54,6 +63,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否删除
 		/// </summary>
+		[Required]
 		public Boolean IsDelete {get;set;}
 
 		/// <summary>
