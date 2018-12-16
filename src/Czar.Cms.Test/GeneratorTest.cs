@@ -21,7 +21,7 @@ namespace Czar.Cms.Test
         {
             var serviceProvider= BuildServiceForSqlServer();
             var codeGenerator = serviceProvider.GetRequiredService<CodeGenerator>();
-            codeGenerator.GenerateModelCodesFromDatabase(true);
+            //codeGenerator.GenerateModelCodesFromDatabase(true);
             Assert.Equal("SQLServer", DatabaseType.SqlServer.ToString(),ignoreCase:true);
            
         }
