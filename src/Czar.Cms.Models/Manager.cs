@@ -1,5 +1,5 @@
 // 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-16 11:11:16
+// 生成时间  2018-12-16 11:42:20
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +8,7 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-16 11:11:16
+	/// 2018-12-16 11:42:20
 	/// 后台管理员
 	/// </summary>
 	[Table("Manager")]
