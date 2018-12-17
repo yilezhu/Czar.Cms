@@ -26,14 +26,14 @@ namespace Czar.Cms.Core.Repository
 {
     public class BaseRepository<T, TKey> : IBaseRepository<T, TKey> where T : class
     {
-        private readonly DbOpion _dbOpion;
-        private readonly IDbConnection _dbConnection;
+        protected static DbOpion _dbOpion { get; set; }
+        protected IDbConnection _dbConnection{ get; set; }
 
-        public BaseRepository(DbOpion dbOpion)
-        {
-            _dbOpion = dbOpion ?? throw new ArgumentNullException(nameof(DbOpion));
-            _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
-        }
+        //public BaseRepository(DbOpion dbOpion)
+        //{
+        //    _dbOpion = dbOpion ?? throw new ArgumentNullException(nameof(DbOpion));
+        //    _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+        //}
 
         #region 同步
 
