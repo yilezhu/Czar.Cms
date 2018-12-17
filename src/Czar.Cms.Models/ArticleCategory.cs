@@ -1,29 +1,45 @@
-// 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-13 10:10:20
+/**
+*┌──────────────────────────────────────────────────────────────┐
+*│　描    述：文章分类                                                    
+*│　作    者：yilezhu                                              
+*│　版    本：1.0                                                 
+*│　创建时间：2018-12-16 12:00:16                            
+*└──────────────────────────────────────────────────────────────┘
+*┌──────────────────────────────────────────────────────────────┐
+*│　命名空间: Czar.Cms.Models                                  
+*│　类    名：ArticleCategory                                     
+*└──────────────────────────────────────────────────────────────┘
+*/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-13 10:10:20
+	/// 2018-12-16 12:00:16
 	/// 文章分类
 	/// </summary>
+	[Table("ArticleCategory")]
 	public class ArticleCategory
 	{
-				/// <summary>
+		/// <summary>
 		/// 主键
 		/// </summary>
+		[Key]
 		public Int32 Id {get;set;}
 
 		/// <summary>
 		/// 分类标题
 		/// </summary>
+		[Required]
 		public String Title {get;set;}
 
 		/// <summary>
 		/// 父分类ID
 		/// </summary>
+		[Required]
 		public Int32 ParentId {get;set;}
 
 		/// <summary>
@@ -39,6 +55,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 排序
 		/// </summary>
+		[Required]
 		public Int32 Sort {get;set;}
 
 		/// <summary>
@@ -64,6 +81,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否删除
 		/// </summary>
+		[Required]
 		public Boolean IsDeleted {get;set;}
 
 

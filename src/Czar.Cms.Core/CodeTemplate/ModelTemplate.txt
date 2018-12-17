@@ -1,6 +1,18 @@
-﻿// 本代码由代码生成器生成请勿随意改动
-// 生成时间  {GeneratorTime}
+﻿/**
+*┌──────────────────────────────────────────────────────────────┐
+*│　描    述：{Comment}                                                    
+*│　作    者：{Author}                                              
+*│　版    本：1.0   模板代码自动生成                                              
+*│　创建时间：{GeneratorTime}                            
+*└──────────────────────────────────────────────────────────────┘
+*┌──────────────────────────────────────────────────────────────┐
+*│　命名空间: {ModelsNamespace}                                  
+*│　类    名：{ModelName}                                     
+*└──────────────────────────────────────────────────────────────┘
+*/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace {ModelsNamespace}
 {
@@ -9,8 +21,9 @@ namespace {ModelsNamespace}
 	/// {GeneratorTime}
 	/// {Comment}
 	/// </summary>
+	[Table("{ModelName}")]
 	public class {ModelName}
 	{
-		{ModelProperties}
+{ModelProperties}
 	}
 }

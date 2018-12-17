@@ -1,34 +1,51 @@
-// 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-13 10:10:20
+/**
+*┌──────────────────────────────────────────────────────────────┐
+*│　描    述：后台管理员                                                    
+*│　作    者：yilezhu                                              
+*│　版    本：1.0                                                 
+*│　创建时间：2018-12-16 12:00:16                            
+*└──────────────────────────────────────────────────────────────┘
+*┌──────────────────────────────────────────────────────────────┐
+*│　命名空间: Czar.Cms.Models                                  
+*│　类    名：Manager                                     
+*└──────────────────────────────────────────────────────────────┘
+*/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-13 10:10:20
+	/// 2018-12-16 12:00:16
 	/// 后台管理员
 	/// </summary>
+	[Table("Manager")]
 	public class Manager
 	{
-				/// <summary>
+		/// <summary>
 		/// 主键
 		/// </summary>
+		[Key]
 		public Int32 Id {get;set;}
 
 		/// <summary>
 		/// 角色ID
 		/// </summary>
+		[Required]
 		public Int32 RoleId {get;set;}
 
 		/// <summary>
 		/// 用户名
 		/// </summary>
+		[Required]
 		public String UserName {get;set;}
 
 		/// <summary>
 		/// 密码
 		/// </summary>
+		[Required]
 		public String Password {get;set;}
 
 		/// <summary>
@@ -69,11 +86,13 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 添加人
 		/// </summary>
+		[Required]
 		public Int32 AddManagerId {get;set;}
 
 		/// <summary>
 		/// 添加时间
 		/// </summary>
+		[Required]
 		public DateTime AddTime {get;set;}
 
 		/// <summary>
@@ -89,11 +108,13 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否锁定
 		/// </summary>
+		[Required]
 		public Boolean IsLock {get;set;}
 
 		/// <summary>
 		/// 是否删除
 		/// </summary>
+		[Required]
 		public Boolean IsDelete {get;set;}
 
 		/// <summary>

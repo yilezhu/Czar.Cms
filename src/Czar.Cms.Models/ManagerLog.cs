@@ -1,17 +1,34 @@
-// 本代码由代码生成器生成请勿随意改动
-// 生成时间  2018-12-13 10:10:20
+/**
+*┌──────────────────────────────────────────────────────────────┐
+*│　描    述：操作日志                                                    
+*│　作    者：yilezhu                                              
+*│　版    本：1.0                                                 
+*│　创建时间：2018-12-16 12:00:16                            
+*└──────────────────────────────────────────────────────────────┘
+*┌──────────────────────────────────────────────────────────────┐
+*│　命名空间: Czar.Cms.Models                                  
+*│　类    名：ManagerLog                                     
+*└──────────────────────────────────────────────────────────────┘
+*/
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-13 10:10:20
+	/// 2018-12-16 12:00:16
 	/// 操作日志
 	/// </summary>
+	[Table("ManagerLog")]
 	public class ManagerLog
 	{
-				public Int32 Id {get;set;}
+		/// <summary>
+		///  
+		/// </summary>
+		[Key]
+		public Int32 Id {get;set;}
 
 		/// <summary>
 		/// 操作类型
@@ -21,6 +38,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 主键
 		/// </summary>
+		[Required]
 		public Int32 AddManageId {get;set;}
 
 		/// <summary>
@@ -31,6 +49,7 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 操作时间
 		/// </summary>
+		[Required]
 		public DateTime AddTime {get;set;}
 
 		/// <summary>

@@ -13,6 +13,7 @@ using System.Data;
 using Dapper;
 using System.Threading.Tasks;
 using System.Data.SqlTypes;
+using Czar.Cms.Core.DbHelper;
 
 namespace Czar.Cms.Core.CodeGenerator
 {
@@ -38,9 +39,6 @@ namespace Czar.Cms.Core.CodeGenerator
                 throw new ArgumentNullException("不指定数据库连接串就生成代码，你想上天吗？");
             if (_options.DbType.IsNullOrWhiteSpace())
                 throw new ArgumentNullException("不指定数据库类型就生成代码，你想逆天吗？");
-            if (_options.DbType != DatabaseType.SqlServer.ToString())
-                throw new ArgumentNullException("这是我的错，目前只支持MSSQL数据库的代码生成！后续更新MySQL");
-
             var path = AppDomain.CurrentDomain.BaseDirectory;
             if (_options.OutputPath.IsNullOrWhiteSpace())
                 _options.OutputPath = path;
@@ -55,66 +53,11 @@ namespace Czar.Cms.Core.CodeGenerator
         /// <param name="isCoveredExsited">是否覆盖已存在的同名文件</param>
         public void GenerateModelCodesFromDatabase(bool isCoveredExsited = true)
         {
-            //TODO 从数据库获取表列表以及生成实体对象
-            if (_options.DbType != DatabaseType.SqlServer.ToString())
-                throw new ArgumentNullException("这是我的错，目前只支持MSSQL数据库的代码生成！后续更新MySQL");
-            DatabaseType dbType = DatabaseType.SqlServer;
-            string strGetAllTables = @"SELECT DISTINCT d.name as TableName, f.value as TableComment
-FROM      sys.syscolumns AS a LEFT OUTER JOIN
-                sys.systypes AS b ON a.xusertype = b.xusertype INNER JOIN
-                sys.sysobjects AS d ON a.id = d.id AND d.xtype = 'U' AND d.name <> 'dtproperties' LEFT OUTER JOIN
-                sys.syscomments AS e ON a.cdefault = e.id LEFT OUTER JOIN
-                sys.extended_properties AS g ON a.id = g.major_id AND a.colid = g.minor_id LEFT OUTER JOIN
-                sys.extended_properties AS f ON d.id = f.major_id AND f.minor_id = 0";
-            List<DbTable> tables = null;
-            using (var conn = new SqlConnection(_options.ConnectionString))
+            DatabaseType dbType = ConnectionFactory.GetDataBaseType(_options.DbType);
+            List<DbTable> tables = new List<DbTable>();
+            using (var dbConnection = ConnectionFactory.CreateConnection(dbType, _options.ConnectionString))
             {
-                tables = conn.Query<DbTable>(strGetAllTables).ToList();
-                tables.ForEach(item =>
-                {
-                    string strGetTableColumns = @"SELECT   a.name AS ColName, CONVERT(bit, (CASE WHEN COLUMNPROPERTY(a.id, a.name, 'IsIdentity') 
-                = 1 THEN 1 ELSE 0 END)) AS IsIdentity, CONVERT(bit, (CASE WHEN
-                    (SELECT   COUNT(*)
-                     FROM      sysobjects
-                     WHERE   (name IN
-                                         (SELECT   name
-                                          FROM      sysindexes
-                                          WHERE   (id = a.id) AND (indid IN
-                                                              (SELECT   indid
-                                                               FROM      sysindexkeys
-                                                               WHERE   (id = a.id) AND (colid IN
-                                                                                   (SELECT   colid
-                                                                                    FROM      syscolumns
-                                                                                    WHERE   (id = a.id) AND (name = a.name))))))) AND (xtype = 'PK')) 
-                > 0 THEN 1 ELSE 0 END)) AS IsPrimaryKey, b.name AS ColumnType, COLUMNPROPERTY(a.id, a.name, 'PRECISION') 
-                AS ColumnLength, CONVERT(bit, (CASE WHEN a.isnullable = 1 THEN 1 ELSE 0 END)) AS IsNullable, ISNULL(e.text, '') 
-                AS DefaultValue, ISNULL(g.value, ' ') AS Comment
-FROM      sys.syscolumns AS a LEFT OUTER JOIN
-                sys.systypes AS b ON a.xtype = b.xusertype INNER JOIN
-                sys.sysobjects AS d ON a.id = d.id AND d.xtype = 'U' AND d.name <> 'dtproperties' LEFT OUTER JOIN
-                sys.syscomments AS e ON a.cdefault = e.id LEFT OUTER JOIN
-                sys.extended_properties AS g ON a.id = g.major_id AND a.colid = g.minor_id LEFT OUTER JOIN
-                sys.extended_properties AS f ON d.id = f.class AND f.minor_id = 0
-WHERE   (b.name IS NOT NULL) AND (d.name = @TableName)
-ORDER BY a.id, a.colorder";
-                    item.Columns = conn.Query<DbTableColumn>(strGetTableColumns, new
-                    {
-                        TableName = item.TableName
-                    }).ToList();
-
-                    item.Columns.ForEach(x =>
-                    {
-                        var csharpType = DbColumnTypeCollection.DbColumnDataTypes.FirstOrDefault(t =>
-                            t.DatabaseType == dbType && t.ColumnTypes.Split(',').Any(p =>
-                                p.Trim().Equals(x.ColumnType, StringComparison.OrdinalIgnoreCase)))?.CSharpType;
-                        if (string.IsNullOrEmpty(csharpType))
-                        {
-                            throw new SqlTypeException($"未从字典中找到\"{x.ColumnType}\"对应的C#数据类型，请更新DbColumnTypeCollection类型映射字典。");
-                        }
-
-                        x.CSharpType = csharpType;
-                    });
-                });
+                tables = dbConnection.GetCurrentDatabaseTableList(dbType);
             }
 
             if (tables != null && tables.Any())
@@ -146,7 +89,7 @@ ORDER BY a.id, a.colorder";
             var sb = new StringBuilder();
             foreach (var column in table.Columns)
             {
-                var tmp = GenerateEntityProperty(column);
+                var tmp = GenerateEntityProperty(table.TableName,column);
                 sb.AppendLine(tmp);
             }
             var content = ReadTemplate("ModelTemplate.txt");
@@ -165,22 +108,50 @@ ORDER BY a.id, a.colorder";
         /// <param name="tableName">表名</param>
         /// <param name="column">列</param>
         /// <returns></returns>
-        private static string GenerateEntityProperty(DbTableColumn column)
+        private static string GenerateEntityProperty(string tableName,DbTableColumn column)
         {
             var sb = new StringBuilder();
-            if (!column.Comment.IsNullOrWhiteSpace())
+            if (!string.IsNullOrEmpty(column.Comment))
             {
                 sb.AppendLine("\t\t/// <summary>");
                 sb.AppendLine("\t\t/// " + column.Comment);
                 sb.AppendLine("\t\t/// </summary>");
             }
-            var colType = column.CSharpType;
-            if (colType.ToLower() != "string" && colType.ToLower() != "byte[]" && colType.ToLower() != "object" &&
-                column.IsNullable)
+            if (column.IsPrimaryKey)
             {
-                colType = colType + "?";
+                sb.AppendLine("\t\t[Key]");
+                //if (column.IsIdentity)
+                //{
+                //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
+                //}
+                sb.AppendLine($"\t\tpublic {column.CSharpType} Id " + "{get;set;}");
             }
-            sb.AppendLine($"\t\tpublic {colType} {column.ColName} " + "{get;set;}");
+            else
+            {
+                if (!column.IsNullable)
+                {
+                    sb.AppendLine("\t\t[Required]");
+                }
+
+                //if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
+                //{
+                //    sb.AppendLine($"\t\t[MaxLength({column.ColumnLength.Value})]");
+                //}
+                //if (column.IsIdentity)
+                //{
+                //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
+                //}
+
+                var colType = column.CSharpType;
+                if (colType.ToLower() != "string" && colType.ToLower() != "byte[]" && colType.ToLower() != "object" &&
+                    column.IsNullable)
+                {
+                    colType = colType + "?";
+                }
+
+                sb.AppendLine($"\t\tpublic {colType} {column.ColName} " + "{get;set;}");
+            }
+
             return sb.ToString();
         }
 
@@ -209,8 +180,8 @@ ORDER BY a.id, a.colorder";
         /// <summary>
         /// 写文件
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="content"></param>
+        /// <param name="fileName">文件完整路径</param>
+        /// <param name="content">内容</param>
         private static void WriteAndSave(string fileName, string content)
         {
             //实例化一个文件流--->与写入文件相关联
