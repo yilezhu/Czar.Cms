@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Czar.Cms.Core\Czar.Cms.Core.csproj" />
+    <ProjectReference Include="..\Czar.Cms.IRepository\Czar.Cms.IRepository.csproj" />
+    <ProjectReference Include="..\Czar.Cms.Repository.SqlServer\Czar.Cms.Repository.SqlServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +29,12 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

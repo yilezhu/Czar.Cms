@@ -1,13 +1,13 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：后台管理员角色                                                    
+*│　描    述：文章分类                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-18 13:30:14                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：ManagerRole                                     
+*│　类    名：ArticleCategory                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -18,11 +18,11 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
-	/// 后台管理员角色
+	/// 2018-12-18 13:30:14
+	/// 文章分类
 	/// </summary>
-	[Table("ManagerRole")]
-	public class ManagerRole
+	[Table("ArticleCategory")]
+	public class ArticleCategory
 	{
 		/// <summary>
 		/// 主键
@@ -31,55 +31,58 @@ namespace Czar.Cms.Models
 		public Int32 Id {get;set;}
 
 		/// <summary>
-		/// 角色名称
+		/// 分类标题
 		/// </summary>
 		[Required]
-		public String RoleName {get;set;}
+		public String Title {get;set;}
 
 		/// <summary>
-		/// 角色类型1超管2系管
+		/// 父分类ID
 		/// </summary>
 		[Required]
-		public Int32 RoleType {get;set;}
+		public Int32 ParentId {get;set;}
 
 		/// <summary>
-		/// 是否系统默认
+		/// 类别ID列表(逗号分隔开)
+		/// </summary>
+		public String ClassList {get;set;}
+
+		/// <summary>
+		/// 类别深度
+		/// </summary>
+		public Int32? ClassLayer {get;set;}
+
+		/// <summary>
+		/// 排序
 		/// </summary>
 		[Required]
-		public Boolean IsSystem {get;set;}
+		public Int32 Sort {get;set;}
 
 		/// <summary>
-		/// 添加人
+		/// 分类图标
 		/// </summary>
-		[Required]
-		public Int32 AddManagerId {get;set;}
+		public String ImageUrl {get;set;}
 
 		/// <summary>
-		/// 添加时间
+		/// 分类SEO标题
 		/// </summary>
-		[Required]
-		public DateTime AddTime {get;set;}
+		public String SeoTitle {get;set;}
 
 		/// <summary>
-		/// 修改人
+		/// 分类SEO关键字
 		/// </summary>
-		public Int32? ModifyManagerId {get;set;}
+		public String SeoKeywords {get;set;}
 
 		/// <summary>
-		/// 修改时间
+		/// 分类SEO描述
 		/// </summary>
-		public DateTime? ModifyTime {get;set;}
+		public String SeoDescription {get;set;}
 
 		/// <summary>
 		/// 是否删除
 		/// </summary>
 		[Required]
-		public Boolean IsDelete {get;set;}
-
-		/// <summary>
-		/// 备注
-		/// </summary>
-		public String Remark {get;set;}
+		public Boolean IsDeleted {get;set;}
 
 
 	}

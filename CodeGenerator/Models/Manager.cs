@@ -1,13 +1,13 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：后台管理员角色                                                    
+*│　描    述：后台管理员                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-18 13:30:14                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：ManagerRole                                     
+*│　类    名：Manager                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -18,11 +18,11 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
-	/// 后台管理员角色
+	/// 2018-12-18 13:30:14
+	/// 后台管理员
 	/// </summary>
-	[Table("ManagerRole")]
-	public class ManagerRole
+	[Table("Manager")]
+	public class Manager
 	{
 		/// <summary>
 		/// 主键
@@ -31,22 +31,57 @@ namespace Czar.Cms.Models
 		public Int32 Id {get;set;}
 
 		/// <summary>
-		/// 角色名称
+		/// 角色ID
 		/// </summary>
 		[Required]
-		public String RoleName {get;set;}
+		public Int32 RoleId {get;set;}
 
 		/// <summary>
-		/// 角色类型1超管2系管
+		/// 用户名
 		/// </summary>
 		[Required]
-		public Int32 RoleType {get;set;}
+		public String UserName {get;set;}
 
 		/// <summary>
-		/// 是否系统默认
+		/// 密码
 		/// </summary>
 		[Required]
-		public Boolean IsSystem {get;set;}
+		public String Password {get;set;}
+
+		/// <summary>
+		/// 头像
+		/// </summary>
+		public String Avatar {get;set;}
+
+		/// <summary>
+		/// 用户昵称
+		/// </summary>
+		public String NickName {get;set;}
+
+		/// <summary>
+		/// 手机号码
+		/// </summary>
+		public String Mobile {get;set;}
+
+		/// <summary>
+		/// 邮箱地址
+		/// </summary>
+		public String Email {get;set;}
+
+		/// <summary>
+		/// 登录次数
+		/// </summary>
+		public Int32? LoginCount {get;set;}
+
+		/// <summary>
+		/// 最后一次登录IP
+		/// </summary>
+		public String LoginLastIp {get;set;}
+
+		/// <summary>
+		/// 最后一次登录时间
+		/// </summary>
+		public DateTime? LoginLastTime {get;set;}
 
 		/// <summary>
 		/// 添加人
@@ -69,6 +104,12 @@ namespace Czar.Cms.Models
 		/// 修改时间
 		/// </summary>
 		public DateTime? ModifyTime {get;set;}
+
+		/// <summary>
+		/// 是否锁定
+		/// </summary>
+		[Required]
+		public Boolean IsLock {get;set;}
 
 		/// <summary>
 		/// 是否删除

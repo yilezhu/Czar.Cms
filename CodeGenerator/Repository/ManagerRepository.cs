@@ -1,13 +1,13 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：文章接口实现                                                    
+*│　描    述：后台管理员接口实现                                                    
 *│　作    者：yilezhu                                            
 *│　版    本：1.0    模板代码自动生成                                                
-*│　创建时间：2018-12-18 13:28:43                             
+*│　创建时间：2018-12-18 13:30:14                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间： Czar.Cms.Repository.SqlServer                                  
-*│　类    名： ArticleRepository                                      
+*│　类    名： ManagerRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
 using Czar.Cms.Core.DbHelper;
@@ -20,9 +20,9 @@ using System;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class ArticleRepository:BaseRepository<Article,Int32>, IArticleRepository
+    public class ManagerRepository:BaseRepository<Manager,Int32>, IManagerRepository
     {
-        public ArticleRepository(IOptionsSnapshot<DbOpion> options)
+        public ManagerRepository(IOptionsSnapshot<DbOpion> options)
         {
             _dbOpion =options.Get("CzarCms");
             if (_dbOpion == null)

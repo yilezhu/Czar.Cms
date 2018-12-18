@@ -1,13 +1,13 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：后台管理员角色                                                    
+*│　描    述：后台管理菜单                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-18 13:30:14                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：ManagerRole                                     
+*│　类    名：Menu                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -18,11 +18,11 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
-	/// 后台管理员角色
+	/// 2018-12-18 13:30:14
+	/// 后台管理菜单
 	/// </summary>
-	[Table("ManagerRole")]
-	public class ManagerRole
+	[Table("Menu")]
+	public class Menu
 	{
 		/// <summary>
 		/// 主键
@@ -31,16 +31,47 @@ namespace Czar.Cms.Models
 		public Int32 Id {get;set;}
 
 		/// <summary>
-		/// 角色名称
+		/// 父菜单ID
 		/// </summary>
 		[Required]
-		public String RoleName {get;set;}
+		public Int32 ParentId {get;set;}
 
 		/// <summary>
-		/// 角色类型1超管2系管
+		/// 名称
 		/// </summary>
 		[Required]
-		public Int32 RoleType {get;set;}
+		public String Name {get;set;}
+
+		/// <summary>
+		/// 显示名称
+		/// </summary>
+		public String DisplayName {get;set;}
+
+		/// <summary>
+		/// 图标地址
+		/// </summary>
+		public String IconUrl {get;set;}
+
+		/// <summary>
+		/// 链接地址
+		/// </summary>
+		public String LinkUrl {get;set;}
+
+		/// <summary>
+		/// 排序数字
+		/// </summary>
+		public Int32? Sort {get;set;}
+
+		/// <summary>
+		/// 操作权限（按钮权限时使用）
+		/// </summary>
+		public String Permission {get;set;}
+
+		/// <summary>
+		/// 是否显示
+		/// </summary>
+		[Required]
+		public Boolean IsDisplay {get;set;}
 
 		/// <summary>
 		/// 是否系统默认
@@ -68,18 +99,13 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 修改时间
 		/// </summary>
-		public DateTime? ModifyTime {get;set;}
+		public DateTime? ModifyTimes {get;set;}
 
 		/// <summary>
 		/// 是否删除
 		/// </summary>
 		[Required]
 		public Boolean IsDelete {get;set;}
-
-		/// <summary>
-		/// 备注
-		/// </summary>
-		public String Remark {get;set;}
 
 
 	}
