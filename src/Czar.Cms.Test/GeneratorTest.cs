@@ -1,7 +1,4 @@
 
-using Czar.Cms.Core.CodeGenerator;
-using Czar.Cms.Core.Models;
-using Czar.Cms.Core.Options;
 using Czar.Cms.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +7,9 @@ using Xunit;
 using System.Linq;
 using Czar.Cms.IRepository;
 using Czar.Cms.Repository.SqlServer;
+using Czar.Cms.Core.Models;
+using Czar.Cms.Core.CodeGenerator;
+using Czar.Cms.Core.Options;
 
 namespace Czar.Cms.Test
 {
