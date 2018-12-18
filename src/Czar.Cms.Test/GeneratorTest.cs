@@ -71,7 +71,7 @@ namespace Czar.Cms.Test
                 options.ConnectionString = "Data Source=.;Initial Catalog=CzarCms;User ID=sa;Password=1;Persist Security Info=True;Max Pool Size=50;Min Pool Size=0;Connection Lifetime=300;";
                 options.DbType = DatabaseType.SqlServer.ToString();//数据库类型是SqlServer,其他数据类型参照枚举DatabaseType
                 options.Author = "yilezhu";//作者名称
-                options.OutputPath = @"E:\workspace\vs2017\Czar.Cms\CodeGenerator";//实体模型输出路径，为空则默认为当前程序运行的路径
+                options.OutputPath = "C:\\CzarCmsCodeGenerator";//模板代码生成的路径
                 options.ModelsNamespace = "Czar.Cms.Models";//实体命名空间
                 options.IRepositoryNamespace = "Czar.Cms.IRepository";//仓储接口命名空间
                 options.RepositoryNamespace = "Czar.Cms.Repository.SqlServer";//仓储命名空间
@@ -81,7 +81,6 @@ namespace Czar.Cms.Test
             services.Configure<DbOpion>("CzarCms", GetConfiguration().GetSection("DbOpion"));
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
-        
             return services.BuildServiceProvider(); //构建服务提供程序
         }
 
