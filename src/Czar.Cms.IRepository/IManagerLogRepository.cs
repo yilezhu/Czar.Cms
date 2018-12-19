@@ -1,52 +1,22 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：角色权限表                                                    
+*│　描    述：操作日志                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-18 13:28:43                           
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间: Czar.Cms.Models                                  
-*│　类    名：RolePermission                                     
+*│　命名空间： Czar.Cms.IRepository                                   
+*│　接口名称： IManagerLogRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Core.Repository;
+using Czar.Cms.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Czar.Cms.Models
+namespace Czar.Cms.IRepository
 {
-	/// <summary>
-	/// yilezhu
-	/// 2018-12-18 13:28:43
-	/// 角色权限表
-	/// </summary>
-	[Table("RolePermission")]
-	public class RolePermission
-	{
-		/// <summary>
-		/// 主键
-		/// </summary>
-		[Key]
-		public Int32 Id {get;set;}
-
-		/// <summary>
-		/// 角色主键
-		/// </summary>
-		[Required]
-		public Int32 RoleId {get;set;}
-
-		/// <summary>
-		/// 菜单主键
-		/// </summary>
-		[Required]
-		public Int32 MenuId {get;set;}
-
-		/// <summary>
-		/// 操作类型（功能权限）
-		/// </summary>
-		public String Permission {get;set;}
-
-
-	}
+    public interface IManagerLogRepository : IBaseRepository<ManagerLog, Int32>
+    {
+    }
 }

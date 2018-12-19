@@ -48,10 +48,10 @@ namespace Czar.Cms.Core.CodeGenerator
         }
 
         /// <summary>
-        /// 根据数据库连接字符串生成数据库表对应的Model层代码
+        /// 根据数据库连接字符串生成数据库表对应的模板代码
         /// </summary>
         /// <param name="isCoveredExsited">是否覆盖已存在的同名文件</param>
-        public void GenerateModelCodesFromDatabase(bool isCoveredExsited = true)
+        public void GenerateTemplateCodesFromDatabase(bool isCoveredExsited = true)
         {
             DatabaseType dbType = ConnectionFactory.GetDataBaseType(_options.DbType);
             List<DbTable> tables = new List<DbTable>();
@@ -63,19 +63,26 @@ namespace Czar.Cms.Core.CodeGenerator
             if (tables != null && tables.Any())
             {
                 foreach (var table in tables)
-                {
+                {  
+                    GenerateEntity(table, isCoveredExsited);
                     if (table.Columns.Any(c => c.IsPrimaryKey))
                     {
-                        GenerateEntity(table, isCoveredExsited);
+                        var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+                        GenerateIRepository(table, pkTypeName, isCoveredExsited);
+                        GenerateRepository(table, pkTypeName, isCoveredExsited);
                     }
                 }
             }
         }
 
-
+        /// <summary>
+        /// 生成实体代码
+        /// </summary>
+        /// <param name="table">表名</param>
+        /// <param name="isCoveredExsited">是否覆盖</param>
         private void GenerateEntity(DbTable table, bool isCoveredExsited = true)
         {
-            var modelPath = _options.OutputPath;
+            var modelPath = _options.OutputPath + Delimiter + "Models"; ;
             if (!Directory.Exists(modelPath))
             {
                 Directory.CreateDirectory(modelPath);
@@ -89,7 +96,7 @@ namespace Czar.Cms.Core.CodeGenerator
             var sb = new StringBuilder();
             foreach (var column in table.Columns)
             {
-                var tmp = GenerateEntityProperty(table.TableName,column);
+                var tmp = GenerateEntityProperty(table.TableName, column);
                 sb.AppendLine(tmp);
             }
             var content = ReadTemplate("ModelTemplate.txt");
@@ -103,12 +110,64 @@ namespace Czar.Cms.Core.CodeGenerator
         }
 
         /// <summary>
+        /// 生成IRepository层代码文件
+        /// </summary>
+        /// <param name="modelTypeName"></param>
+        /// <param name="keyTypeName"></param>
+        /// <param name="ifExsitedCovered"></param>
+        private void GenerateIRepository(DbTable table, string keyTypeName, bool ifExsitedCovered = true)
+        {
+            var iRepositoryPath = _options.OutputPath + Delimiter + "IRepository";
+            if (!Directory.Exists(iRepositoryPath))
+            {
+                Directory.CreateDirectory(iRepositoryPath);
+            }
+            var fullPath = iRepositoryPath + Delimiter + "I" + table.TableName + "Repository.cs";
+            if (File.Exists(fullPath) && !ifExsitedCovered)
+                return;
+            var content = ReadTemplate("IRepositoryTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{IRepositoryNamespace}", _options.IRepositoryNamespace)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{KeyTypeName}", keyTypeName);
+            WriteAndSave(fullPath, content);
+        }
+        /// <summary>
+        /// 生成Repository层代码文件
+        /// </summary>
+        /// <param name="modelTypeName"></param>
+        /// <param name="keyTypeName"></param>
+        /// <param name="ifExsitedCovered"></param>
+        private void GenerateRepository(DbTable table, string keyTypeName, bool ifExsitedCovered = true)
+        {
+            var repositoryPath = _options.OutputPath + Delimiter + "Repository";
+            if (!Directory.Exists(repositoryPath))
+            {
+                Directory.CreateDirectory(repositoryPath);
+            }
+            var fullPath = repositoryPath + Delimiter + table.TableName + "Repository.cs";
+            if (File.Exists(fullPath) && !ifExsitedCovered)
+                return;
+            var content = ReadTemplate("RepositoryTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{RepositoryNamespace}", _options.RepositoryNamespace)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{KeyTypeName}", keyTypeName);
+            WriteAndSave(fullPath, content);
+        }
+
+
+        /// <summary>
         /// 生成属性
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <param name="column">列</param>
         /// <returns></returns>
-        private static string GenerateEntityProperty(string tableName,DbTableColumn column)
+        private static string GenerateEntityProperty(string tableName, DbTableColumn column)
         {
             var sb = new StringBuilder();
             if (!string.IsNullOrEmpty(column.Comment))
