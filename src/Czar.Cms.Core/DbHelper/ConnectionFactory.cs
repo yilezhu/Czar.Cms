@@ -25,29 +25,12 @@ namespace Czar.Cms.Core.DbHelper
         /// <returns>数据库连接</returns>
         public static IDbConnection CreateConnection(string dbtype, string strConn)
         {
-            IDbConnection connection = null;
             if (dbtype.IsNullOrWhiteSpace())
                 throw new ArgumentNullException("获取数据库连接居然不传数据库类型，你想上天吗？");
             if (strConn.IsNullOrWhiteSpace())
                 throw new ArgumentNullException("获取数据库连接居然不传数据库类型，你想上天吗？");
             var dbType = GetDataBaseType(dbtype);
-
-            switch (dbType)
-            {
-                case DatabaseType.SqlServer:
-                    connection = new SqlConnection(strConn);
-                    break;
-                case DatabaseType.MySQL:
-                    connection = new MySqlConnection(strConn);
-                    break;
-                case DatabaseType.PostgreSQL:
-                    connection = new NpgsqlConnection(strConn);
-                    break;
-                default:
-                    throw new ArgumentNullException($"这是我的错，还不支持的{dbType.ToString()}数据库类型");
-
-            }
-            return connection;
+            return CreateConnection(dbType,strConn);
         }
 
         /// <summary>
