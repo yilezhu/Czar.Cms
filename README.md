@@ -39,6 +39,7 @@
 顾名思义，带着大家按照我们设计的数据库进行相关功能的开发！
 
 1. *[.NET Core实战项目之CMS 第十一章 开发篇-数据库生成及实体代码生成器开发](https://www.cnblogs.com/yilezhu/p/10112406.html)*
+2. *[.NET Core实战项目之CMS 第十二章 开发篇-Dapper封装CURD及仓储代码生成器实现](https://www.cnblogs.com/yilezhu/p/10146311.html)*
 
 待更新
 
