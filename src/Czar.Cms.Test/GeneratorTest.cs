@@ -31,34 +31,6 @@ namespace Czar.Cms.Test
 
         }
 
-        [Fact]
-        public void TestBaseFactory()
-        {
-            IServiceProvider serviceProvider = BuildServiceForSqlServer();
-            IArticleCategoryRepository categoryRepository = serviceProvider.GetService<IArticleCategoryRepository>();
-            var category = new ArticleCategory
-            {
-                Title = "随笔",
-                ParentId = 0,
-                ClassList = "",
-                ClassLayer = 0,
-                Sort = 0,
-                ImageUrl = "",
-                SeoTitle = "随笔的SEOTitle",
-                SeoKeywords = "随笔的SeoKeywords",
-                SeoDescription = "随笔的SeoDescription",
-                IsDeleted = false,
-            };
-            var categoryId = categoryRepository.Insert(category);
-            var list = categoryRepository.GetList();
-            Assert.True(1 == list.Count());
-            Assert.Equal("随笔", list.FirstOrDefault().Title);
-            Assert.Equal("SQLServer", DatabaseType.SqlServer.ToString(), ignoreCase: true);
-            categoryRepository.Delete(categoryId.Value);
-            var count = categoryRepository.RecordCount();
-            Assert.True(0 == count);
-        }
-
         /// <summary>
         /// 构造依赖注入容器，然后传入参数
         /// </summary>
