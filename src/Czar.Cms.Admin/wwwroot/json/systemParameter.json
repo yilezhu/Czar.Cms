@@ -1,0 +1,14 @@
+{
+	"cmsName": "CzarCMS后台管理系统",
+	"version": "v1.0",
+	"author": "yilezhu",
+	"homePage": "~/Home/Index",
+	"server": "windows",
+	"dataBase": "8.00.2039",
+	"maxUpload": "2M",
+	"userRights": "超级管理员",
+	"description": "这是yilezhu CMS实战教程从无到有一步一步制作的CMS系统",
+	"powerby": "copyright @2018 yilezhu",
+	"record": "皖ICP备XXXX号-1",
+	"keywords": "CzarCms,CMS,yilezhu"
+}
