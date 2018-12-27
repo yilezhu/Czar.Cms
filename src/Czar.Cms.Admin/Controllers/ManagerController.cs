@@ -13,5 +13,10 @@ namespace Czar.Cms.Admin.Controllers
         {
             return View();
         }
+
+        public IActionResult AddOrModify()
+        {
+            return View();
+        }
     }
 }
