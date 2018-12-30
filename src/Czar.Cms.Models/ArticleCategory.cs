@@ -3,7 +3,7 @@
 *│　描    述：文章分类                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-30 14:54:11                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
@@ -18,7 +18,7 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
+	/// 2018-12-30 14:54:11
 	/// 文章分类
 	/// </summary>
 	[Table("ArticleCategory")]
@@ -33,13 +33,11 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 分类标题
 		/// </summary>
-		[Required]
 		public String Title {get;set;}
 
 		/// <summary>
 		/// 父分类ID
 		/// </summary>
-		[Required]
 		public Int32 ParentId {get;set;}
 
 		/// <summary>
@@ -55,7 +53,6 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 排序
 		/// </summary>
-		[Required]
 		public Int32 Sort {get;set;}
 
 		/// <summary>
@@ -81,7 +78,6 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否删除
 		/// </summary>
-		[Required]
 		public Boolean IsDeleted {get;set;}
 
 

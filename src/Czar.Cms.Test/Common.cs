@@ -10,6 +10,7 @@
 *│　类    名： Common                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Core.CodeGenerator;
 using Czar.Cms.Core.Models;
 using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
@@ -47,6 +48,7 @@ namespace Czar.Cms.Test
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<CodeGenerator>();
             return services.BuildServiceProvider(); //构建服务提供程序
         }
 

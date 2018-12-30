@@ -3,7 +3,7 @@
 *│　描    述：后台管理菜单                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-30 14:54:11                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
@@ -18,7 +18,7 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
+	/// 2018-12-30 14:54:11
 	/// 后台管理菜单
 	/// </summary>
 	[Table("Menu")]
@@ -33,13 +33,11 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 父菜单ID
 		/// </summary>
-		[Required]
 		public Int32 ParentId {get;set;}
 
 		/// <summary>
 		/// 名称
 		/// </summary>
-		[Required]
 		public String Name {get;set;}
 
 		/// <summary>
@@ -70,25 +68,21 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否显示
 		/// </summary>
-		[Required]
 		public Boolean IsDisplay {get;set;}
 
 		/// <summary>
 		/// 是否系统默认
 		/// </summary>
-		[Required]
 		public Boolean IsSystem {get;set;}
 
 		/// <summary>
 		/// 添加人
 		/// </summary>
-		[Required]
 		public Int32 AddManagerId {get;set;}
 
 		/// <summary>
 		/// 添加时间
 		/// </summary>
-		[Required]
 		public DateTime AddTime {get;set;}
 
 		/// <summary>
@@ -104,7 +98,6 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否删除
 		/// </summary>
-		[Required]
 		public Boolean IsDelete {get;set;}
 
 

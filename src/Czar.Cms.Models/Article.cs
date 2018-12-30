@@ -3,7 +3,7 @@
 *│　描    述：文章                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：2018-12-18 13:28:43                            
+*│　创建时间：2018-12-30 14:54:11                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
@@ -18,7 +18,7 @@ namespace Czar.Cms.Models
 {
 	/// <summary>
 	/// yilezhu
-	/// 2018-12-18 13:28:43
+	/// 2018-12-30 14:54:11
 	/// 文章
 	/// </summary>
 	[Table("Article")]
@@ -33,13 +33,11 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 分类ID
 		/// </summary>
-		[Required]
 		public Int32 CategoryId {get;set;}
 
 		/// <summary>
 		/// 文章标题
 		/// </summary>
-		[Required]
 		public String Title {get;set;}
 
 		/// <summary>
@@ -55,13 +53,11 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 浏览次数
 		/// </summary>
-		[Required]
 		public Int32 ViewCount {get;set;}
 
 		/// <summary>
 		/// 排序
 		/// </summary>
-		[Required]
 		public Int32 Sort {get;set;}
 
 		/// <summary>
@@ -92,13 +88,11 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 添加人ID
 		/// </summary>
-		[Required]
 		public Int32 AddManagerId {get;set;}
 
 		/// <summary>
 		/// 添加时间
 		/// </summary>
-		[Required]
 		public DateTime AddTime {get;set;}
 
 		/// <summary>
@@ -114,31 +108,26 @@ namespace Czar.Cms.Models
 		/// <summary>
 		/// 是否置顶
 		/// </summary>
-		[Required]
 		public Boolean IsTop {get;set;}
 
 		/// <summary>
 		/// 是否轮播显示
 		/// </summary>
-		[Required]
 		public Boolean IsSlide {get;set;}
 
 		/// <summary>
 		/// 是否热门
 		/// </summary>
-		[Required]
 		public Boolean IsRed {get;set;}
 
 		/// <summary>
 		/// 是否发布
 		/// </summary>
-		[Required]
 		public Boolean IsPublish {get;set;}
 
 		/// <summary>
 		/// 是否删除
 		/// </summary>
-		[Required]
 		public Boolean IsDeleted {get;set;}
 
 

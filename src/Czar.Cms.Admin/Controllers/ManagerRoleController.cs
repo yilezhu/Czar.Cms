@@ -21,6 +21,7 @@ namespace Czar.Cms.Admin.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

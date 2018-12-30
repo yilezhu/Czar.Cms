@@ -187,10 +187,10 @@ namespace Czar.Cms.Core.CodeGenerator
             }
             else
             {
-                if (!column.IsNullable)
-                {
-                    sb.AppendLine("\t\t[Required]");
-                }
+                //if (!column.IsNullable)
+                //{
+                //    sb.AppendLine("\t\t[Required]");
+                //}
 
                 //if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
                 //{
