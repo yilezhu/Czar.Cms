@@ -1,4 +1,5 @@
-﻿using Czar.Cms.Models;
+﻿
+using Czar.Cms.ViewModels;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Czar.Cms.Admin.Validation
 {
-    public class ManagerRoleValidation : AbstractValidator<ManagerRole>
+    public class ManagerRoleValidation : AbstractValidator<ManagerRoleAddOrModifyModel>
     {
         public ManagerRoleValidation()
         {

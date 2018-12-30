@@ -43,7 +43,7 @@ namespace Czar.Cms.Admin.ResultModel
         /// <summary>
         /// 数据为空的信息
         /// </summary>
-        public const string CommonFailNoDataMsg = "传输过来的数据为空";
+        public const string CommonFailNoDataMsg = "数据不存在";
         
         /// <summary>
         /// 通用失败，系统异常错误码

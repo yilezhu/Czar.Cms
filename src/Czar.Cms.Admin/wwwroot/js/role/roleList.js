@@ -8,15 +8,16 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     //角色列表
     var tableIns = table.render({
         elem: '#roleList',
-        url: '../../json/userList.json',
+        url: '/ManagerRole/LoadData/',
         cellMinWidth: 95,
         page: true,
         height: "full-125",
         limits: [10, 15, 20, 25],
-        limit: 20,
+        limit: 10,
         id: "roleListTable",
         cols: [[
-            { field:'Id',type: "checkbox", fixed: "left", width: 50 },
+            { type: "checkbox", fixed: "left", width: 50 },
+            { field: "Id", title: 'Id', width: 50, align: "center" },
             { field: 'RoleName', title: '角色名称', minWidth: 100, align: "center" },
             {
                 field: 'RoleType', title: '角色类型', minWidth: 150, align: 'center', templet: function (d) {
@@ -24,7 +25,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                         return "超级管理员";
                     } else if (d.RoleType === 2) {
                         return "系统管理员";
-                    } else  {
+                    } else {
                         return "未知";
                     }
                 }
@@ -34,7 +35,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     return d.IsSystem === true ? "是" : "否";
                 }
             },
-            { field: 'userGrade', title: '备注', align: 'center' },
+            { field: 'Remark', title: '备注', align: 'center' },
             { field: 'AddTime', title: '添加时间', align: 'center', minWidth: 150 },
             { title: '操作', minWidth: 175, templet: '#roleListBar', fixed: "right", align: "center" }
         ]]
@@ -58,33 +59,34 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //添加用户
     function addRole(edit) {
+        var tit = "添加角色";
+        if (edit) {
+            tit = "编辑角色";
+        }
         var index = layui.layer.open({
-            title: "添加角色",
+            title: tit,
             type: 2,
+            anim: 1,
+            area: ['600px', '80%'],
             content: "/ManagerRole/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    body.find("#Id").val(edit.id);  //主键
+                    body.find("#Id").val(edit.Id);  //主键
                     body.find(".RoleName").val(edit.RoleName);  //角色名
                     body.find(".RoleType input[value=" + edit.RoleType + "]").prop("checked", "checked");  //角色类型
                     body.find(".IsSystem").val(edit.IsSystem);  //会员等级
                     body.find(".Remark").text(edit.Remark);    //角色备注
                     form.render();
                 }
-                setTimeout(function () {
-                    layui.layer.tips('点击此处返回角色列表', '.layui-layer-setwin .layui-layer-close', {
-                        tips: 3
-                    });
-                }, 500);
             }
         });
-        layui.layer.full(index);
-        window.sessionStorage.setItem("index", index);
-        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        $(window).on("resize", function () {
-            layui.layer.full(window.sessionStorage.getItem("index"));
-        });
+        //layui.layer.full(index);
+        //window.sessionStorage.setItem("index", index);
+        ////改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        //$(window).on("resize", function () {
+        //    layui.layer.full(window.sessionStorage.getItem("index"));
+        //});
     }
     $(".addRoles_btn").click(function () {
         addRole();

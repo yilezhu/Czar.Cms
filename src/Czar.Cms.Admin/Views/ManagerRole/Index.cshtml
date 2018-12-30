@@ -11,7 +11,6 @@
             </div>
             <a class="layui-btn search_btn" data-type="reload">搜索</a>
         </div>
-        <br />
         <div class="layui-inline">
             <a class="layui-btn layui-btn-normal addRoles_btn"><i class="layui-icon">&#xe61f;</i>添加角色</a>
         </div>
@@ -29,5 +28,5 @@
 </script>
 @section Scripts{
     <script type="text/javascript" src="~/layui/layui.js"></script>
-    <script type="text/javascript" src="~/js/role/roleList.js"></script>
+    <script type="text/javascript" src="~/js/role/roleList.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
 }

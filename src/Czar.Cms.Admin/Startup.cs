@@ -19,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using AutoMapper;
 
 namespace Czar.Cms.Admin
 {
@@ -66,6 +67,8 @@ namespace Czar.Cms.Admin
                     fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>();
                     fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                 });
+            //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile
+            services.AddAutoMapper();
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)

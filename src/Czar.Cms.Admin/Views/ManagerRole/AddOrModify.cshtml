@@ -16,8 +16,8 @@
         <label class="layui-form-label">角色类型</label>
         <div class="layui-input-block">
             <select name="RoleType" class="RoleType" lay-filter="RoleType">
-                <option value="1" selected>超级管理员</option>
-                <option value="2">系统管理员</option>
+                <option value="1">超级管理员</option>
+                <option value="2" selected>系统管理员</option>
             </select>
         </div>
     </div>
@@ -36,14 +36,14 @@
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
-            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addRole">立即添加</button>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button>
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addRole">确定</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
         </div>
     </div>
 </form>
 @section Scripts{
     <script type="text/javascript" src="~/layui/layui.js"></script>
-    <script type="text/javascript" src="~/js/role/roleAdd.js"></script>
+    <script type="text/javascript" src="~/js/role/roleAdd.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
 }
 
 
