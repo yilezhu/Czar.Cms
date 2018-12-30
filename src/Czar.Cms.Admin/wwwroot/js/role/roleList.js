@@ -96,18 +96,14 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     $(".delAll_btn").click(function () {
         var checkStatus = table.checkStatus('roleListTable'),
             data = checkStatus.data,
-            newsId = [];
+            roleId = [];
         if (data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].Id);
+                roleId.push(data[i].Id);
             }
             layer.confirm('确定删除选中的用户？', { icon: 3, title: '提示信息' }, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                //获取防伪标记
+                del(roleId);
             });
         } else {
             layer.msg("请选择需要删除的用户");
@@ -121,36 +117,34 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
         if (layEvent === 'edit') { //编辑
             addRole(data);
-        } else if (layEvent === 'usable') { //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if (_this.text() === "已禁用") {
-                usableText = "是否确定启用此用户？",
-                    btnText = "已启用";
-            }
-            layer.confirm(usableText, {
-                icon: 3,
-                title: '系统提示',
-                cancel: function (index) {
-                    layer.close(index);
-                }
-            }, function (index) {
-                _this.text(btnText);
-                layer.close(index);
-            }, function (index) {
-                layer.close(index);
-            });
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此角色？', { icon: 3, title: '提示信息' }, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                del(data.Id);
             });
         }
     });
+
+    function del(roleId) {
+        $.ajax({
+            type: 'POST',
+            url: '/ManagerRole/Delete/',
+            data: { roleId: roleId },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                    layer.close(index);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
+    }
 
 });

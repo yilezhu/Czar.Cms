@@ -56,18 +56,18 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddOrModify([FromForm]ManagerRoleAddOrModifyModel item)
+        public string AddOrModify([FromForm]ManagerRoleAddOrModifyModel item)
         {
             var result = new BaseResult();
             ManagerRoleValidation validationRules = new ManagerRoleValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                ManagerRole managerRole=_mapper.Map<ManagerRole>(item);
-                if (managerRole.Id == 0)
+                ManagerRole managerRole ;
+                if (item.Id == 0)
                 {
                     //TODO ADD
-                    managerRole = new ManagerRole();
+                    managerRole = _mapper.Map<ManagerRole>(item);
                     managerRole.AddManagerId = 1;
                     managerRole.IsDelete = false;
                     managerRole.AddTime = DateTime.Now;
@@ -89,7 +89,7 @@ namespace Czar.Cms.Admin.Controllers
                     managerRole = _managerRoleRepository.Get(item.Id);
                     if (managerRole != null)
                     {
-
+                        _mapper.Map(item, managerRole);
                         managerRole.ModifyManagerId = 1;
                         managerRole.ModifyTime = DateTime.Now;
                         if (_managerRoleRepository.Update(managerRole) > 0)
@@ -118,7 +118,27 @@ namespace Czar.Cms.Admin.Controllers
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
                 result.ResultMsg = results.ToString("||");
             }
-            return Json(result);
+            return JsonHelper.Serialize(result) ;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string Delete(int[] roleId)
+        {
+            var result = new BaseResult();
+            if (roleId.Count() == 0)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonModelStateInvalidMsg;
+
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+
+            }
+            return JsonHelper.Serialize(result) ;
         }
     }
 }

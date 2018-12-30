@@ -30,20 +30,21 @@
                     <li class="layui-nav-item" data-menu="contentManagement">
                         <a href="javascript:;"><i class="seraph icon-caidan"></i><cite>CzarCms</cite></a>
                         <dl class="layui-nav-child">
-                            <dd class="layui-this" data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
-                            <dd data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
+                            <dd class="layui-this" data-menu="memberCenter"><a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a></dd>
+                            <dd data-menu="contentManagement"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a></dd>
                             <dd data-menu="systemeSttings"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a></dd>
                             <dd data-menu="seraphApi"><a href="javascript:;"><i class="layui-icon" data-icon="&#xe705;">&#xe705;</i><cite>使用文档</cite></a></dd>
                         </dl>
                     </li>
                 </ul>
                 <ul class="layui-nav topLevelMenus" pc>
-                    <li class="layui-nav-item layui-this" data-menu="contentManagement">
-                        <a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a>
-                    </li>
-                    <li class="layui-nav-item" data-menu="memberCenter" pc>
+                    <li class="layui-nav-item layui-this" data-menu="memberCenter" pc>
                         <a href="javascript:;"><i class="seraph icon-icon10" data-icon="icon-icon10"></i><cite>用户中心</cite></a>
                     </li>
+                    <li class="layui-nav-item" data-menu="contentManagement">
+                        <a href="javascript:;"><i class="layui-icon" data-icon="&#xe63c;">&#xe63c;</i><cite>内容管理</cite></a>
+                    </li>
+
                     <li class="layui-nav-item" data-menu="systemeSttings" pc>
                         <a href="javascript:;"><i class="layui-icon" data-icon="&#xe620;">&#xe620;</i><cite>系统设置</cite></a>
                     </li>
@@ -80,18 +81,18 @@
                 <p>你好！<span class="userName">CzarAdmin</span>, 欢迎登录</p>
             </div>
             <!-- 搜索 -->
-            <div class="layui-form component">
+            @*<div class="layui-form component">
                 <select name="search" id="search" lay-search lay-filter="searchPage">
                     <option value="">搜索页面或功能</option>
                     <option value="1">layer</option>
                     <option value="2">form</option>
                 </select>
                 <i class="layui-icon">&#xe615;</i>
-            </div>
+            </div>*@
             <div class="navBar layui-side-scroll" id="navBar">
                 <ul class="layui-nav layui-nav-tree">
                     <li class="layui-nav-item layui-this">
-                        <a href="javascript:;" data-url="page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
+                        <a href="javascript:;" data-url="/Home/Main/"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a>
                     </li>
                 </ul>
             </div>
