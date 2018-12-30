@@ -20,24 +20,21 @@ layui.use(['form', 'layer'], function () {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (res) {//res为相应体,function为回调函数
-                if (res.status === 200) {
-                    layer.alert('添加客户信息成功', { icon: 1 });
+                if (res.ResultCode === "0") {
+                    layer.alert(res.ResultMsg, { icon: 1 }, function () {
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                    });
                     //$("#res").click();//调用重置按钮将表单数据清空
                 } else {
-                    layer.alert(data.fields.RoleType, { icon: 5 });
+                    layer.alert(res.ResultMsg, { icon: 5 });
                 }
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
             }
         });
-        //setTimeout(function () {
-        //    top.layer.close(index);
-        //    top.layer.msg("角色添加成功！");
-        //    layer.closeAll("iframe");
-        //    //刷新父页面
-        //    parent.location.reload();
-        //}, 2000);
         return false;
     });
 });

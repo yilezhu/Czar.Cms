@@ -187,15 +187,15 @@ namespace Czar.Cms.Core.CodeGenerator
             }
             else
             {
-                //if (!column.IsNullable)
-                //{
-                //    sb.AppendLine("\t\t[Required]");
-                //}
+                if (!column.IsNullable)
+                {
+                    sb.AppendLine("\t\t[Required]");
+                }
 
-                //if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
-                //{
-                //    sb.AppendLine($"\t\t[MaxLength({column.ColumnLength.Value})]");
-                //}
+                if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
+                {
+                    sb.AppendLine($"\t\t[MaxLength({column.ColumnLength.Value})]");
+                }
                 //if (column.IsIdentity)
                 //{
                 //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
@@ -209,7 +209,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 }
 
                 sb.AppendLine($"\t\tpublic {colType} {column.ColName} " + "{get;set;}");
-            }
+        }
 
             return sb.ToString();
         }

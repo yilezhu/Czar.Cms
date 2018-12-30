@@ -24,7 +24,7 @@ namespace Czar.Cms.Admin.Filter
 {
     public class GlobalExceptionFilter: IExceptionFilter
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
+       public static Logger logger = LogManager.GetCurrentClassLogger();
 
         public void OnException(ExceptionContext filterContext)
         {

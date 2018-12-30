@@ -16,13 +16,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using NLog.Web;
 
 namespace Czar.Cms.Admin
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
+            env.ConfigureNLog("Nlog.config");
             Configuration = configuration;
         }
 
@@ -57,7 +61,11 @@ namespace Czar.Cms.Admin
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>());
+                .AddFluentValidation(fv =>
+                {
+                    fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>();
+                    fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                });
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)
@@ -68,7 +76,7 @@ namespace Czar.Cms.Admin
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -81,7 +89,8 @@ namespace Czar.Cms.Admin
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            //add NLog to ASP.NET Core
+            loggerFactory.AddNLog();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

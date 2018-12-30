@@ -7,6 +7,9 @@ using Czar.Cms.Models;
 using Czar.Cms.IRepository;
 using Czar.Cms.Admin.ResultModel;
 using System.Text;
+using Czar.Cms.Admin.Validation;
+using FluentValidation.Results;
+using Czar.Cms.ViewModels;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -19,7 +22,7 @@ namespace Czar.Cms.Admin.Controllers
             _managerRoleRepository = managerRoleRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index([FromQuery]ManagerRoleRequestModel model)
         {
 
             return View();
@@ -36,7 +39,9 @@ namespace Czar.Cms.Admin.Controllers
         public IActionResult AddOrModify([FromForm]ManagerRole item)
         {
             var result = new BaseResult();
-            if (ModelState.IsValid)
+            ManagerRoleValidation validationRules = new ManagerRoleValidation();
+            ValidationResult results = validationRules.Validate(item);
+            if (results.IsValid)
             {
                 item.IsDelete = false;
                 if (item.Id == 0)
@@ -76,16 +81,8 @@ namespace Czar.Cms.Admin.Controllers
             }
             else
             {
-                StringBuilder errinfo = new StringBuilder();
-                foreach (var s in ModelState.Values)
-                {
-                    foreach (var p in s.Errors)
-                    {
-                        errinfo.AppendFormat("{0}||", p.ErrorMessage);
-                    }
-                }
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = errinfo.ToString();
+                result.ResultMsg = results.ToString("||");
             }
             return Json(result);
         }
