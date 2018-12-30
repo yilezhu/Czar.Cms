@@ -36,17 +36,17 @@
 	],
 	"memberCenter": [
 		{
-			"title": "用户中心",
+			"title": "用户管理",
 			"icon": "&#xe612;",
 			"href": "/Manager/Index",
 			"spread": false
 		},
-		{
-			"title": "会员等级",
-			"icon": "icon-vip",
-			"href": "page/user/userGrade.html",
-			"spread": false
-		}
+    {
+      "title": "角色管理",
+      "icon": "icon-vip",
+      "href": "/ManagerRole/Index",
+      "spread": false
+    }
 	],
 	"systemeSttings": [
 		{

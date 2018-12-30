@@ -8,7 +8,7 @@ using Czar.Cms.Admin.Models;
 
 namespace Czar.Cms.Admin.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         /// <summary>
         /// 主界面
