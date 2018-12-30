@@ -14,6 +14,8 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Alexinea.Autofac.Extensions.DependencyInjection" Version="4.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
@@ -23,7 +25,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Czar.Cms.Core\Czar.Cms.Core.csproj" />
+    <ProjectReference Include="..\Czar.Cms.IRepository\Czar.Cms.IRepository.csproj" />
     <ProjectReference Include="..\Czar.Cms.Models\Czar.Cms.Models.csproj" />
+    <ProjectReference Include="..\Czar.Cms.Repository.SqlServer\Czar.Cms.Repository.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

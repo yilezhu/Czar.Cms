@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Alexinea.Autofac.Extensions.DependencyInjection;
+using Autofac;
 using Czar.Cms.Admin.Filter;
+using Czar.Cms.Admin.Validation;
 using Czar.Cms.Core.Options;
+using Czar.Cms.Repository.SqlServer;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +29,7 @@ namespace Czar.Cms.Admin
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<DbOpion>("CzarCms", Configuration.GetSection("DbOpion"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -51,7 +56,15 @@ namespace Czar.Cms.Admin
                 option.Filters.Add(new GlobalExceptionFilter());
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddControllersAsServices();
+                .AddControllersAsServices()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>());
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+            builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .AsImplementedInterfaces();
+
+            return new AutofacServiceProvider(builder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
