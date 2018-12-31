@@ -5,54 +5,46 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         laytpl = layui.laytpl,
         table = layui.table;
 
-    //用户列表
+    //角色列表
     var tableIns = table.render({
-        elem: '#userList',
-        url: '../../json/userList.json',
+        elem: '#managerList',
+        url: '/Manager/LoadData/',
         cellMinWidth: 95,
         page: true,
         height: "full-125",
         limits: [10, 15, 20, 25],
-        limit: 20,
-        id: "userListTable",
+        limit: 10,
+        id: "managerListTable",
         cols: [[
             { type: "checkbox", fixed: "left", width: 50 },
-            { field: 'userName', title: '用户名', minWidth: 100, align: "center" },
+            { field: "Id", title: 'Id', width: 50, align: "center" },
+            { field: 'RoleName', title: '角色名称', minWidth: 100, align: "center" },
             {
-                field: 'userEmail', title: '用户邮箱', minWidth: 200, align: 'center', templet: function (d) {
-                    return '<a class="layui-blue" href="mailto:' + d.userEmail + '">' + d.userEmail + '</a>';
-                }
-            },
-            { field: 'userSex', title: '用户性别', align: 'center' },
-            {
-                field: 'userStatus', title: '用户状态', align: 'center', templet: function (d) {
-                    return d.userStatus === "0" ? "正常使用" : "限制使用";
-                }
-            },
-            {
-                field: 'userGrade', title: '用户等级', align: 'center', templet: function (d) {
-                    if (d.userGrade === "0") {
-                        return "注册会员";
-                    } else if (d.userGrade === "1") {
-                        return "中级会员";
-                    } else if (d.userGrade === "2") {
-                        return "高级会员";
-                    } else if (d.userGrade === "3") {
-                        return "钻石会员";
-                    } else if (d.userGrade === "4") {
-                        return "超级会员";
+                field: 'RoleType', title: '角色类型', minWidth: 150, align: 'center', templet: function (d) {
+                    if (d.RoleType === 1) {
+                        return "超级管理员";
+                    } else if (d.RoleType === 2) {
+                        return "系统管理员";
+                    } else {
+                        return "未知";
                     }
                 }
             },
-            { field: 'userEndTime', title: '最后登录时间', align: 'center', minWidth: 150 },
-            { title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center" }
+            {
+                field: 'IsSystem', title: '系统默认', minWidth: 100, align: 'center', templet: function (d) {
+                    return d.IsSystem === true ? "是" : "否";
+                }
+            },
+            { field: 'Remark', title: '备注', align: 'center' },
+            { field: 'AddTime', title: '添加时间', align: 'center', minWidth: 150 },
+            { title: '操作', minWidth: 175, templet: '#roleListBar', fixed: "right", align: "center" }
         ]]
     });
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click", function () {
         if ($(".searchVal").val() !== '') {
-            table.reload("newsListTable", {
+            table.reload("managerListTable", {
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
@@ -66,56 +58,59 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     });
 
     //添加用户
-    function addUser(edit) {
+    function addManager(edit) {
+        var tit = "添加角色";
+        if (edit) {
+            tit = "编辑角色";
+        }
         var index = layui.layer.open({
-            title: "添加用户",
+            title: tit,
             type: 2,
+            anim: 1,
+            area: ['700px', '80%'],
             content: "/Manager/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    body.find(".userName").val(edit.userName);  //登录名
-                    body.find(".userEmail").val(edit.userEmail);  //邮箱
-                    body.find(".userSex input[value=" + edit.userSex + "]").prop("checked", "checked");  //性别
-                    body.find(".userGrade").val(edit.userGrade);  //会员等级
-                    body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find("#Id").val(edit.Id);  //主键
+                    body.find(".RoleName").val(edit.RoleName);  //角色名
+                    body.find(".RoleType").val(edit.RoleType);  //会员等级
+                    if (edit.IsSystem === true) {
+                        body.find(".IsSystem input[value=1]").prop("checked", "checked");  //是否系统默认
+                    }
+                    else {
+                        body.find(".IsSystem input[value=0]").prop("checked", "checked");   //是否系统默认
+
+                    }
+                    body.find(".Remark").text(edit.Remark);    //角色备注
                     form.render();
+
                 }
-                setTimeout(function () {
-                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
-                        tips: 3
-                    });
-                }, 500);
             }
         });
-        layui.layer.full(index);
-        window.sessionStorage.setItem("index", index);
-        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        $(window).on("resize", function () {
-            layui.layer.full(window.sessionStorage.getItem("index"));
-        });
+        //layui.layer.full(index);
+        //window.sessionStorage.setItem("index", index);
+        ////改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        //$(window).on("resize", function () {
+        //    layui.layer.full(window.sessionStorage.getItem("index"));
+        //});
     }
-    $(".addNews_btn").click(function () {
-        addUser();
+    $(".addManager_btn").click(function () {
+        addManager();
     });
 
     //批量删除
     $(".delAll_btn").click(function () {
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('managerListTable'),
             data = checkStatus.data,
-            newsId = [];
+            managerId = [];
         if (data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                managerId.push(data[i].Id);
             }
             layer.confirm('确定删除选中的用户？', { icon: 3, title: '提示信息' }, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                //获取防伪标记
+                del(managerId);
             });
         } else {
             layer.msg("请选择需要删除的用户");
@@ -123,42 +118,40 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     });
 
     //列表操作
-    table.on('tool(userList)', function (obj) {
+    table.on('tool(managerList)', function (obj) {
         var layEvent = obj.event,
             data = obj.data;
 
         if (layEvent === 'edit') { //编辑
-            addUser(data);
-        } else if (layEvent === 'usable') { //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if (_this.text() === "已禁用") {
-                usableText = "是否确定启用此用户？",
-                    btnText = "已启用";
-            }
-            layer.confirm(usableText, {
-                icon: 3,
-                title: '系统提示',
-                cancel: function (index) {
-                    layer.close(index);
-                }
-            }, function (index) {
-                _this.text(btnText);
-                layer.close(index);
-            }, function (index) {
-                layer.close(index);
-            });
+            addManager(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', { icon: 3, title: '提示信息' }, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                del(data.Id);
             });
         }
     });
+
+    function del(managerId) {
+        $.ajax({
+            type: 'POST',
+            url: '/Manager/Delete/',
+            data: { managerId: managerId },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                    layer.close(index);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
+    }
 
 });

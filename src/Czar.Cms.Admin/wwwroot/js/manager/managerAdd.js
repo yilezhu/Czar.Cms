@@ -3,41 +3,47 @@ layui.use(['form', 'layer'], function () {
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
 
-    form.on("submit(addUser)", function (data) {
-        //弹出loading
-        var index = top.layer.msg('数据提交中，请稍候', { icon: 16, time: false, shade: 0.8 });
-        // 实际使用时的提交信息
-        // $.post("上传路径",{
-        //     userName : $(".userName").val(),  //登录名
-        //     userEmail : $(".userEmail").val(),  //邮箱
-        //     userSex : data.field.sex,  //性别
-        //     userGrade : data.field.userGrade,  //会员等级
-        //     userStatus : data.field.userStatus,    //用户状态
-        //     newsTime : submitTime,    //添加时间
-        //     userDesc : $(".userDesc").text(),    //用户简介
-        // },function(res){
-        //
-        // })
-        setTimeout(function () {
-            top.layer.close(index);
-            top.layer.msg("用户添加成功！");
-            layer.closeAll("iframe");
-            //刷新父页面
-            parent.location.reload();
-        }, 2000);
+    form.on("submit(addManager)", function (data) {
+        //获取防伪标记
+        $.ajax({
+            type: 'POST',
+            url: '/Manager/AddOrModify/',
+            data: {
+                Id: $("#Id").val(),  //主键
+                RoleName: $(".RoleName").val(),  //角色名称
+                RoleType: $(".RoleType").val(),  //角色类型
+                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,  //是否系统默认
+                Remark: $(".Remark").val()  //用户简介
+            },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (res) {//res为相应体,function为回调函数
+                if (res.ResultCode === 0) {
+                    var alertIndex = layer.alert(res.ResultMsg, { icon: 1 }, function () {
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                        top.layer.close(alertIndex);
+                    });
+                    //$("#res").click();//调用重置按钮将表单数据清空
+                } else if (res.ResultCode === 102) {
+                    layer.alert(res.ResultMsg, { icon: 5 }, function () {
+                        layer.closeAll("iframe");
+                        //刷新父页面
+                        parent.location.reload();
+                        top.layer.close(alertIndex);
+                    });
+                }
+                else {
+                    layer.alert(res.ResultMsg, { icon: 5 });
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
         return false;
     });
-
-    //格式化时间
-    function filterTime(val) {
-        if (val < 10) {
-            return "0" + val;
-        } else {
-            return val;
-        }
-    }
-    //定时发布
-    var time = new Date();
-    var submitTime = time.getFullYear() + '-' + filterTime(time.getMonth() + 1) + '-' + filterTime(time.getDate()) + ' ' + filterTime(time.getHours()) + ':' + filterTime(time.getMinutes()) + ':' + filterTime(time.getSeconds());
-
 });

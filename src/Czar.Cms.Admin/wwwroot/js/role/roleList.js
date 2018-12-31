@@ -108,12 +108,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             for (var i in data) {
                 roleId.push(data[i].Id);
             }
-            layer.confirm('确定删除选中的用户？', { icon: 3, title: '提示信息' }, function (index) {
+            layer.confirm('确定删除选中的角色？', { icon: 3, title: '提示信息' }, function (index) {
                 //获取防伪标记
                 del(roleId);
             });
         } else {
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的角色");
         }
     });
 
