@@ -42,6 +42,9 @@ namespace Czar.Cms.Test
                 options.ModelsNamespace = "Czar.Cms.Models";//实体命名空间
                 options.IRepositoryNamespace = "Czar.Cms.IRepository";//仓储接口命名空间
                 options.RepositoryNamespace = "Czar.Cms.Repository.SqlServer";//仓储命名空间
+                options.IServicesNamespace = "Czar.Cms.IServices";//服务接口命名空间
+                options.ServicesNamespace = "Czar.Cms.Services";//服务命名空间
+
 
             });
             services.Configure<DbOpion>("CzarCms", GetConfiguration().GetSection("DbOpion"));

@@ -126,10 +126,9 @@ namespace Czar.Cms.Test
                 unitwork.Add(menu);
                 count=unitwork.Commit();
             }
-            catch (Exception ex)
+            catch
             {
                 count = 0;
-               
             }
             
             Assert.True(3 == count);
@@ -183,8 +182,6 @@ namespace Czar.Cms.Test
                 IsSystem = false,
                 IsDisplay = true,
                 AddTime = DateTime.Now
-
-
             };
             IArticleCategoryRepository categoryRepository = serviceProvider.GetService<IArticleCategoryRepository>();
 
@@ -198,11 +195,10 @@ namespace Czar.Cms.Test
                 unitwork.Add(menu);
                 count = unitwork.Commit();
             }
-            catch (Exception ex)
+            catch
             {
                 
             }
-
             Assert.True(0 == count);
             #region categoryRepository
             var list = categoryRepository.GetList();
