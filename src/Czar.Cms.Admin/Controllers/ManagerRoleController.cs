@@ -35,7 +35,7 @@ namespace Czar.Cms.Admin.Controllers
         
         public string LoadData([FromQuery]ManagerRoleRequestModel model)
         {
-            string conditions = "where 1=1 ";
+            string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
                 conditions += $"and RoleName like '%{model.Key}%'";
@@ -134,8 +134,20 @@ namespace Czar.Cms.Admin.Controllers
             }
             else
             {
-                result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
-                result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                var count = _managerRoleRepository.DeleteLogical(roleId);
+                if (count > 0)
+                {
+                    //成功
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    //失败
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+               
 
             }
             return JsonHelper.Serialize(result) ;

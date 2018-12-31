@@ -17,6 +17,8 @@ using Czar.Cms.IRepository;
 using Czar.Cms.Models;
 using Microsoft.Extensions.Options;
 using System;
+using System.Threading.Tasks;
+using Dapper;
 
 namespace Czar.Cms.Repository.SqlServer
 {
@@ -32,5 +34,20 @@ namespace Czar.Cms.Repository.SqlServer
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
         }
 
+        public int DeleteLogical(int[] ids)
+        {
+            string sql= "update [ManagerRole] set IsDelete=1 where Id in @Ids";
+            return _dbConnection.Execute(sql, new {
+                Ids=ids
+            });
+        }
+
+        public async Task<int> DeleteLogicalAsync(int[] ids)
+        {
+            string sql = "update [ManagerRole] set IsDelete=1 where Id in @Ids";
+            return await _dbConnection.ExecuteAsync(sql, new {
+                Ids=ids
+            });
+        }
     }
 }
