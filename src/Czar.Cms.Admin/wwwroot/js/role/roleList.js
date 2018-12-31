@@ -74,10 +74,17 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 if (edit) {
                     body.find("#Id").val(edit.Id);  //主键
                     body.find(".RoleName").val(edit.RoleName);  //角色名
-                    body.find(".RoleType input[value=" + edit.RoleType + "]").prop("checked", "checked");  //角色类型
-                    body.find(".IsSystem").val(edit.IsSystem);  //会员等级
+                    body.find(".RoleType").val(edit.RoleType);  //会员等级
+                    if (edit.IsSystem === true) {
+                        body.find(".IsSystem input[value=1]").prop("checked", "checked");  //是否系统默认
+                    }
+                    else {
+                        body.find(".IsSystem input[value=0]").prop("checked", "checked");   //是否系统默认
+
+                    }
                     body.find(".Remark").text(edit.Remark);    //角色备注
                     form.render();
+
                 }
             }
         });
