@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Czar.Cms.ViewModels\Czar.Cms.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

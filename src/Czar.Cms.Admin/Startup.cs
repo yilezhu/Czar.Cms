@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using AutoMapper;
+using Czar.Cms.Services;
 
 namespace Czar.Cms.Admin
 {
@@ -74,7 +75,9 @@ namespace Czar.Cms.Admin
             builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)
                    .Where(t => t.Name.EndsWith("Repository"))
                    .AsImplementedInterfaces();
-
+            builder.RegisterAssemblyTypes(typeof(ManagerRoleService).Assembly)
+                 .Where(t => t.Name.EndsWith("Service"))
+                 .AsImplementedInterfaces();
             return new AutofacServiceProvider(builder.Build());
         }
 

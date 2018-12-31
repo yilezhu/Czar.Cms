@@ -1,13 +1,13 @@
 ﻿/**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：结果通用key                                                    
+*│　描    述：结果基类                                                    
 *│　作    者：yilezhu                                             
 *│　版    本：1.0                                                 
 *│　创建时间：2018/12/29 17:30:51                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间： Czar.Cms.Admin.ResultModel                                 
-*│　类    名： ResultCodeAddMsgKeys                                      
+*│　类    名： BaseResult                                      
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -15,44 +15,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Czar.Cms.Admin.ResultModel
+namespace Czar.Cms.ViewModels
 {
-    public class ResultCodeAddMsgKeys
+    public class BaseResult
     {
-        #region 通用 100
         /// <summary>
-        /// 通用成功编码
+        /// 结果编码
         /// </summary>
-        public const int CommonObjectSuccessCode = 0;
+        public int ResultCode { get; set; }
         /// <summary>
-        /// 通用操作成功信息
+        /// 结果消息 如果不成功，返回的错误信息
         /// </summary>
-        public const string CommonObjectSuccessMsg = "操作成功";
+        public string ResultMsg { get; set; }
         /// <summary>
-        /// 通用Form验证失败错误码
+        /// 无参构造函数
         /// </summary>
-        public const int CommonModelStateInvalidCode = 101;
+        public BaseResult()
+        {
+
+        }
+
         /// <summary>
-        /// 通用Form验证失败错误码
+        /// 有参构造函数
         /// </summary>
-        public const string CommonModelStateInvalidMsg = "请求数据校验失败";
-        /// <summary>
-        /// 数据为空的编码
-        /// </summary>
-        public const int CommonFailNoDataCode = 102;
-        /// <summary>
-        /// 数据为空的信息
-        /// </summary>
-        public const string CommonFailNoDataMsg = "数据不存在";
-        
-        /// <summary>
-        /// 通用失败，系统异常错误码
-        /// </summary>
-        public const int CommonExceptionCode = 106;
-        /// <summary>
-        /// 通用失败，系统异常信息
-        /// </summary>
-        public const string CommonExceptionMsg = "系统异常";
-        #endregion
+        /// <param name="resultCode">结果代码</param>
+        /// <param name="resultMsg">结果信息</param>
+        public BaseResult(int resultCode, string resultMsg)
+        {
+            ResultCode = resultCode;
+            ResultMsg = resultMsg;
+        }
     }
 }

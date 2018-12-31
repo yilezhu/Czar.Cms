@@ -10,7 +10,8 @@
 *│　类    名：GlobalExceptionFilter                                     
 *└──────────────────────────────────────────────────────────────┘
 */
-using Czar.Cms.Admin.ResultModel;
+
+using Czar.Cms.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NLog;
