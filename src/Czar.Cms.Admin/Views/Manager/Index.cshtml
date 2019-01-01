@@ -26,6 +26,13 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="IsLock">
+    {{#  if(d.IsLock ===true){ }}
+    <input type="checkbox" name="IsLock" lay-filter="IsLock" lay-skin="switch" lay-text="是|否" checked>
+    {{#  } else{ }}
+    <input type="checkbox" name="IsLock" lay-filter="IsLock" lay-skin="switch" lay-text="是|否">
+    {{#  }}}
+</script>
 @section Scripts{
     <script type="text/javascript" src="~/layui/layui.js"></script>
     <script type="text/javascript" src="~/js/manager/managerList.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>

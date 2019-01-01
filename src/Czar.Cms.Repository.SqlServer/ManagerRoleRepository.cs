@@ -49,5 +49,18 @@ namespace Czar.Cms.Repository.SqlServer
                 Ids=ids
             });
         }
+
+        public string GetNameById(int id)
+        {
+            var item = Get(id);
+            return item == null ? "角色不存在" : item.RoleName;
+        }
+
+        public async Task<string> GetNameByIdAsync(int id)
+        {
+            var item = await GetAsync(id);
+            return item == null ? "角色不存在" : item.RoleName;
+
+        }
     }
 }

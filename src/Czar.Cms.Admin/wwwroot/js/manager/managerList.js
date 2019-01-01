@@ -24,7 +24,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             { field: 'Email', title: '邮箱地址', minWidth: 100, align: "center" },
             { field: 'RoleName', title: '所属角色', minWidth: 80, align: 'center' },
             { field: 'Remark', title: '备注', align: 'center' },
-            { field: 'AddTime', title: '添加时间', align: 'center', minWidth: 100 },
+            { field: 'IsLock', title: '是否锁定', minWidth: 100, fixed: "right", align: "center", templet: '#IsLock' },
             { title: '操作', minWidth: 80, templet: '#managerListBar', fixed: "right", align: "center" }
         ]]
     });
@@ -55,20 +55,20 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             title: tit,
             type: 2,
             anim: 1,
-            area: ['500px', '85%'],
+            area: ['500px', '90%'],
             content: "/Manager/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    body.find("#Id").val(edit.Id);  //主键
-                    body.find(".UserName").val(edit.UserName);  //登陆ID
-                    body.find(".RoleId").val(edit.RoleId);  //角色ID
-                    body.find(".Mobile").val(edit.Mobile);  //手机号码
-                    body.find(".Email").val(edit.Email);  //邮箱地址
-                    body.find("input:checkbox[name='IsLock']").prop("checked", data.IsLock === true);
-                    body.find(".Remark").text(edit.Remark);    //备注
+                    body.find("#Id").val(edit.Id);
+                    body.find(".UserName").val(edit.UserName);
+                    body.find(".NickName").val(edit.NickName);
+                    body.find(".RoleId").val(edit.RoleId);
+                    body.find(".Mobile").val(edit.Mobile);
+                    body.find(".Email").val(edit.Email);
+                    body.find("input:checkbox[name='IsLock']").prop("checked", edit.IsLock);
+                    body.find(".Remark").text(edit.Remark);
                     form.render();
-
                 }
             }
         });
@@ -107,6 +107,28 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 del(data.Id);
             });
         }
+    });
+
+    form.on('switch(IsLock)', function (data) {
+        var tipText = '确定锁定当前用户吗？';
+        if (!data.elem.checked) {
+            tipText = '确定启用当前用户吗？';
+        }
+        layer.confirm(tipText, {
+            icon: 3,
+            title: '系统提示',
+            cancel: function (index) {
+                data.elem.checked = !data.elem.checked;
+                form.render();
+                layer.close(index);
+            }
+        }, function (index) {
+            layer.close(index);
+        }, function (index) {
+            data.elem.checked = !data.elem.checked;
+            form.render();
+            layer.close(index);
+        });
     });
 
     function del(managerId) {

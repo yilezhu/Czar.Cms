@@ -28,11 +28,13 @@ namespace Czar.Cms.Services
     public class ManagerService: IManagerService
     {
         private readonly IManagerRepository _repository;
+        private readonly IManagerRoleRepository _roleRepository;
         private readonly IMapper _mapper;
 
-        public ManagerService(IManagerRepository repository, IMapper mapper)
+        public ManagerService(IManagerRepository repository, IManagerRoleRepository roleRepository, IMapper mapper)
         {
             _repository = repository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
@@ -126,10 +128,17 @@ namespace Czar.Cms.Services
             {
                 conditions += $"and (UserName like '%{model.Key}%' or NickName like '%{model.Key}%' or Remark like '%{model.Key}%' or Mobile like '%{model.Key}%' or Email like '%{model.Key}%')";
             }
+            var list =_repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc").ToList();
+            var viewList = new List<ManagerListModel>();
+            list.ForEach(x=> {
+                var item = _mapper.Map<ManagerListModel>(x);
+                item.RoleName = _roleRepository.GetNameById(x.RoleId);
+                viewList.Add(item);
+            });
             return new TableDataModel
             {
                 count = _repository.RecordCount(conditions),
-                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc"),
+                data = viewList,
             };
         }
     }
