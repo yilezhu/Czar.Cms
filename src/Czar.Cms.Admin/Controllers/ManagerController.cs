@@ -19,10 +19,12 @@ namespace Czar.Cms.Admin.Controllers
     public class ManagerController : BaseController
     {
         private readonly IManagerService _service;
+        private readonly IManagerRoleService _roleService;
 
-        public ManagerController(IManagerService service)
+        public ManagerController(IManagerService service, IManagerRoleService roleService)
         {
             _service = service;
+            _roleService = roleService;
         }
 
         public IActionResult Index()
@@ -31,43 +33,44 @@ namespace Czar.Cms.Admin.Controllers
         }
 
 
-        public string LoadData([FromQuery]ManagerRoleRequestModel model)
+        public string LoadData([FromQuery]ManagerRequestModel model)
         {
-            return "";
-            //return JsonHelper.Serialize(_service.LoadData(model));
+            return JsonHelper.ObjectToJSON(_service.LoadData(model));
         }
 
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            return View();
+            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel {
+                Key=null
+            });
+            return View(roleList);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]ManagerRoleAddOrModifyModel item)
+        public string AddOrModify([FromForm]ManagerAddOrModifyModel item)
         {
             var result = new BaseResult();
-            ManagerRoleValidation validationRules = new ManagerRoleValidation();
+            ManagerValidation validationRules = new ManagerValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                //result = _service.AddOrModify(item);
+                result = _service.AddOrModify(item);
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
                 result.ResultMsg = results.ToString("||");
             }
-            return JsonHelper.Serialize(result);
+            return JsonHelper.ObjectToJSON(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public string Delete(int[] roleId)
         {
-            return "";
-           // return JsonHelper.Serialize(_service.DeleteIds(roleId));
+            return JsonHelper.ObjectToJSON(_service.DeleteIds(roleId));
         }
     }
 }

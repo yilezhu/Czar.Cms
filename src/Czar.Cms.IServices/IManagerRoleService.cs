@@ -10,6 +10,7 @@
 *│　接口名称： IManagerRoleRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -36,8 +37,15 @@ namespace Czar.Cms.IServices
         /// <summary>
         /// 批量删除
         /// </summary>
-        /// <param name="roleId">角色主键id</param>
+        /// <param name="Ids">主键id数组</param>
         /// <returns>结果实体</returns>
         BaseResult DeleteIds(int[] roleId);
+
+        /// <summary>
+        /// 根据条件获取数据
+        /// </summary>
+        /// <param name="model">查询实体</param>
+        /// <returns>table数据</returns>
+        List<ManagerRole> GetListByCondition(ManagerRoleRequestModel model);
     }
 }

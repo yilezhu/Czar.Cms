@@ -123,11 +123,21 @@ namespace Czar.Cms.Services
                     result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
                 }
-
-
             }
             return result;
         }
+
+        public List<ManagerRole> GetListByCondition(ManagerRoleRequestModel model)
+        {
+            string conditions = "where IsDelete=0 ";//未删除的
+            if (!model.Key.IsNullOrWhiteSpace())
+            {
+                conditions += $"and RoleName like '%{model.Key}%'";
+            }
+            return _repository.GetList(conditions).ToList();
+        }
+
+
 
         /// <summary>
         /// 根据查询条件获取数据

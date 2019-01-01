@@ -10,6 +10,7 @@
 *│　接口名称： IManagerRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,5 +19,25 @@ namespace Czar.Cms.IServices
 {
     public interface IManagerService
     {
+        /// <summary>
+        /// 根据查询条件获取数据
+        /// </summary>
+        /// <param name="model">查询实体</param>
+        /// <returns>table数据</returns>
+        TableDataModel LoadData(ManagerRequestModel model);
+
+        /// <summary>
+        /// 新增或者修改服务
+        /// </summary>
+        /// <param name="item">新增或者修改试图实体</param>
+        /// <returns>结果实体</returns>
+        BaseResult AddOrModify(ManagerAddOrModifyModel item);
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="Ids">主键id数组</param>
+        /// <returns>结果实体</returns>
+        BaseResult DeleteIds(int[] Ids);
     }
 }

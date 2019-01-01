@@ -33,7 +33,7 @@ namespace Czar.Cms.Admin.Controllers
         
         public string LoadData([FromQuery]ManagerRoleRequestModel model)
         {
-            return JsonHelper.Serialize(_service.LoadData(model));
+            return JsonHelper.ObjectToJSON(_service.LoadData(model));
         }
 
         [HttpGet]
@@ -58,14 +58,14 @@ namespace Czar.Cms.Admin.Controllers
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
                 result.ResultMsg = results.ToString("||");
             }
-            return JsonHelper.Serialize(result) ;
+            return JsonHelper.ObjectToJSON(result) ;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public string Delete(int[] roleId)
         {
-            return JsonHelper.Serialize(_service.DeleteIds(roleId)) ;
+            return JsonHelper.ObjectToJSON(_service.DeleteIds(roleId)) ;
         }
     }
 }

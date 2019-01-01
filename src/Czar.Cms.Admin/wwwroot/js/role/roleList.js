@@ -67,7 +67,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             title: tit,
             type: 2,
             anim: 1,
-            area: ['600px', '80%'],
+            area: ['600px', '70%'],
             content: "/ManagerRole/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
@@ -88,12 +88,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             }
         });
-        //layui.layer.full(index);
-        //window.sessionStorage.setItem("index", index);
-        ////改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        //$(window).on("resize", function () {
-        //    layui.layer.full(window.sessionStorage.getItem("index"));
-        //});
     }
     $(".addRoles_btn").click(function () {
         addRole();

@@ -15,8 +15,10 @@ using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
 using Czar.Cms.IRepository;
 using Czar.Cms.Models;
+using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Repository.SqlServer
 {
@@ -30,6 +32,24 @@ namespace Czar.Cms.Repository.SqlServer
                 throw new ArgumentNullException(nameof(DbOpion));
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+        }
+
+        public int DeleteLogical(int[] ids)
+        {
+            string sql = "update [Manager] set IsDelete=1 where Id in @Ids";
+            return _dbConnection.Execute(sql, new
+            {
+                Ids = ids
+            });
+        }
+
+        public async Task<int> DeleteLogicalAsync(int[] ids)
+        {
+            string sql = "update [Manager] set IsDelete=1 where Id in @Ids";
+            return await _dbConnection.ExecuteAsync(sql, new
+            {
+                Ids = ids
+            });
         }
 
     }

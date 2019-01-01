@@ -18,26 +18,14 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         cols: [[
             { type: "checkbox", fixed: "left", width: 50 },
             { field: "Id", title: 'Id', width: 50, align: "center" },
-            { field: 'RoleName', title: '角色名称', minWidth: 100, align: "center" },
-            {
-                field: 'RoleType', title: '角色类型', minWidth: 150, align: 'center', templet: function (d) {
-                    if (d.RoleType === 1) {
-                        return "超级管理员";
-                    } else if (d.RoleType === 2) {
-                        return "系统管理员";
-                    } else {
-                        return "未知";
-                    }
-                }
-            },
-            {
-                field: 'IsSystem', title: '系统默认', minWidth: 100, align: 'center', templet: function (d) {
-                    return d.IsSystem === true ? "是" : "否";
-                }
-            },
+            { field: 'UserName', title: '登陆ID', minWidth: 50, align: "center" },
+            { field: 'NickName', title: '用户昵称', minWidth: 50, align: "center" },
+            { field: 'Mobile', title: '手机号码', minWidth: 80, align: "center" },
+            { field: 'Email', title: '邮箱地址', minWidth: 100, align: "center" },
+            { field: 'RoleName', title: '所属角色', minWidth: 80, align: 'center' },
             { field: 'Remark', title: '备注', align: 'center' },
-            { field: 'AddTime', title: '添加时间', align: 'center', minWidth: 150 },
-            { title: '操作', minWidth: 175, templet: '#roleListBar', fixed: "right", align: "center" }
+            { field: 'AddTime', title: '添加时间', align: 'center', minWidth: 100 },
+            { title: '操作', minWidth: 80, templet: '#managerListBar', fixed: "right", align: "center" }
         ]]
     });
 
@@ -59,41 +47,31 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //添加用户
     function addManager(edit) {
-        var tit = "添加角色";
+        var tit = "添加用户";
         if (edit) {
-            tit = "编辑角色";
+            tit = "编辑用户";
         }
         var index = layui.layer.open({
             title: tit,
             type: 2,
             anim: 1,
-            area: ['700px', '80%'],
+            area: ['500px', '85%'],
             content: "/Manager/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
                     body.find("#Id").val(edit.Id);  //主键
-                    body.find(".RoleName").val(edit.RoleName);  //角色名
-                    body.find(".RoleType").val(edit.RoleType);  //会员等级
-                    if (edit.IsSystem === true) {
-                        body.find(".IsSystem input[value=1]").prop("checked", "checked");  //是否系统默认
-                    }
-                    else {
-                        body.find(".IsSystem input[value=0]").prop("checked", "checked");   //是否系统默认
-
-                    }
-                    body.find(".Remark").text(edit.Remark);    //角色备注
+                    body.find(".UserName").val(edit.UserName);  //登陆ID
+                    body.find(".RoleId").val(edit.RoleId);  //角色ID
+                    body.find(".Mobile").val(edit.Mobile);  //手机号码
+                    body.find(".Email").val(edit.Email);  //邮箱地址
+                    body.find("input:checkbox[name='IsLock']").prop("checked", data.IsLock === true);
+                    body.find(".Remark").text(edit.Remark);    //备注
                     form.render();
 
                 }
             }
         });
-        //layui.layer.full(index);
-        //window.sessionStorage.setItem("index", index);
-        ////改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        //$(window).on("resize", function () {
-        //    layui.layer.full(window.sessionStorage.getItem("index"));
-        //});
     }
     $(".addManager_btn").click(function () {
         addManager();
