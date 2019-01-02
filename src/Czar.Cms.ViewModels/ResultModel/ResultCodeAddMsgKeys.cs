@@ -44,7 +44,15 @@ namespace Czar.Cms.ViewModels
         /// 数据为空的信息
         /// </summary>
         public const string CommonFailNoDataMsg = "数据不存在";
-        
+        /// <summary>
+        /// 数据状态发生变化的编码
+        /// </summary>
+        public const int CommonDataStatusChangeCode = 103;
+        /// <summary>
+        /// 数据状态发生变化的信息
+        /// </summary>
+        public const string CommonDataStatusChangeMsg = "数据状态发生变化";
+
         /// <summary>
         /// 通用失败，系统异常错误码
         /// </summary>

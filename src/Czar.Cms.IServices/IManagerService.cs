@@ -31,7 +31,7 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="item">新增或者修改试图实体</param>
         /// <returns>结果实体</returns>
-        BaseResult AddOrModify(ManagerAddOrModifyModel item);
+        BaseResult AddOrModify(ManagerAddOrModifyModel model);
 
         /// <summary>
         /// 批量删除
@@ -39,5 +39,12 @@ namespace Czar.Cms.IServices
         /// <param name="Ids">主键id数组</param>
         /// <returns>结果实体</returns>
         BaseResult DeleteIds(int[] Ids);
+
+        /// <summary>
+        /// 修改锁定状态
+        /// </summary>
+        /// <param name="model">修改锁定状态实体</param>
+        /// <returns>结果</returns>
+        BaseResult ChangeLockStatus(ManagerChangeLockStatusModel model);
     }
 }

@@ -123,6 +123,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 layer.close(index);
             }
         }, function (index) {
+            changeLockStatus(data.value, data.elem.checked);
             layer.close(index);
         }, function (index) {
             data.elem.checked = !data.elem.checked;
@@ -147,6 +148,24 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     tableIns.reload();
                     layer.close(index);
                 });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
+    }
+
+    function changeLockStatus(managerId,status) {
+        $.ajax({
+            type: 'POST',
+            url: '/Manager/ChangeLockStatus/',
+            data: { Id: managerId, IsLock: status },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });

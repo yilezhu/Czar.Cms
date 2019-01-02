@@ -22,16 +22,36 @@ using System.Threading.Tasks;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class ManagerRepository:BaseRepository<Manager,Int32>, IManagerRepository
+    public class ManagerRepository : BaseRepository<Manager, Int32>, IManagerRepository
     {
         public ManagerRepository(IOptionsSnapshot<DbOpion> options)
         {
-            _dbOpion =options.Get("CzarCms");
+            _dbOpion = options.Get("CzarCms");
             if (_dbOpion == null)
             {
                 throw new ArgumentNullException(nameof(DbOpion));
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+        }
+
+        public int ChangeLockStatusById(int id, bool status)
+        {
+            string sql = "update [Manager] set IsLock=@IsLock where  Id=@Id";
+            return _dbConnection.Execute(sql, new
+            {
+                IsLock = status ? 1 : 0,
+                Id = id,
+            }); 
+        }
+
+        public async Task<int> ChangeLockStatusByIdAsync(int id, bool status)
+        {
+            string sql = "update [Manager] set IsLock=@IsLock where  Id=@Id";
+            return await _dbConnection.ExecuteAsync(sql, new
+            {
+                IsLock = status ? 1 : 0,
+                Id = id,
+            }); 
         }
 
         public int DeleteLogical(int[] ids)
@@ -52,5 +72,22 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
+        public bool GetLockStatusById(int id)
+        {
+            string sql = "select IsLock from [dbo].[Manager] where Id=@Id and IsDelete=0";
+            return _dbConnection.QueryFirstOrDefault<bool>(sql, new
+            {
+                Id = id,
+            });
+        }
+
+        public async Task<bool> GetLockStatusByIdAsync(int id)
+        {
+            string sql = "select IsLock from [dbo].[Manager] where Id=@Id and IsDelete=0";
+            return await _dbConnection.QueryFirstOrDefaultAsync<bool>(sql, new
+            {
+                Id = id,
+            });
+        }
     }
 }

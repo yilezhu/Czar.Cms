@@ -28,9 +28,9 @@
 </script>
 <script type="text/html" id="IsLock">
     {{#  if(d.IsLock ===true){ }}
-    <input type="checkbox" name="IsLock" lay-filter="IsLock" lay-skin="switch" lay-text="是|否" checked>
+    <input type="checkbox" name="IsLock" value="{{d.Id}}" lay-filter="IsLock" lay-skin="switch" lay-text="是|否" checked>
     {{#  } else{ }}
-    <input type="checkbox" name="IsLock" lay-filter="IsLock" lay-skin="switch" lay-text="是|否">
+    <input type="checkbox" name="IsLock" value="{{d.Id}}" lay-filter="IsLock" lay-skin="switch" lay-text="是|否">
     {{#  }}}
 </script>
 @section Scripts{
