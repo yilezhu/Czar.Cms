@@ -65,9 +65,42 @@ git。现代开发如果你还不知道Git我想你真应该考虑下使用这�
 
 
 ## 技术栈
-.NET Core2.1+AutoFac+ FluentValidation +Dapper+Vue+Redis+SqlServer/Mysql
+ASP.NET Core2.2+AutoFac+AutoMapper+ FluentValidation +Dapper+Layui+Redis+SqlServer/Mysql
 
-## GitHub开源地址
+### 效果展示
+这里话不多说，给大家展示下效果吧：
+
+主页
+
+![1546428396237](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194123882-1502458827.png)
+
+角色管理：
+
+![1546428441722](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194123607-1984874302.png)
+
+角色编辑：
+
+![1546428474235](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194123320-976529128.png)
+
+用户管理：
+
+![1546428506860](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194123024-654573282.png)
+
+用户管理编辑：
+
+![1546428532563](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194122744-2093184372.png)
+
+用户管理列表页，锁定用户：
+
+![1546428568258](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194122418-1604258721.png)
+
+锁定界面：
+
+![1546428593869](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194121950-1509022990.png)
+
+目前只实现了这些功能其他后续再展示。
+
+## 开源地址
 
 这个系列教程的源码我会开放在GitHub以及码云上，有兴趣的朋友可以下载查看！觉得不错的欢迎Star
 GitHub：https://github.com/yilezhu/Czar.Cms
@@ -76,6 +109,7 @@ GitHub：https://github.com/yilezhu/Czar.Cms
 如果你觉得这个系列对您有所帮助的话，欢迎以各种方式进行赞助，当然给个Star支持下也是可以滴！另外一种最简单粗暴的方式就是下面两种：
 
 如果你觉得这个系列对您有所帮助的话，欢迎以各种方式进行赞助，当然给个Star支持下也是可以滴！另外一种最简单粗暴的方式就是下面两种或者关注我们的微信公众号：
+
 
 ![DotNetCore实战公众号](https://www.cnblogs.com/images/cnblogs_com/yilezhu/1359617/o_qrcode_for_gh_3d7593c84946_258.jpg)
 
