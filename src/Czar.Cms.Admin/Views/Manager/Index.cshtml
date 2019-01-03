@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = "用户管理";
+}
+
+<blockquote class="layui-elem-quote quoteBox">
+    <form class="layui-form">
+        @Html.AntiForgeryToken()
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input searchVal" placeholder="请输入用户名称" />
+            </div>
+            <a class="layui-btn search_btn" data-type="reload">搜索</a>
+        </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal addManager_btn"><i class="layui-icon">&#xe61f;</i>添加用户</a>
+        </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-danger layui-btn-normal delAll_btn"><i class="layui-icon layui-icon-delete"></i>批量删除</a>
+        </div>
+    </form>
+</blockquote>
+<table id="managerList" lay-filter="managerList"></table>
+<!--操作-->
+<script type="text/html" id="managerListBar">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="IsLock">
+    {{#  if(d.IsLock ===true){ }}
+    <input type="checkbox" name="IsLock" value="{{d.Id}}" lay-filter="IsLock" lay-skin="switch" lay-text="是|否" checked>
+    {{#  } else{ }}
+    <input type="checkbox" name="IsLock" value="{{d.Id}}" lay-filter="IsLock" lay-skin="switch" lay-text="是|否">
+    {{#  }}}
+</script>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/manager/managerList.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}

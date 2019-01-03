@@ -31,6 +31,5 @@ namespace Czar.Cms.Repository.SqlServer
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
         }
-
     }
 }

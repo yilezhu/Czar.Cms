@@ -8,14 +8,22 @@ using Czar.Cms.Admin.Models;
 
 namespace Czar.Cms.Admin.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        /// <summary>
+        /// 主界面
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        /// <summary>
+        /// 控制中心
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Main()
         {
             return View();
         }

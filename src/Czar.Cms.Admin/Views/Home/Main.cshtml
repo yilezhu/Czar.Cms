@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewData["Title"] = "管理中心";
+}
+
+<blockquote class="layui-elem-quote layui-bg-green">
+    <div id="nowTime"></div>
+</blockquote>
+<div class="layui-row layui-col-space10 panel_box">
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;" data-url="https://www.cnblogs.com/yilezhu/p/9977862.html" target="_blank">
+            <div class="panel_icon layui-bg-green">
+                <i class="layui-anim seraph icon-good"></i>
+            </div>
+            <div class="panel_word">
+                <span>为我点赞</span>
+                <cite>点赞地址链接</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;" data-url="https://github.com/yilezhu/Czar.Cms" target="_blank">
+            <div class="panel_icon layui-bg-black">
+                <i class="layui-anim seraph icon-github"></i>
+            </div>
+            <div class="panel_word">
+                <span>Github</span>
+                <cite>源码下载链接</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;" data-url="https://gitee.com/yilezhu/Czar.Cms" target="_blank">
+            <div class="panel_icon layui-bg-red">
+                <i class="layui-anim seraph icon-oschina"></i>
+            </div>
+            <div class="panel_word">
+                <span>码云</span>
+                <cite>模版下载链接</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;">
+            <div class="panel_icon layui-bg-orange">
+                <i class="layui-anim seraph icon-icon10" data-icon="icon-icon10"></i>
+            </div>
+            <div class="panel_word userAll">
+                <span>100</span>
+                <em>用户总数</em>
+                <cite class="layui-hide">用户中心</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;" data-url="https://www.cnblogs.com/yilezhu/" target="_blank">
+            <div class="panel_icon layui-bg-cyan">
+                <i class="layui-anim layui-icon" data-icon="&#xe857;">&#xe857;</i>
+            </div>
+            <div class="panel_word outIcons">
+                <span></span>
+                <em>博客链接</em>
+                <cite class="layui-hide">博客地址</cite>
+            </div>
+        </a>
+    </div>
+    <div class="panel layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg2">
+        <a href="javascript:;">
+            <div class="panel_icon layui-bg-blue">
+                <i class="layui-anim seraph icon-clock"></i>
+            </div>
+            <div class="panel_word">
+                <span class="loginTime"></span>
+                <cite>上次登录时间</cite>
+            </div>
+        </a>
+    </div>
+</div>
+<blockquote class="layui-elem-quote main_btn">
+    <p>本CMS系统基于ASP.NET Core2.2+AutoFac+AutoMap+ FluentValidation +Dapper+LayUI+Redis+SqlServer实现，并采用Layui以及LayuiCMS2.0的后台模板实现。layui开发文档地址：<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="http://www.layui.com/doc">layui文档</a>　.NET Core实战项目交流千人群：<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=e348b892a6e24b96c0f50f9fb26941af414b496665cf1b9d8d509155814b7a7b"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt=".NET Core项目实战交流群" title=".NET Core项目实战交流群"></a>（添加时请注明来源，如：“博客园”、“github”等）</p>
+    <p class="layui-red">郑重提示：本CMS系统仅作为ASP.NET Core实战项目学习交流免费使用【强烈要求付费或者捐赠的我也就默默的接受了😄】，如需用作商业用途，也是可以滴，但出现任何问题，与作者无关！【另不管以何种形式获取的源码，请勿进行出售或者上传到任何源码网站，否则将追究相应的责任】</p>
+    <p>注：本后台模版采用的是开源的LayuiCMS2.0，<a class="layui-btn layui-btn-xs layui-btn-danger" target="_blank" href="https://gitee.com/layuicms/layuicms2.0">码云</a>，未引入任何第三方组件，单纯的layui+js实现的各种功能。。</p>
+</blockquote>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-lg6 layui-col-md12">
+        <blockquote class="layui-elem-quote title">系统基本参数</blockquote>
+        <table class="layui-table magt0">
+            <colgroup>
+                <col width="150">
+                <col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>当前版本</td>
+                    <td class="version"></td>
+                </tr>
+                <tr>
+                    <td>开发作者</td>
+                    <td class="author"></td>
+                </tr>
+                <tr>
+                    <td>网站首页</td>
+                    <td class="homePage"></td>
+                </tr>
+                <tr>
+                    <td>服务器环境</td>
+                    <td class="server"></td>
+                </tr>
+                <tr>
+                    <td>数据库版本</td>
+                    <td class="dataBase"></td>
+                </tr>
+                <tr>
+                    <td>最大上传限制</td>
+                    <td class="maxUpload"></td>
+                </tr>
+                <tr>
+                    <td>当前用户权限</td>
+                    <td class="userRights"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="layui-col-lg6 layui-col-md12">
+        <blockquote class="layui-elem-quote title">发展历程&更新日志</blockquote>
+        <div class="layui-elem-quote layui-quote-nm history_box magb0">
+            <ul class="layui-timeline">
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis">&#xe756;</i>
+                    <div class="layui-timeline-content layui-text">
+                        <div class="layui-timeline-title">
+                            <h3 class="layui-inline">CzarCms 里程碑版本<span class="layui-red">CzarCms1.0版</span>发布　</h3>
+                            <span class="layui-badge-rim">2019-01-01</span>
+                        </div>
+                        <ul>
+                            <li>
+                                <blockquote class="layui-elem-quote title">全部后台代码完成并发布</blockquote>
+                            </li>
+                            <li class="layui-red layedit-tool-help">郑重提示：本系统仅作参考，有很多内容以及功能还在陆续视线中，尽情期待【以后主要侧重组件开发和功能优化，由于能力有限，请大家多多担待】</li>
+                            <li>框架采用最新的ASP.NET Core2.2进行开发，进行源码学习前还请到我的博客查看系列教程对Asp.NET Core进行相应的学习</li>
+                            <li class="layui-blue">由于本人对设计和色差之类的不太感冒，所以后台模板采用开源的LayCms2.0版进行开发，后期考虑升级到Vue</li>
+                           
+                        </ul>
+                    </div>
+                </li>
+               
+            </ul>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/main.js"></script>
+}

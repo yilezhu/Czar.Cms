@@ -71,6 +71,9 @@ namespace Czar.Cms.Core.CodeGenerator
                         GenerateIRepository(table, pkTypeName, isCoveredExsited);
                         GenerateRepository(table, pkTypeName, isCoveredExsited);
                     }
+                    GenerateIServices(table,isCoveredExsited);
+                    GenerateServices(table, isCoveredExsited);
+
                 }
             }
         }
@@ -108,6 +111,57 @@ namespace Czar.Cms.Core.CodeGenerator
                 .Replace("{ModelProperties}", sb.ToString());
             WriteAndSave(fullPath, content);
         }
+
+        /// <summary>
+        /// 生成IService层代码文件
+        /// </summary>
+        /// <param name="modelTypeName"></param>
+        /// <param name="keyTypeName"></param>
+        /// <param name="ifExsitedCovered"></param>
+        private void GenerateIServices(DbTable table, bool ifExsitedCovered = true)
+        {
+            var iServicesPath = _options.OutputPath + Delimiter + "IServices";
+            if (!Directory.Exists(iServicesPath))
+            {
+                Directory.CreateDirectory(iServicesPath);
+            }
+            var fullPath = iServicesPath + Delimiter + "I" + table.TableName + "Service.cs";
+            if (File.Exists(fullPath) && !ifExsitedCovered)
+                return;
+            var content = ReadTemplate("IServicesTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{IServicesNamespace}", _options.IServicesNamespace)
+                .Replace("{ModelName}", table.TableName);
+            WriteAndSave(fullPath, content);
+        }
+
+        /// <summary>
+        /// 生成Services层代码文件
+        /// </summary>
+        /// <param name="modelTypeName"></param>
+        /// <param name="keyTypeName"></param>
+        /// <param name="ifExsitedCovered"></param>
+        private void GenerateServices(DbTable table,  bool ifExsitedCovered = true)
+        {
+            var repositoryPath = _options.OutputPath + Delimiter + "Services";
+            if (!Directory.Exists(repositoryPath))
+            {
+                Directory.CreateDirectory(repositoryPath);
+            }
+            var fullPath = repositoryPath + Delimiter + table.TableName + "Service.cs";
+            if (File.Exists(fullPath) && !ifExsitedCovered)
+                return;
+            var content = ReadTemplate("ServiceTemplate.txt");
+            content = content.Replace("{Comment}", table.TableComment)
+                .Replace("{Author}", _options.Author)
+                .Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{ServicesNamespace}", _options.ServicesNamespace)
+                .Replace("{ModelName}", table.TableName);
+            WriteAndSave(fullPath, content);
+        }
+
 
         /// <summary>
         /// 生成IRepository层代码文件
@@ -192,10 +246,10 @@ namespace Czar.Cms.Core.CodeGenerator
                     sb.AppendLine("\t\t[Required]");
                 }
 
-                //if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
-                //{
-                //    sb.AppendLine($"\t\t[MaxLength({column.ColumnLength.Value})]");
-                //}
+                if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
+                {
+                    sb.AppendLine($"\t\t[MaxLength({column.ColumnLength.Value})]");
+                }
                 //if (column.IsIdentity)
                 //{
                 //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
@@ -209,7 +263,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 }
 
                 sb.AppendLine($"\t\tpublic {colType} {column.ColName} " + "{get;set;}");
-            }
+        }
 
             return sb.ToString();
         }

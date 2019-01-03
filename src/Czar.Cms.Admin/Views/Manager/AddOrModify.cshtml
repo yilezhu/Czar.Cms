@@ -1,0 +1,70 @@
+﻿@using Czar.Cms.Models
+@model List<ManagerRole>
+@{
+    ViewData["Title"] = "用户管理";
+}
+
+<form class="layui-form layui-form-pane" style="width:90%;">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Id")
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">登陆ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="UserName" class="layui-input UserName" lay-verify="required|username" placeholder="请输入登录ID">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">所属角色</label>
+        <div class="layui-input-block">
+            <select name="RoleId" class="RoleId" lay-filter="RoleId" lay-verify="required">
+                @foreach (var item in Model)
+                {
+                    <option value="@item.Id">@item.RoleName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">用户昵称</label>
+        <div class="layui-input-block">
+            <input type="text" name="NickName" class="layui-input NickName" placeholder="请输入用户昵称" lay-verify="required|username" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">手机号码</label>
+        <div class="layui-input-block">
+            <input type="text" name="Mobile" class="layui-input Mobile" placeholder="请输入手机号码" lay-verify="phone|number" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">邮箱地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="Email" class="layui-input Email" placeholder="请输入邮箱地址" lay-verify="email" autocomplete="off" />
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12" pane>
+        <label class="layui-form-label">是否锁定</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="IsLock" class="IsLock" lay-filter="IsLock" lay-skin="switch" lay-text="是|否" value="1"/>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text layui-col-xs12">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入备注信息" name="Remark" class="layui-textarea Remark"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addManager">确定</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/manager/managerAdd.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}
+
+
+

@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "角色管理";
+}
+
+<form class="layui-form layui-form-pane" style="width:90%;">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Id")
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">角色名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="RoleName" class="layui-input RoleName" lay-verify="required" placeholder="请输入角色名称">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">角色类型</label>
+        <div class="layui-input-block">
+            <select name="RoleType" class="RoleType" lay-filter="RoleType">
+                <option value="1">超级管理员</option>
+                <option value="2" selected>系统管理员</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12" pane>
+        <label class="layui-form-label">系统默认</label>
+        <div class="layui-input-block IsSystem">
+            <input type="radio" name="IsSystem" value="0" title="否" checked>
+            <input type="radio" name="IsSystem" value="1" title="是">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text layui-col-xs12">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入备注信息" name="Remark" class="layui-textarea Remark"></textarea>
+        </div>
+    </div>
+  
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addRole">确定</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/role/roleAdd.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}
+
+
+

@@ -40,6 +40,7 @@
 
 1. *[.NET Core实战项目之CMS 第十一章 开发篇-数据库生成及实体代码生成器开发](https://www.cnblogs.com/yilezhu/p/10112406.html)*
 2. *[.NET Core实战项目之CMS 第十二章 开发篇-Dapper封装CURD及仓储代码生成器实现](https://www.cnblogs.com/yilezhu/p/10146311.html)*
+3. *[.NET Core实战项目之CMS 第十三章 开发篇-在MVC项目结构介绍及应用第三方UI](https://www.cnblogs.com/yilezhu/p/10210732.html)*
 
 待更新
 
