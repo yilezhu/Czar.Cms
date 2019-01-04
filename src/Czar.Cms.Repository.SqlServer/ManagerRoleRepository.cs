@@ -24,12 +24,12 @@ namespace Czar.Cms.Repository.SqlServer
 {
     public class ManagerRoleRepository:BaseRepository<ManagerRole,Int32>, IManagerRoleRepository
     {
-        public ManagerRoleRepository(IOptionsSnapshot<DbOpion> options)
+        public ManagerRoleRepository(IOptionsSnapshot<DbOption> options)
         {
             _dbOpion =options.Get("CzarCms");
             if (_dbOpion == null)
             {
-                throw new ArgumentNullException(nameof(DbOpion));
+                throw new ArgumentNullException(nameof(DbOption));
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
         }

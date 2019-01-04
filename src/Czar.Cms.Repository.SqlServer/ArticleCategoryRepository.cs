@@ -22,12 +22,12 @@ namespace Czar.Cms.Repository.SqlServer
 {
     public class ArticleCategoryRepository:BaseRepository<ArticleCategory,Int32>, IArticleCategoryRepository
     {
-        public ArticleCategoryRepository(IOptionsSnapshot<DbOpion> options)
+        public ArticleCategoryRepository(IOptionsSnapshot<DbOption> options)
         {
             _dbOpion =options.Get("CzarCms");
             if (_dbOpion == null)
             {
-                throw new ArgumentNullException(nameof(DbOpion));
+                throw new ArgumentNullException(nameof(DbOption));
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
         }

@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Czar.Cms.Core.Options
 {
-    public class DbOpion
+    public class DbOption
     {
         /// <summary>
         /// 数据库连接字符串

@@ -25,17 +25,17 @@ namespace Czar.Cms.Core.Repository
     public class UnitOfWork : IUnitOfWork
     {
         public IDbConnection _dbConnection;
-        protected DbOpion _dbOpion;
+        protected DbOption _dbOpion;
         private Dictionary<object, Action> addEntities;
         private Dictionary<object, Action> updateEntities;
         private Dictionary<object, Action> deleteEntities;
 
-        public UnitOfWork(IOptionsSnapshot<DbOpion> options)
+        public UnitOfWork(IOptionsSnapshot<DbOption> options)
         {
             _dbOpion = options.Get("CzarCms");
             if (_dbOpion == null)
             {
-                throw new ArgumentNullException(nameof(DbOpion));
+                throw new ArgumentNullException(nameof(DbOption));
             }
            
             addEntities = new Dictionary<object, Action>();
