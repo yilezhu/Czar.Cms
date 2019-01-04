@@ -26,7 +26,7 @@ namespace Czar.Cms.Core.Repository
 {
     public class BaseRepository<T, TKey> : IBaseRepository<T, TKey> where T : class
     {
-        protected DbOption _dbOpion;
+        protected DbOption _dbOption;
         protected IDbConnection _dbConnection;
 
         //public BaseRepository(DbOpion dbOpion)

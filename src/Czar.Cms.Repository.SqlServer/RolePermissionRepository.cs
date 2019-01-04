@@ -24,12 +24,12 @@ namespace Czar.Cms.Repository.SqlServer
     {
         public RolePermissionRepository(IOptionsSnapshot<DbOption> options)
         {
-            _dbOpion =options.Get("CzarCms");
-            if (_dbOpion == null)
+            _dbOption = options.Get("CzarCms");
+            if (_dbOption == null)
             {
                 throw new ArgumentNullException(nameof(DbOption));
             }
-            _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+            _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
 
     }
