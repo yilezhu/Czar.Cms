@@ -112,7 +112,7 @@ namespace Czar.Cms.Models
 		/// 修改时间
 		/// </summary>
 		[MaxLength(23)]
-		public DateTime? ModifyTimes {get;set;}
+		public DateTime? ModifyTime {get;set;}
 
 		/// <summary>
 		/// 是否删除

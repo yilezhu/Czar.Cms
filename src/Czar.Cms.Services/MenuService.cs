@@ -11,10 +11,15 @@
 *│　类    名： MenuService                                    
 *└──────────────────────────────────────────────────────────────┘
 */
+using AutoMapper;
+using Czar.Cms.Core.Extensions;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
+using Czar.Cms.Models;
+using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Czar.Cms.Services
@@ -22,10 +27,108 @@ namespace Czar.Cms.Services
     public class MenuService: IMenuService
     {
         private readonly IMenuRepository _repository;
+        private readonly IMapper _mapper;
 
-        public MenuService(IMenuRepository repository)
+        public MenuService(IMenuRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
+        }
+
+        public BaseResult AddOrModify(MenuAddOrModifyModel item)
+        {
+            var result = new BaseResult();
+            Menu model;
+            if (item.Id == 0)
+            {
+                //TODO ADD
+                model = _mapper.Map<Menu>(item);
+                model.AddManagerId = 1;
+                model.IsDelete = false;
+                model.AddTime = DateTime.Now;
+                if (_repository.Insert(model) > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                //TODO Modify
+                model = _repository.Get(item.Id);
+                if (model != null)
+                {
+                    _mapper.Map(item, model);
+                    model.ModifyManagerId = 1;
+                    model.ModifyTime = DateTime.Now;
+                    if (_repository.Update(model) > 0)
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                    }
+                    else
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                    }
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonFailNoDataCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonFailNoDataMsg;
+                }
+            }
+            return result;
+        }
+
+        public BaseResult DeleteIds(int[] Ids)
+        {
+            var result = new BaseResult();
+            if (Ids.Count() == 0)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonModelStateInvalidMsg;
+
+            }
+            else
+            {
+                var count = _repository.DeleteLogical(Ids);
+                if (count > 0)
+                {
+                    //成功
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    //失败
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+
+
+            }
+            return result;
+        }
+
+        public TableDataModel LoadData(MenuRequestModel model)
+        {
+            string conditions = "where IsDelete=0 ";//未删除的
+            if (!model.Key.IsNullOrWhiteSpace())
+            {
+                conditions += $"and DisplayName like '%{model.Key}%'";
+            }
+           
+            return new TableDataModel
+            {
+                count = _repository.RecordCount(conditions),
+                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc").ToList(),
+            };
         }
     }
 }
