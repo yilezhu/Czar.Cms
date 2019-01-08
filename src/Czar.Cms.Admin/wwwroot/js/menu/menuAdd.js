@@ -95,4 +95,41 @@ layui.use(['form', 'layer', 'authtree'], function () {
             layer.alert(errstr + '，获取样例数据失败，请检查是否部署在本地服务器中！');
         }
     });
+
+    form.verify({
+        userName: function (value, item) { //value：表单的值、item：表单的DOM对象
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '菜单别名不能有特殊字符';
+            }
+            if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                return '菜单别名首尾不能出现下划线\'_\'';
+            }
+            if (/^\d+\d+\d$/.test(value)) {
+                return '菜单别名不能全为数字';
+            }
+            var msg;
+            $.ajax({
+                url: "/Menu/IsExistsName/",
+                async: false,
+                data: {
+                    Name: value,
+                    Id: $("#Id").val()
+                },
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res);
+                    
+                    if (res.Data === true) {
+                        msg= "系统已存在相同的别名的菜单，请修改后再进行操作";
+                    }
+                },
+                error: function (xml, errstr, err) {
+                    msg= "系统异常，请稍候再试";
+                }
+            });
+            if (msg) {
+                return msg;
+            }
+        }
+    });      
 });

@@ -18,15 +18,16 @@ using Czar.Cms.Models;
 using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class MenuRepository:BaseRepository<Menu,Int32>, IMenuRepository
+    public class MenuRepository : BaseRepository<Menu, Int32>, IMenuRepository
     {
         public MenuRepository(IOptionsSnapshot<DbOption> options)
         {
-            _dbOption =options.Get("CzarCms");
+            _dbOption = options.Get("CzarCms");
             if (_dbOption == null)
             {
                 throw new ArgumentNullException(nameof(DbOption));
@@ -71,6 +72,40 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
-      
+        public bool IsExistsName(string Name)
+        {
+            string sql = "select Id from Menu where Name=@Name and IsDelete=0";
+            var result = _dbConnection.Query<int>(sql, new
+            {
+                Name = Name,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+        public bool IsExistsName(string Name, Int32 Id)
+        {
+            string sql = "select Id from Menu where Name=@Name and Id <> @Id and IsDelete=0";
+            var result = _dbConnection.Query<int>(sql, new
+            {
+                Name = Name,
+                Id=Id,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

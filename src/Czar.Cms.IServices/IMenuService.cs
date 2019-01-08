@@ -40,6 +40,18 @@ namespace Czar.Cms.IServices
         /// <returns>结果实体</returns>
         BaseResult DeleteIds(int[] Ids);
 
+        /// <summary>
+        /// 更改显示的状态
+        /// </summary>
+        /// <param name="item">改变状态实体</param>
+        /// <returns></returns>
         BaseResult ChangeDisplayStatus(ChangeStatusModel item);
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        BooleanResult IsExistsName(MenuAddOrModifyModel item);
     }
 }

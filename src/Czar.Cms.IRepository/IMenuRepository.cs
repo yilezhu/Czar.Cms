@@ -46,5 +46,20 @@ namespace Czar.Cms.IRepository
         /// <param name="status">更改后的状态</param>
         /// <returns></returns>
         Int32 ChangeDisplayStatusById(Int32 id, bool status);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="Name">别名</param>
+        /// <returns></returns>
+        Boolean IsExistsName(string Name);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="Name">别名</param>
+        /// <param name="Id">主键</param>
+        /// <returns></returns>
+        Boolean IsExistsName(string Name,Int32 Id);
     }
 }

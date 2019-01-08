@@ -81,5 +81,12 @@ namespace Czar.Cms.Admin.Controllers
             }
             return JsonHelper.ObjectToJSON(result);
         }
+
+        [HttpGet]
+        public string IsExistsName([FromQuery]MenuAddOrModifyModel item)
+        {
+            var result = _service.IsExistsName(item);
+            return JsonHelper.ObjectToJSON(result);
+        }
     }
 }

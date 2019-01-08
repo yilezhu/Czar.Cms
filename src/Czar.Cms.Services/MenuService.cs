@@ -159,5 +159,28 @@ namespace Czar.Cms.Services
             }
             return result;
         }
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public BooleanResult IsExistsName(MenuAddOrModifyModel item)
+        {
+            bool data = false;
+            if (item.Id > 0)
+            {
+                data = _repository.IsExistsName(item.Name, item.Id);
+            }
+            else
+            {
+                data = _repository.IsExistsName(item.Name);
+
+            }
+            var result = new BooleanResult {
+                Data= data,
+            };
+            return result;
+        }
     }
 }

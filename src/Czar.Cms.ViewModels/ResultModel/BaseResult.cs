@@ -22,11 +22,11 @@ namespace Czar.Cms.ViewModels
         /// <summary>
         /// 结果编码
         /// </summary>
-        public int ResultCode { get; set; }
+        public int ResultCode { get; set; } = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
         /// <summary>
         /// 结果消息 如果不成功，返回的错误信息
         /// </summary>
-        public string ResultMsg { get; set; }
+        public string ResultMsg { get; set; } = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
         /// <summary>
         /// 无参构造函数
         /// </summary>
