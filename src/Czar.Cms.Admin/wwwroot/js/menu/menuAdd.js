@@ -60,8 +60,6 @@ layui.use(['form', 'layer', 'authtree'], function () {
         url: "/Menu/LoadData/",
         dataType: 'json',
         success: function (res) {
-            console.log(res.data);
-
             // 支持自定义递归字段、数组权限判断等
             // 深坑注意：如果API返回的数据是字符串，那么 startPid 的数据类型也需要是字符串
             var trees = authtree.listConvert(res.data, {
@@ -72,7 +70,6 @@ layui.use(['form', 'layer', 'authtree'], function () {
                 , valueKey: 'Id'
             });
 
-            console.log(trees);
             // 渲染单选框
             var html = '<option value="0">无上级菜单</option>';
             layui.each(trees, function (index, item) {
@@ -81,8 +78,6 @@ layui.use(['form', 'layer', 'authtree'], function () {
                     + (item.disabled ? 'disabled' : '' + '>')
                     + item.name + '</option>';
             });
-
-            console.log(html);
 
             $('.ParentId').html(html);
             form.render('select');
@@ -117,8 +112,6 @@ layui.use(['form', 'layer', 'authtree'], function () {
                 },
                 dataType: 'json',
                 success: function (res) {
-                    console.log(res);
-                    
                     if (res.Data === true) {
                         msg= "系统已存在相同的别名的菜单，请修改后再进行操作";
                     }
