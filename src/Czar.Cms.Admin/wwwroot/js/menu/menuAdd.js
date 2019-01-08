@@ -1,8 +1,13 @@
-layui.use(['form', 'layer'], function () {
+
+layui.config({
+    base: "/js/"
+}).extend({
+    "authtree": "authtree"
+});
+layui.use(['form', 'layer', 'authtree'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.jquery;
-
+        $ = layui.jquery, authtree = layui.authtree;
     form.on("submit(addMenu)", function (data) {
         //获取防伪标记
         $.ajax({
@@ -16,8 +21,8 @@ layui.use(['form', 'layer'], function () {
                 LinkUrl: $(".LinkUrl").val(),
                 Sort: $(".Sort").val(),
                 ParentId: $(".ParentId").val(),
-                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true, 
-                IsDisplay: $("input[name='IsDisplay']:checked").val() === "0" ? false : true,  //是否系统默认
+                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,
+                IsDisplay: $("input[name='IsDisplay']:checked").val() === "0" ? false : true
             },
             dataType: "json",
             headers: {
@@ -49,5 +54,45 @@ layui.use(['form', 'layer'], function () {
             }
         });
         return false;
+    });
+
+    $.ajax({
+        url: "/Menu/LoadData/",
+        dataType: 'json',
+        success: function (res) {
+            console.log(res.data);
+
+            // 支持自定义递归字段、数组权限判断等
+            // 深坑注意：如果API返回的数据是字符串，那么 startPid 的数据类型也需要是字符串
+            var trees = authtree.listConvert(res.data, {
+                primaryKey: 'Id'
+                , startPid: 0
+                , parentKey: 'ParentId'
+                , nameKey: 'DisplayName'
+                , valueKey: 'Id'
+            });
+
+            console.log(trees);
+            // 渲染单选框
+            var html = '<option value="0">无上级菜单</option>';
+            layui.each(trees, function (index, item) {
+                html = html + '<option value="' + item.value + '" '
+                    + (item.checked ? 'selected' : '' + ' ')
+                    + (item.disabled ? 'disabled' : '' + '>')
+                    + item.name + '</option>';
+            });
+
+            console.log(html);
+
+            $('.ParentId').html(html);
+            form.render('select');
+            form.on('select(ParentId)', function (data) {
+                console.log('选中信息', data);
+            });
+
+        },
+        error: function (xml, errstr, err) {
+            layer.alert(errstr + '，获取样例数据失败，请检查是否部署在本地服务器中！');
+        }
     });
 });

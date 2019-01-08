@@ -17,7 +17,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         id: "menuListTable",
         cols: [[
             { type: "checkbox", fixed: "left", width: 50 },
-            { field: "Id", title: 'Id', width: 50, align: "center" },
+            { field: "Id", title: 'Id', minWidth: 30, align: "center" },
             { field: 'Name', title: '调用别名', minWidth: 50, align: "center" },
             { field: 'DisplayName', title: '显示名称', minWidth: 50, align: "center" },
             { field: 'LinkUrl', title: '链接地址', minWidth: 80, align: "center" },
