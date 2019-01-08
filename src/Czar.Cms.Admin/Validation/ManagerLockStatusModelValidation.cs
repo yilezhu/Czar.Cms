@@ -9,12 +9,12 @@ using Czar.Cms.Core.Extensions;
 
 namespace Czar.Cms.Admin.Validation
 {
-    public class ManagerLockStatusModelValidation : AbstractValidator<ManagerChangeLockStatusModel>
+    public class ManagerLockStatusModelValidation : AbstractValidator<ChangeStatusModel>
     {
         public ManagerLockStatusModelValidation()
         {
             RuleFor(x => x.Id).NotNull().GreaterThan(0).WithMessage("主键不能为空");
-            RuleFor(x => x.IsLock).NotNull().WithMessage("是否锁定状态不能为空") ;
+            RuleFor(x => x.Status).NotNull().WithMessage("状态不能为空") ;
         }
     }
 }

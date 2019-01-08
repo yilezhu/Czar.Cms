@@ -34,7 +34,17 @@ namespace Czar.Cms.Repository.SqlServer
             _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
 
-		public int DeleteLogical(int[] ids)
+        public int ChangeDisplayStatusById(int id, bool status)
+        {
+            string sql = "update Menu set IsDisplay=@IsDisplay where  Id=@Id";
+            return _dbConnection.Execute(sql, new
+            {
+                IsDisplay = status ? 1 : 0,
+                Id = id,
+            });
+        }
+
+        public int DeleteLogical(int[] ids)
         {
             string sql = "update Menu set IsDelete=1 where Id in @Ids";
             return _dbConnection.Execute(sql, new
@@ -52,5 +62,15 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
+        public bool GetDisplayStatusById(int id)
+        {
+            string sql = "select IsDisplay from Menu where Id=@Id and IsDelete=0";
+            return _dbConnection.QueryFirstOrDefault<bool>(sql, new
+            {
+                Id = id,
+            });
+        }
+
+      
     }
 }

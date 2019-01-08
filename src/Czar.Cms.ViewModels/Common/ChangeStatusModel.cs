@@ -16,9 +16,15 @@ using System.Text;
 
 namespace Czar.Cms.ViewModels
 {
-    public class ManagerChangeLockStatusModel
+    public class ChangeStatusModel
     {
+        /// <summary>
+        /// 主键
+        /// </summary>
         public Int32 Id { get; set; }
-        public Boolean IsLock { get; set; } 
+        /// <summary>
+        /// 修改后的状态
+        /// </summary>
+        public Boolean Status { get; set; } 
     }
 }

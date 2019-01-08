@@ -159,13 +159,18 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         $.ajax({
             type: 'POST',
             url: '/Manager/ChangeLockStatus/',
-            data: { Id: managerId, IsLock: status },
+            data: { Id: managerId, Status: status },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (data) {//res为相应体,function为回调函数
-                layer.msg(data.ResultMsg);
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //2s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                    layer.close(index);
+                });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });

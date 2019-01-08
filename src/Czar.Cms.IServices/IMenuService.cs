@@ -39,5 +39,7 @@ namespace Czar.Cms.IServices
         /// <param name="Ids">主键id数组</param>
         /// <returns>结果实体</returns>
         BaseResult DeleteIds(int[] Ids);
+
+        BaseResult ChangeDisplayStatus(ChangeStatusModel item);
     }
 }

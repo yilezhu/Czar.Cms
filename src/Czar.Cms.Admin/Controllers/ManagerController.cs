@@ -75,7 +75,7 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeLockStatus([FromForm]ManagerChangeLockStatusModel item)
+        public string ChangeLockStatus([FromForm]ChangeStatusModel item)
         {
             var result = new BaseResult();
             ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();

@@ -62,5 +62,24 @@ namespace Czar.Cms.Admin.Controllers
         {
             return JsonHelper.ObjectToJSON(_service.DeleteIds(menuId));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string ChangeDisplayStatus([FromForm]ChangeStatusModel item)
+        {
+            var result = new BaseResult();
+            ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
+            ValidationResult results = validationRules.Validate(item);
+            if (results.IsValid)
+            {
+                result = _service.ChangeDisplayStatus(item);
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
+                result.ResultMsg = results.ToString("||");
+            }
+            return JsonHelper.ObjectToJSON(result);
+        }
     }
 }

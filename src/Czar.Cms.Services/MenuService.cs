@@ -86,6 +86,8 @@ namespace Czar.Cms.Services
             return result;
         }
 
+        
+
         public BaseResult DeleteIds(int[] Ids)
         {
             var result = new BaseResult();
@@ -129,6 +131,33 @@ namespace Czar.Cms.Services
                 count = _repository.RecordCount(conditions),
                 data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc").ToList(),
             };
+        }
+
+        public BaseResult ChangeDisplayStatus(ChangeStatusModel model)
+        {
+            var result = new BaseResult();
+            //判断状态是否发生变化，没有则修改，有则返回状态已变化无法更改状态的提示
+            var isLock = _repository.GetDisplayStatusById(model.Id);
+            if (isLock == !model.Status)
+            {
+                var count = _repository.ChangeDisplayStatusById(model.Id, model.Status);
+                if (count > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonDataStatusChangeCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonDataStatusChangeMsg;
+            }
+            return result;
         }
     }
 }
