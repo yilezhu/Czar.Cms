@@ -25,7 +25,7 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-
+        [HttpGet]
         public string LoadData([FromQuery]MenuRequestModel model)
         {
             return JsonHelper.ObjectToJSON(_service.LoadData(model));
@@ -34,7 +34,7 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            return View();
+            return View(_service.GetChildListByParentId(0));
         }
 
         [HttpPost]
@@ -87,6 +87,12 @@ namespace Czar.Cms.Admin.Controllers
         {
             var result = _service.IsExistsName(item);
             return JsonHelper.ObjectToJSON(result);
+        }
+
+        [HttpGet]
+        public string LoadDataWithParentId([FromQuery]int ParentId=-1)
+        {
+            return JsonHelper.ObjectToJSON(_service.GetChildListByParentId(ParentId));
         }
     }
 }

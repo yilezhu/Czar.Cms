@@ -86,7 +86,6 @@ namespace Czar.Cms.Services
             return result;
         }
 
-        
 
         public BaseResult DeleteIds(int[] Ids)
         {
@@ -181,6 +180,17 @@ namespace Czar.Cms.Services
                 Data= data,
             };
             return result;
+        }
+
+        public List<Menu> GetChildListByParentId(int ParentId)
+        {
+            string conditions = "where IsDelete=0 ";//未删除的
+            if (ParentId >= 0)
+            {
+                conditions += " and ParentId ="+ParentId;
+            }
+            return _repository.GetList(conditions).ToList();
+           
         }
     }
 }

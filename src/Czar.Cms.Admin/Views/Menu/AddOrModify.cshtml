@@ -1,4 +1,5 @@
-﻿
+﻿@using Czar.Cms.Models
+@model List<Menu>
 @{
     ViewData["Title"] = "后台菜单管理";
 }
@@ -23,6 +24,11 @@
         <div class="layui-input-block">
             <select name="ParentId" class="ParentId" lay-filter="ParentId">
                 <option value="0">无上级菜单</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@item.Id">@item.DisplayName</option>
+
+                }
             </select>
         </div>
     </div>

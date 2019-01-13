@@ -10,6 +10,7 @@
 *│　接口名称： IMenuRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -53,5 +54,12 @@ namespace Czar.Cms.IServices
         /// <param name="Name"></param>
         /// <returns></returns>
         BooleanResult IsExistsName(MenuAddOrModifyModel item);
+
+        /// <summary>
+        /// 根据父节点返回列表
+        /// </summary>
+        /// <param name="ParentId"></param>
+        /// <returns></returns>
+        List<Menu> GetChildListByParentId(int ParentId);
     }
 }

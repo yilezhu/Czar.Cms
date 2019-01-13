@@ -89,7 +89,6 @@ namespace Czar.Cms.Repository.SqlServer
             }
         }
 
-
         public bool IsExistsName(string Name, Int32 Id)
         {
             string sql = "select Id from Menu where Name=@Name and Id <> @Id and IsDelete=0";

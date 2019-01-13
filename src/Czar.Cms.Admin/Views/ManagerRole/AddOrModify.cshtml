@@ -23,9 +23,15 @@
     </div>
     <div class="layui-form-item layui-row layui-col-xs12" pane>
         <label class="layui-form-label">系统默认</label>
-        <div class="layui-input-block IsSystem">
+        <div class="layui-input-block">
             <input type="radio" name="IsSystem" value="0" title="否" checked>
             <input type="radio" name="IsSystem" value="1" title="是">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">权限分配</label>
+        <div class="layui-input-block">
+            <div id="yilezhu-auth-tree"></div>
         </div>
     </div>
     <div class="layui-form-item layui-form-text layui-col-xs12">
@@ -34,7 +40,7 @@
             <textarea placeholder="请输入备注信息" name="Remark" class="layui-textarea Remark"></textarea>
         </div>
     </div>
-  
+
     <div class="layui-form-item layui-row layui-col-xs12">
         <div class="layui-input-block">
             <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addRole">确定</button>

@@ -40,5 +40,9 @@ namespace Czar.Cms.ViewModels
         /// 备注
         /// </summary>
         public String Remark { get; set; }
+        /// <summary>
+        /// 菜单列表
+        /// </summary>
+        public int[] MenuIds { get; set; }
     }
 }

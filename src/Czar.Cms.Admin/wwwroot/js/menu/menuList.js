@@ -79,6 +79,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                         body.find(".IsDisplay input[value=0]").prop("checked", "checked");
 
                     }
+                    body.find(".ParentId").val(edit.ParentId);
                     body.find(".Remark").text(edit.Remark);    //角色备注
                     form.render();
 

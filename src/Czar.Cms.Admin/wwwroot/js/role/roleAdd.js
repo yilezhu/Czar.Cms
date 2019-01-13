@@ -1,7 +1,13 @@
-layui.use(['form', 'layer'], function () {
+
+layui.config({
+    base: "/js/"
+}).extend({
+    "authtree": "authtree"
+});
+layui.use(['form', 'layer', 'authtree'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.jquery;
+        $ = layui.jquery, authtree = layui.authtree;
 
     form.on("submit(addRole)", function (data) {
         //获取防伪标记
@@ -13,6 +19,7 @@ layui.use(['form', 'layer'], function () {
                 RoleName: $(".RoleName").val(),  //角色名称
                 RoleType: $(".RoleType").val(),  //角色类型
                 IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,  //是否系统默认
+                MenuIds: authtree.getChecked('#yilezhu-auth-tree'),
                 Remark: $(".Remark").val()  //用户简介
             },
             dataType: "json",
@@ -45,5 +52,36 @@ layui.use(['form', 'layer'], function () {
             }
         });
         return false;
+    });
+
+    // 初始化
+    $.ajax({
+        url: '/Menu/LoadDataWithParentId/',
+        dataType: 'json',
+        success: function (data) {
+            // 渲染时传入渲染目标ID，树形结构数据（具体结构看样例，checked表示默认选中），以及input表单的名字
+            var trees = authtree.listConvert(data, {
+                primaryKey: 'Id'
+                , startPid: 0
+                , parentKey: 'ParentId'
+                , nameKey: 'DisplayName'
+                , valueKey: 'Id'
+            });
+            authtree.render('#yilezhu-auth-tree', trees, {
+                inputname: 'ids[]'
+                , layfilter: 'yilezhu-check-auth'
+                , autowidth: true
+            });
+
+            authtree.on('change(yilezhu-check-auth)', function (data) {
+                console.log('监听 authtree 触发事件数据', data);
+            });
+            authtree.on('dblclick(yilezhu-check-auth)', function (data) {
+                console.log('监听到双击事件', data);
+            });
+        },
+        error: function (xml, errstr, err) {
+            layer.alert(errstr + '，系统异常！');
+        }
     });
 });
