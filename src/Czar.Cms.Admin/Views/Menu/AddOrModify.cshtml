@@ -1,0 +1,82 @@
+﻿@using Czar.Cms.Models
+@model List<Menu>
+@{
+    ViewData["Title"] = "后台菜单管理";
+}
+
+<form class="layui-form layui-form-pane" style="width:90%;">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Id")
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">调用别名</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" class="layui-input Name" lay-verify="required|userName" placeholder="只允许字母数字下划线">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">显示名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="DisplayName" class="layui-input DisplayName" lay-verify="required" placeholder="请输入显示名称">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">上级菜单</label>
+        <div class="layui-input-block">
+            <select name="ParentId" class="ParentId" lay-filter="ParentId">
+                <option value="0">无上级菜单</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@item.Id">@item.DisplayName</option>
+
+                }
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">菜单图标</label>
+        <div class="layui-input-block">
+            <input type="text" name="IconUrl" class="layui-input IconUrl" placeholder="请输入菜单图标">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">链接地址</label>
+        <div class="layui-input-block">
+            <input type="text" name="LinkUrl" class="layui-input LinkUrl" placeholder="请输入链接地址">
+        </div>
+
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12" pane>
+        <label class="layui-form-label">系统默认</label>
+        <div class="layui-input-block IsSystem">
+            <input type="radio" name="IsSystem" value="0" title="否">
+            <input type="radio" name="IsSystem" value="1" title="是" checked>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12" pane>
+        <label class="layui-form-label">是否显示</label>
+        <div class="layui-input-block IsDisplay">
+            <input type="radio" name="IsDisplay" value="0" title="否">
+            <input type="radio" name="IsDisplay" value="1" title="是" checked>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">排序数字</label>
+        <div class="layui-input-block">
+            <input type="text" name="Sort" class="layui-input Sort" value="99" lay-verify="required" placeholder="请输入排序数字">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addMenu">确定</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/menu/menuAdd.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}
+
+
+

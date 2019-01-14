@@ -142,14 +142,14 @@ namespace Czar.Cms.Services
             };
         }
 
-        public BaseResult ChangeLockStatus(ManagerChangeLockStatusModel model)
+        public BaseResult ChangeLockStatus(ChangeStatusModel model)
         {
             var result = new BaseResult();
             //判断状态是否发生变化，没有则修改，有则返回状态已变化无法更改状态的提示
             var isLock = _repository.GetLockStatusById(model.Id);
-            if (isLock == !model.IsLock)
+            if (isLock == !model.Status)
             {
-                var count = _repository.ChangeLockStatusById(model.Id,model.IsLock);
+                var count = _repository.ChangeLockStatusById(model.Id,model.Status);
                 if (count > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;

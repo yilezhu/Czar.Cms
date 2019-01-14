@@ -47,7 +47,7 @@ namespace Czar.Cms.Test
 
 
             });
-            services.Configure<DbOpion>("CzarCms", GetConfiguration().GetSection("DbOpion"));
+            services.Configure<DbOption>("CzarCms", GetConfiguration().GetSection("DbOpion"));
             services.AddScoped<IArticleRepository, ArticleRepository>();
             services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

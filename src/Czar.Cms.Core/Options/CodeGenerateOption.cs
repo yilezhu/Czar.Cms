@@ -10,7 +10,7 @@ namespace Czar.Cms.Core.Options
     /// 2018.12.12
     /// 代码生成选项
     /// </summary>
-    public class CodeGenerateOption:DbOpion
+    public class CodeGenerateOption:DbOption
     {
        
         /// <summary>

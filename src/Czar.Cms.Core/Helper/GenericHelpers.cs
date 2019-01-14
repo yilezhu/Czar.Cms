@@ -1,30 +1,26 @@
 ﻿/**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：数据库连接选项                                                    
+*│　描    述：List转成Tree                                                    
 *│　作    者：yilezhu                                             
 *│　版    本：1.0                                                 
-*│　创建时间：2018/12/16 22:08:46                             
+*│　创建时间：2019/1/5 12:14:39                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间： Czar.Cms.Core.Options                                   
-*│　类    名： DbOpion                                      
+*│　命名空间： Czar.Cms.Core.Helper                                   
+*│　类    名： GenericHelpers                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Czar.Cms.Core.Options
+namespace Czar.Cms.Core.Helper
 {
-    public class DbOpion
+    public static class GenericHelpers
     {
-        /// <summary>
-        /// 数据库连接字符串
-        /// </summary>
-        public string ConnectionString { get; set; }
-        /// <summary>
-        /// 数据库类型
-        /// </summary>
-        public string DbType { get; set; }
+    
+        
     }
 }

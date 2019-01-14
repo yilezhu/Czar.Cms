@@ -37,7 +37,7 @@ namespace Czar.Cms.Admin
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DbOpion>("CzarCms", Configuration.GetSection("DbOpion"));
+            services.Configure<DbOption>("CzarCms", Configuration.GetSection("DbOpion"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(options =>
              {

@@ -8,19 +8,21 @@ layui.use(['form', 'layer', 'authtree'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery, authtree = layui.authtree;
-
-    form.on("submit(addRole)", function (data) {
+    form.on("submit(addMenu)", function (data) {
         //获取防伪标记
         $.ajax({
             type: 'POST',
-            url: '/ManagerRole/AddOrModify/',
+            url: '/Menu/AddOrModify/',
             data: {
                 Id: $("#Id").val(),  //主键
-                RoleName: $(".RoleName").val(),  //角色名称
-                RoleType: $(".RoleType").val(),  //角色类型
-                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,  //是否系统默认
-                MenuIds: authtree.getChecked('#yilezhu-auth-tree'),
-                Remark: $(".Remark").val()  //用户简介
+                Name: $(".Name").val(),
+                DisplayName: $(".DisplayName").val(),
+                IconUrl: $(".IconUrl").val(),
+                LinkUrl: $(".LinkUrl").val(),
+                Sort: $(".Sort").val(),
+                ParentId: $(".ParentId").val(),
+                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,
+                IsDisplay: $("input[name='IsDisplay']:checked").val() === "0" ? false : true
             },
             dataType: "json",
             headers: {
@@ -53,35 +55,38 @@ layui.use(['form', 'layer', 'authtree'], function () {
         });
         return false;
     });
-
-    // 初始化
-    $.ajax({
-        url: '/Menu/LoadDataWithParentId/',
-        dataType: 'json',
-        success: function (data) {
-            // 渲染时传入渲染目标ID，树形结构数据（具体结构看样例，checked表示默认选中），以及input表单的名字
-            var trees = authtree.listConvert(data, {
-                primaryKey: 'Id'
-                , startPid: 0
-                , parentKey: 'ParentId'
-                , nameKey: 'DisplayName'
-                , valueKey: 'Id'
+    form.verify({
+        userName: function (value, item) { //value：表单的值、item：表单的DOM对象
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                return '菜单别名不能有特殊字符';
+            }
+            if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                return '菜单别名首尾不能出现下划线\'_\'';
+            }
+            if (/^\d+\d+\d$/.test(value)) {
+                return '菜单别名不能全为数字';
+            }
+            var msg;
+            $.ajax({
+                url: "/Menu/IsExistsName/",
+                async: false,
+                data: {
+                    Name: value,
+                    Id: $("#Id").val()
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.Data === true) {
+                        msg= "系统已存在相同的别名的菜单，请修改后再进行操作";
+                    }
+                },
+                error: function (xml, errstr, err) {
+                    msg= "系统异常，请稍候再试";
+                }
             });
-            authtree.render('#yilezhu-auth-tree', trees, {
-                inputname: 'ids[]'
-                , layfilter: 'yilezhu-check-auth'
-                , autowidth: true
-            });
-
-            authtree.on('change(yilezhu-check-auth)', function (data) {
-                console.log('监听 authtree 触发事件数据', data);
-            });
-            authtree.on('dblclick(yilezhu-check-auth)', function (data) {
-                console.log('监听到双击事件', data);
-            });
-        },
-        error: function (xml, errstr, err) {
-            layer.alert(errstr + '，系统异常！');
+            if (msg) {
+                return msg;
+            }
         }
-    });
+    });      
 });

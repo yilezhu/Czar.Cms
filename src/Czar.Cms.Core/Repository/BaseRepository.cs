@@ -26,7 +26,7 @@ namespace Czar.Cms.Core.Repository
 {
     public class BaseRepository<T, TKey> : IBaseRepository<T, TKey> where T : class
     {
-        protected DbOpion _dbOpion;
+        protected DbOption _dbOption;
         protected IDbConnection _dbConnection;
 
         //public BaseRepository(DbOpion dbOpion)
@@ -137,6 +137,7 @@ namespace Czar.Cms.Core.Repository
                 if (disposing)
                 {
                     // TODO: 释放托管状态(托管对象)。
+                    _dbConnection?.Dispose();
                 }
 
                 // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。

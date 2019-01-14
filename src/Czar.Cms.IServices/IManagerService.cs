@@ -45,6 +45,6 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="model">修改锁定状态实体</param>
         /// <returns>结果</returns>
-        BaseResult ChangeLockStatus(ManagerChangeLockStatusModel model);
+        BaseResult ChangeLockStatus(ChangeStatusModel model);
     }
 }

@@ -1,4 +1,27 @@
-﻿/**
+﻿////////////////////////////////////////////////////////////////////
+//                          _ooOoo_                               //
+//                         o8888888o                              //
+//                         88" . "88                              //
+//                         (| ^_^ |)                              //
+//                         O\  =  /O                              //
+//                      ____/`---'\____                           //
+//                    .'  \\|     |//  `.                         //
+//                   /  \\|||  :  |||//  \                        //
+//                  /  _||||| -:- |||||-  \                       //
+//                  |   | \\\  -  /// |   |                       //
+//                  | \_|  ''\---/''  |   |                       //
+//                  \  .-\__  `-`  ___/-. /                       //
+//                ___`. .'  /--.--\  `. . ___                     //
+//              ."" '<  `.___\_<|>_/___.'  >'"".                  //
+//            | | :  `- \`.;`\ _ /`;.`/ - ` : | |                 //
+//            \  \ `-.   \_ __\ /__ _/   .-` /  /                 //
+//      ========`-.____`-.___\_____/___.-`____.-'========         //
+//                           `=---='                              //
+//      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        //
+//                   佛祖保佑       永不宕机     永无BUG          //
+////////////////////////////////////////////////////////////////////
+
+/**
 *┌──────────────────────────────────────────────────────────────┐
 *│　描    述：{Comment}接口实现                                                    
 *│　作    者：{Author}                                            
@@ -15,21 +38,41 @@ using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
 using Czar.Cms.IRepository;
 using Czar.Cms.Models;
+using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Threading.Tasks;
 
 namespace {RepositoryNamespace}
 {
     public class {ModelName}Repository:BaseRepository<{ModelName},{KeyTypeName}>, I{ModelName}Repository
     {
-        public {ModelName}Repository(IOptionsSnapshot<DbOpion> options)
+        public {ModelName}Repository(IOptionsSnapshot<DbOption> options)
         {
-            _dbOpion =options.Get("CzarCms");
-            if (_dbOpion == null)
+            _dbOption =options.Get("CzarCms");
+            if (_dbOption == null)
             {
-                throw new ArgumentNullException(nameof(DbOpion));
+                throw new ArgumentNullException(nameof(DbOption));
             }
-            _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+            _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
+        }
+
+		public int DeleteLogical(int[] ids)
+        {
+            string sql = "update {ModelName} set IsDelete=1 where Id in @Ids";
+            return _dbConnection.Execute(sql, new
+            {
+                Ids = ids
+            });
+        }
+
+        public async Task<int> DeleteLogicalAsync(int[] ids)
+        {
+            string sql = "update {ModelName} set IsDelete=1 where Id in @Ids";
+            return await _dbConnection.ExecuteAsync(sql, new
+            {
+                Ids = ids
+            });
         }
 
     }

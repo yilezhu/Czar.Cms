@@ -3,7 +3,7 @@
 *│　描    述：后台管理菜单接口实现                                                    
 *│　作    者：yilezhu                                            
 *│　版    本：1.0    模板代码自动生成                                                
-*│　创建时间：2018-12-18 13:28:43                             
+*│　创建时间：2019-01-05 17:54:04                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间： Czar.Cms.Repository.SqlServer                                  
@@ -15,22 +15,96 @@ using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
 using Czar.Cms.IRepository;
 using Czar.Cms.Models;
+using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class MenuRepository:BaseRepository<Menu,Int32>, IMenuRepository
+    public class MenuRepository : BaseRepository<Menu, Int32>, IMenuRepository
     {
-        public MenuRepository(IOptionsSnapshot<DbOpion> options)
+        public MenuRepository(IOptionsSnapshot<DbOption> options)
         {
-            _dbOpion =options.Get("CzarCms");
-            if (_dbOpion == null)
+            _dbOption = options.Get("CzarCms");
+            if (_dbOption == null)
             {
-                throw new ArgumentNullException(nameof(DbOpion));
+                throw new ArgumentNullException(nameof(DbOption));
             }
-            _dbConnection = ConnectionFactory.CreateConnection(_dbOpion.DbType, _dbOpion.ConnectionString);
+            _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
 
+        public int ChangeDisplayStatusById(int id, bool status)
+        {
+            string sql = "update Menu set IsDisplay=@IsDisplay where  Id=@Id";
+            return _dbConnection.Execute(sql, new
+            {
+                IsDisplay = status ? 1 : 0,
+                Id = id,
+            });
+        }
+
+        public int DeleteLogical(int[] ids)
+        {
+            string sql = "update Menu set IsDelete=1 where Id in @Ids";
+            return _dbConnection.Execute(sql, new
+            {
+                Ids = ids
+            });
+        }
+
+        public async Task<int> DeleteLogicalAsync(int[] ids)
+        {
+            string sql = "update Menu set IsDelete=1 where Id in @Ids";
+            return await _dbConnection.ExecuteAsync(sql, new
+            {
+                Ids = ids
+            });
+        }
+
+        public bool GetDisplayStatusById(int id)
+        {
+            string sql = "select IsDisplay from Menu where Id=@Id and IsDelete=0";
+            return _dbConnection.QueryFirstOrDefault<bool>(sql, new
+            {
+                Id = id,
+            });
+        }
+
+        public bool IsExistsName(string Name)
+        {
+            string sql = "select Id from Menu where Name=@Name and IsDelete=0";
+            var result = _dbConnection.Query<int>(sql, new
+            {
+                Name = Name,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool IsExistsName(string Name, Int32 Id)
+        {
+            string sql = "select Id from Menu where Name=@Name and Id <> @Id and IsDelete=0";
+            var result = _dbConnection.Query<int>(sql, new
+            {
+                Name = Name,
+                Id=Id,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

@@ -2,29 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Czar.Cms.Models;
-using Czar.Cms.IRepository;
-using System.Text;
 using Czar.Cms.Admin.Validation;
-using FluentValidation.Results;
-using Czar.Cms.ViewModels;
-using Czar.Cms.Core.Extensions;
 using Czar.Cms.Core.Helper;
-using AutoMapper;
 using Czar.Cms.IServices;
+using Czar.Cms.ViewModels;
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Czar.Cms.Admin.Controllers
 {
-    public class ManagerController : BaseController
+    public class MenuController : BaseController
     {
-        private readonly IManagerService _service;
-        private readonly IManagerRoleService _roleService;
+        private readonly IMenuService _service;
 
-        public ManagerController(IManagerService service, IManagerRoleService roleService)
+        public MenuController(IMenuService service)
         {
             _service = service;
-            _roleService = roleService;
         }
 
         public IActionResult Index()
@@ -32,8 +25,8 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-
-        public string LoadData([FromQuery]ManagerRequestModel model)
+        [HttpGet]
+        public string LoadData([FromQuery]MenuRequestModel model)
         {
             return JsonHelper.ObjectToJSON(_service.LoadData(model));
         }
@@ -41,18 +34,15 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel {
-                Key=null
-            });
-            return View(roleList);
+            return View(_service.GetChildListByParentId(0));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]ManagerAddOrModifyModel item)
+        public string AddOrModify([FromForm]MenuAddOrModifyModel item)
         {
             var result = new BaseResult();
-            ManagerValidation validationRules = new ManagerValidation();
+            MenuValidation validationRules = new MenuValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
@@ -68,21 +58,21 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] roleId)
+        public string Delete(int[] menuId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIds(roleId));
+            return JsonHelper.ObjectToJSON(_service.DeleteIds(menuId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeLockStatus([FromForm]ChangeStatusModel item)
+        public string ChangeDisplayStatus([FromForm]ChangeStatusModel item)
         {
             var result = new BaseResult();
             ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.ChangeLockStatus(item);
+                result = _service.ChangeDisplayStatus(item);
             }
             else
             {
@@ -90,6 +80,19 @@ namespace Czar.Cms.Admin.Controllers
                 result.ResultMsg = results.ToString("||");
             }
             return JsonHelper.ObjectToJSON(result);
+        }
+
+        [HttpGet]
+        public string IsExistsName([FromQuery]MenuAddOrModifyModel item)
+        {
+            var result = _service.IsExistsName(item);
+            return JsonHelper.ObjectToJSON(result);
+        }
+
+        [HttpGet]
+        public string LoadDataWithParentId([FromQuery]int ParentId=-1)
+        {
+            return JsonHelper.ObjectToJSON(_service.GetChildListByParentId(ParentId));
         }
     }
 }

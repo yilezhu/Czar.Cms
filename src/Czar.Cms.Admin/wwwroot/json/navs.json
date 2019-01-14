@@ -1,5 +1,5 @@
 {
-  "memberCenter": [
+  "systemSettings": [
     {
       "title": "用户管理",
       "icon": "&#xe612;",
@@ -10,7 +10,13 @@
       "title": "角色管理",
       "icon": "icon-vip",
       "href": "/ManagerRole/Index",
-      "spread": true
+      "spread": false
+    },
+    {
+      "title": "菜单管理",
+      "icon": "icon-vip",
+      "href": "/Menu/Index",
+      "spread": false
     }
   ],
   "contentManagement": [
@@ -46,32 +52,6 @@
           "target": "_blank"
         }
       ]
-    }
-  ],
-  "systemeSttings": [
-    {
-      "title": "系统基本参数",
-      "icon": "&#xe631;",
-      "href": "page/systemSetting/basicParameter.html",
-      "spread": false
-    },
-    {
-      "title": "系统日志",
-      "icon": "icon-log",
-      "href": "page/systemSetting/logs.html",
-      "spread": false
-    },
-    {
-      "title": "友情链接",
-      "icon": "&#xe64c;",
-      "href": "page/systemSetting/linkList.html",
-      "spread": false
-    },
-    {
-      "title": "图标管理",
-      "icon": "&#xe857;",
-      "href": "page/systemSetting/icons.html",
-      "spread": false
     }
   ],
   "seraphApi": [

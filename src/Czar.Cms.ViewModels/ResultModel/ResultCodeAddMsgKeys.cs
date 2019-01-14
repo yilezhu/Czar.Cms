@@ -51,7 +51,7 @@ namespace Czar.Cms.ViewModels
         /// <summary>
         /// 数据状态发生变化的信息
         /// </summary>
-        public const string CommonDataStatusChangeMsg = "数据状态发生变化";
+        public const string CommonDataStatusChangeMsg = "数据状态已发生变化，请刷新后再进行操作";
 
         /// <summary>
         /// 通用失败，系统异常错误码
