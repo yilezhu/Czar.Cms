@@ -31,5 +31,12 @@ namespace Czar.Cms.IRepository
         /// <param name="ids">需要删除的主键数组</param>
         /// <returns>影响的行数</returns>
         Task<Int32> DeleteLogicalAsync(Int32[] ids);
+
+        /// <summary>
+        /// 通过角色主键获取菜单主键数组
+        /// </summary>
+        /// <param name="RoleId"></param>
+        /// <returns></returns>
+        int[] GetIdsByRoleId(int RoleId);
     }
 }

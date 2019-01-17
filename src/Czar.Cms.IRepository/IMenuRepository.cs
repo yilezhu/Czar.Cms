@@ -61,5 +61,6 @@ namespace Czar.Cms.IRepository
         /// <param name="Id">主键</param>
         /// <returns></returns>
         Boolean IsExistsName(string Name,Int32 Id);
+
     }
 }

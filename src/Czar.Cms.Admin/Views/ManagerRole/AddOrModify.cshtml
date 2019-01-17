@@ -6,6 +6,7 @@
 <form class="layui-form layui-form-pane" style="width:90%;">
     @Html.AntiForgeryToken()
     @Html.Hidden("Id")
+    @Html.Hidden("MenuIdsInit", ViewData["MenuIds"])
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">角色名称</label>
         <div class="layui-input-block">

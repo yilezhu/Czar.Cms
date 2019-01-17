@@ -53,7 +53,7 @@ namespace Czar.Cms.Services
                 managerRole.AddManagerId = 1;
                 managerRole.IsDelete = false;
                 managerRole.AddTime = DateTime.Now;
-                if (_repository.Insert(managerRole) > 0)
+                if (_repository.InsertByTrans(managerRole) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -73,7 +73,7 @@ namespace Czar.Cms.Services
                     _mapper.Map(item, managerRole);
                     managerRole.ModifyManagerId = 1;
                     managerRole.ModifyTime = DateTime.Now;
-                    if (_repository.Update(managerRole) > 0)
+                    if (_repository.UpdateByTrans(managerRole) > 0)
                     {
                         result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                         result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
