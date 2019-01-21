@@ -38,17 +38,24 @@ namespace Czar.Cms.Admin
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<DbOption>("CzarCms", Configuration.GetSection("DbOpion"));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-             .AddCookie(options =>
-             {
-                 options.LoginPath = "/Account/Index";
-                 options.LogoutPath = "/Account/Logout";
-             });
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie(options =>
+           {
+               options.LoginPath = "/Account/Index";
+               options.LogoutPath = "/Account/Logout";
+           });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.Cookie.HttpOnly = true;
             });
             services.AddAntiforgery(options =>
             {
@@ -95,6 +102,8 @@ namespace Czar.Cms.Admin
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSession();
+            app.UseAuthentication();
             //add NLog to ASP.NET Core
             loggerFactory.AddNLog();
             app.UseMvc(routes =>

@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="CodeTemplate\IRepositoryTemplate.txt" />
     <None Remove="CodeTemplate\IServicesTemplate.txt" />
@@ -30,6 +34,7 @@
     <PackageReference Include="MySql.Data" Version="8.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Npgsql" Version="4.0.4" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
 
 </Project>
