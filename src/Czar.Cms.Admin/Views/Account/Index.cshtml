@@ -21,18 +21,19 @@
 </head>
 <body class="loginBody">
     <form class="layui-form">
+        @Html.AntiForgeryToken()
         <div class="login_face"><img src="~/images/face.jpg" class="userAvatar"></div>
         <div class="layui-form-item input-item">
             <label for="userName">用户名</label>
-            <input type="text" placeholder="请输入用户名" autocomplete="off" id="userName" class="layui-input" lay-verify="required">
+            <input type="text" placeholder="请输入用户名" autocomplete="off" id="UserName" name="UserName" class="layui-input" lay-verify="required|userName">
         </div>
         <div class="layui-form-item input-item">
-            <label for="password">密码</label>
-            <input type="password" placeholder="请输入密码" autocomplete="off" id="password" class="layui-input" lay-verify="required">
+            <label for="password">密  码</label>
+            <input type="password" placeholder="请输入密码" autocomplete="off" id="Password" name="Password" class="layui-input" lay-verify="required|password">
         </div>
         <div class="layui-form-item input-item" id="imgCode">
             <label for="code">验证码</label>
-            <input type="text" placeholder="请输入验证码" autocomplete="off" id="code" class="layui-input">
+            <input type="text" placeholder="请输入验证码" autocomplete="off" id="CaptchaCode" name="CaptchaCode" class="layui-input" lay-verify="required|captchaCode">
             <img src="@Url.Action("GetCaptchaImage", "Account")">
         </div>
         <div class="layui-form-item">
@@ -45,7 +46,7 @@
         </div>
     </form>
     <script type="text/javascript" src="~/layui/layui.js"></script>
-    <script type="text/javascript" src="~/js/login.js"></script>
+    <script type="text/javascript" src="~/js/login.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
 </body>
 </html>
 

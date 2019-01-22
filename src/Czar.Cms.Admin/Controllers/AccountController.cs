@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Czar.Cms.Core.Helper;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Czar.Cms.ViewModels;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -13,6 +14,13 @@ namespace Czar.Cms.Admin.Controllers
     {
         private readonly string CaptchaCodeSessionName = "CaptchaCode";
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LoginOn(LoginModel model)
         {
             return View();
         }
