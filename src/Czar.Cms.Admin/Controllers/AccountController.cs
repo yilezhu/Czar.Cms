@@ -15,6 +15,7 @@ using Czar.Cms.Admin.Validation;
 using FluentValidation.Results;
 using Czar.Cms.Core.Extensions;
 
+
 namespace Czar.Cms.Admin.Controllers
 {
     public class AccountController : Controller
@@ -149,7 +150,7 @@ namespace Czar.Cms.Admin.Controllers
 
         private bool ValidateCaptchaCode(string userInputCaptcha)
         {
-            var isValid = userInputCaptcha == HttpContext.Session.GetString(CaptchaCodeSessionName);
+            var isValid = userInputCaptcha.Equals(HttpContext.Session.GetString(CaptchaCodeSessionName), StringComparison.OrdinalIgnoreCase);
             HttpContext.Session.Remove(CaptchaCodeSessionName);
             return isValid;
         }

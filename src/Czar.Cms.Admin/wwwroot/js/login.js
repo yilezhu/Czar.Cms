@@ -12,7 +12,8 @@ layui.use(['form', 'layer', 'jquery'], function () {
     //登录按钮
     form.on("submit(login)", function (data) {
         console.log(data);
-        $(this).text("登录中...").attr("disabled", "disabled").addClass("layui-disabled");
+        var obj = $(this);
+        obj.text("登录中...").attr("disabled", "disabled").addClass("layui-disabled");
         $.ajax({
             type: 'POST', 
             url: '/Account/SignIn/',
@@ -33,7 +34,7 @@ layui.use(['form', 'layer', 'jquery'], function () {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
             },
             complete: function () {
-                $(this).text("登录").removeAttr("disabled").removeClass("layui-disabled");
+                obj.text("登录").removeAttr("disabled").removeClass("layui-disabled");
 
             }
         });
