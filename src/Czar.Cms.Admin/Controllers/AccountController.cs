@@ -114,11 +114,11 @@ namespace Czar.Cms.Admin.Controllers
         }
 
 
-        [HttpPost, ValidateAntiForgeryToken, Route("Account/SignOut")]
+        [Route("Account/SignOut")]
         public async Task<IActionResult> SignOutAsync()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return View();
+            return RedirectToAction("Index");
         }
 
         public IActionResult GetCaptchaImage()
