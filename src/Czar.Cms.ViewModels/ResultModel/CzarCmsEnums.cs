@@ -1,13 +1,13 @@
 ﻿/**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：登陆实体                                                    
+*│　描    述：通用枚举                                                    
 *│　作    者：yilezhu                                             
 *│　版    本：1.0                                                 
-*│　创建时间：2019/1/22 12:50:54                             
+*│　创建时间：2019/1/22 22:17:15                             
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间： Czar.Cms.ViewModels.Manager                                   
-*│　类    名： LoginModel                                      
+*│　命名空间： Czar.Cms.ViewModels.ResultModel                                   
+*│　类    名： CzarCmsEnums                                      
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -16,13 +16,18 @@ using System.Text;
 
 namespace Czar.Cms.ViewModels
 {
-    public class LoginModel
+    public class CzarCmsEnums
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string CaptchaCode { get; set; }
-        public string Ip { get; set; }
-        public string ReturnUrl { get; set; }
+        /// <summary>
+        /// 统一管理操作枚举
+        /// </summary>
+        public enum ActionEnum
+        {
+            /// <summary>
+            /// 登录
+            /// </summary>
+            SignIn,
+        }
 
     }
 }

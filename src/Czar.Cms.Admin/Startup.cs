@@ -51,6 +51,7 @@ namespace Czar.Cms.Admin
            {
                options.LoginPath = "/Account/Index";
                options.LogoutPath = "/Account/Logout";
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
            });
             services.AddSession(options =>
             {

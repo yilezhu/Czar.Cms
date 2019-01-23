@@ -14,8 +14,8 @@ layui.use(['form', 'layer', 'jquery'], function () {
         console.log(data);
         $(this).text("登录中...").attr("disabled", "disabled").addClass("layui-disabled");
         $.ajax({
-            type: 'POST',
-            url: '/Account/LoginOn/',
+            type: 'POST', 
+            url: '/Account/SignIn/',
             data: data.field,
             dataType: "json",
             headers: {
@@ -23,27 +23,18 @@ layui.use(['form', 'layer', 'jquery'], function () {
             },
             success: function (res) {//res为相应体,function为回调函数
                 if (res.ResultCode === 0) {
-                    var alertIndex = layer.alert(res.ResultMsg, { icon: 1 }, function () {
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                        top.layer.close(alertIndex);
-                    });
-                    //$("#res").click();//调用重置按钮将表单数据清空
-                } else if (res.ResultCode === 102) {
-                    layer.alert(res.ResultMsg, { icon: 5 }, function () {
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                        top.layer.close(alertIndex);
-                    });
-                }
-                else {
+                    window.location.href = $("#ReturnUrl").val();
+                } else {
                     layer.alert(res.ResultMsg, { icon: 5 });
                 }
+
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            },
+            complete: function () {
+                $(this).text("登录").removeAttr("disabled").removeClass("layui-disabled");
+
             }
         });
         return false;
@@ -76,9 +67,6 @@ layui.use(['form', 'layer', 'jquery'], function () {
             }
         },
         password: function (value, item) { //value：表单的值、item：表单的DOM对象
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '密码不能有特殊字符';
-            }
             if (/(^\_)|(\__)|(\_+$)/.test(value)) {
                 return '密码首尾不能出现下划线\'_\'';
             }
@@ -87,6 +75,12 @@ layui.use(['form', 'layer', 'jquery'], function () {
             }
         }
     });
+
+    $("#CaptchaCodeImg").click(function () {
+        d = new Date();
+        $("#CaptchaCodeImg").attr("src", "/Account/GetCaptchaImage?" + d.getTime());
+    });
+
 
     //表单输入效果
     $(".loginBody .input-item").click(function (e) {

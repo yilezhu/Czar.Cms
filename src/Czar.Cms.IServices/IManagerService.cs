@@ -10,6 +10,7 @@
 *│　接口名称： IManagerRepository                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -46,5 +47,12 @@ namespace Czar.Cms.IServices
         /// <param name="model">修改锁定状态实体</param>
         /// <returns>结果</returns>
         BaseResult ChangeLockStatus(ChangeStatusModel model);
+
+        /// <summary>
+        /// 登录操作，成功则写日志
+        /// </summary>
+        /// <param name="model">登陆实体</param>
+        /// <returns>实体对象</returns>
+        Manager SignIn(LoginModel model);
     }
 }
