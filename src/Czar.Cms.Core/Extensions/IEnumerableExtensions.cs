@@ -12,6 +12,7 @@
 */
 using Czar.Cms.Core.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -56,25 +57,16 @@ namespace Czar.Cms.Core.Extensions
         /// <param name="data"></param>
         /// <param name="Str"></param>
         /// <returns></returns>
-        public static string ArrayToString(dynamic data, string Str)
+        public static string ArrayToString(this IEnumerable collection)
         {
-            string resStr = Str;
-            foreach (var item in data)
+            string resStr = "";
+            foreach (var item in collection)
             {
                 if (resStr != "")
                 {
                     resStr += ",";
                 }
-
-                if (item is string)
-                {
-                    resStr += item;
-                }
-                else
-                {
-                    resStr += item.Value;
-
-                }
+                resStr += item;
             }
             return resStr;
         }

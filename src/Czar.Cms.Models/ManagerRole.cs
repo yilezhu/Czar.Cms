@@ -90,6 +90,9 @@ namespace Czar.Cms.Models
 		[MaxLength(128)]
 		public String Remark {get;set;}
 
-
-	}
+        /// <summary>
+        /// 菜单ID数组  
+        /// </summary>
+        public virtual int[] MenuIds { get; set; }
+    }
 }

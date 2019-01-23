@@ -25,17 +25,19 @@ using System.Text;
 
 namespace Czar.Cms.Services
 {
-    public class ManagerService: IManagerService
+    public class ManagerService : IManagerService
     {
         private readonly IManagerRepository _repository;
         private readonly IManagerRoleRepository _roleRepository;
         private readonly IMapper _mapper;
+        private readonly IManagerLogRepository _managerLogRepository;
 
-        public ManagerService(IManagerRepository repository, IManagerRoleRepository roleRepository, IMapper mapper)
+        public ManagerService(IManagerRepository repository, IManagerRoleRepository roleRepository, IMapper mapper, IManagerLogRepository managerLogRepository)
         {
             _repository = repository;
             _roleRepository = roleRepository;
             _mapper = mapper;
+            _managerLogRepository = managerLogRepository;
         }
 
         public BaseResult AddOrModify(ManagerAddOrModifyModel item)
@@ -126,11 +128,12 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and (UserName like '%{model.Key}%' or NickName like '%{model.Key}%' or Remark like '%{model.Key}%' or Mobile like '%{model.Key}%' or Email like '%{model.Key}%')";
+                conditions += $"and (UserName like '%@Key%' or NickName like '%@Key%' or Remark like '%@Key%' or Mobile like '%@Key%' or Email like '%@Key%')";
             }
-            var list =_repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc").ToList();
+            var list = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", model).ToList();
             var viewList = new List<ManagerListModel>();
-            list.ForEach(x=> {
+            list.ForEach(x =>
+            {
                 var item = _mapper.Map<ManagerListModel>(x);
                 item.RoleName = _roleRepository.GetNameById(x.RoleId);
                 viewList.Add(item);
@@ -149,7 +152,7 @@ namespace Czar.Cms.Services
             var isLock = _repository.GetLockStatusById(model.Id);
             if (isLock == !model.Status)
             {
-                var count = _repository.ChangeLockStatusById(model.Id,model.Status);
+                var count = _repository.ChangeLockStatusById(model.Id, model.Status);
                 if (count > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
@@ -167,6 +170,37 @@ namespace Czar.Cms.Services
                 result.ResultMsg = ResultCodeAddMsgKeys.CommonDataStatusChangeMsg;
             }
             return result;
+        }
+
+        /// <summary>
+        /// 登录操作，成功则写日志
+        /// </summary>
+        /// <param name="model">登陆实体</param>
+        /// <returns>状态</returns>
+        public Manager SignIn(LoginModel model)
+        {
+            model.Password = AESEncryptHelper.Encode(model.Password.Trim(), CzarCmsKeys.AesEncryptKeys);
+            model.UserName = model.UserName.Trim();
+            string conditions = "where IsDelete=0 ";//未删除的
+            conditions += $"and (UserName = @UserName or Mobile =@UserName or Email =@UserName) and Password=@Password";
+            var manager = _repository.GetList(conditions, model).FirstOrDefault();
+            if (manager != null)
+            {
+                manager.LoginLastIp = model.Ip;
+                manager.LoginCount += 1;
+                manager.LoginLastTime = DateTime.Now;
+                _repository.Update(manager);
+                _managerLogRepository.Insert(new ManagerLog()
+                {
+                    ActionType = CzarCmsEnums.ActionEnum.SignIn.ToString(),
+                    AddManageId = manager.Id,
+                    AddManagerNickName = manager.NickName,
+                    AddTime = DateTime.Now,
+                    AddIp = model.Ip,
+                    Remark = "用户登录"
+                });
+            }
+            return manager;
         }
     }
 }

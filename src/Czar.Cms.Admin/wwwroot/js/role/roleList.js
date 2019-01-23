@@ -68,7 +68,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             type: 2,
             anim: 1,
             area: ['600px', '70%'],
-            content: "/ManagerRole/AddOrModify/",
+            content: "/ManagerRole/AddOrModify/" + edit.Id,
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {

@@ -19,10 +19,12 @@ namespace Czar.Cms.Admin.Controllers
     public class ManagerRoleController : BaseController
     {
         private readonly IManagerRoleService _service ;
+        private readonly IRolePermissionService _rolePermissionService;
 
-        public ManagerRoleController(IManagerRoleService service)
+        public ManagerRoleController(IManagerRoleService service, IRolePermissionService rolePermissionService)
         {
             _service = service;
+            _rolePermissionService = rolePermissionService;
         }
 
         public IActionResult Index()
@@ -37,8 +39,12 @@ namespace Czar.Cms.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddOrModify()
+        public IActionResult AddOrModify(int id)
         {
+            if (id > 0)
+            {
+               ViewData["MenuIds"] = _rolePermissionService.GetIdsByRoleId(id).ArrayToString();
+            }
             return View();
         }
 

@@ -14,6 +14,8 @@ namespace Czar.Cms.Admin.Profiles
         {
             #region ManagerRole
             CreateMap<ManagerRoleAddOrModifyModel, ManagerRole>();
+            CreateMap<ManagerRole, ManagerRoleListModel>();
+
             #endregion
             #region Manager
             CreateMap<Manager, ManagerListModel>();

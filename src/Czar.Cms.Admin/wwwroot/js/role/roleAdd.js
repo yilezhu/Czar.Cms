@@ -66,6 +66,7 @@ layui.use(['form', 'layer', 'authtree'], function () {
                 , parentKey: 'ParentId'
                 , nameKey: 'DisplayName'
                 , valueKey: 'Id'
+                , checkedKey: strToIntArr($('#MenuIdsInit').val())
             });
             authtree.render('#yilezhu-auth-tree', trees, {
                 inputname: 'ids[]'
@@ -84,4 +85,16 @@ layui.use(['form', 'layer', 'authtree'], function () {
             layer.alert(errstr + '，系统异常！');
         }
     });
+
+    function strToIntArr(str) {
+        if (str) {
+            var strArr = str.split(',');
+            var dataIntArr = [];//保存转换后的整型字符串
+            //方法一
+            strArr.forEach(function (data, index, arr) {
+                dataIntArr.push(+data);
+            });
+            return dataIntArr;
+        }
+    }
 });

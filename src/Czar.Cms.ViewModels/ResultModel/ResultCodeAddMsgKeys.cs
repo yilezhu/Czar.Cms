@@ -62,5 +62,42 @@ namespace Czar.Cms.ViewModels
         /// </summary>
         public const string CommonExceptionMsg = "系统异常";
         #endregion
+
+        #region 用户登录
+        /// <summary>
+        /// 错误次数超过允许最大失败次数
+        /// </summary>
+        public const int SignInErrorTimesOverTimesCode = 201;
+        /// <summary>
+        /// 错误次数超过允许最大失败次数
+        /// </summary>
+        public const string SignInErrorTimesOverTimesMsg = "错误超过3次，请重新打开浏览器后再进行登录";
+
+        /// <summary>
+        /// 用户名或者密码错误
+        /// </summary>
+        public const int SignInPasswordOrUserNameErrorCode = 202;
+        /// <summary>
+        /// 用户名或者密码错误
+        /// </summary>
+        public const string SignInPasswordOrUserNameErrorMsg = "对不起，您输入的用户名或者密码错误";
+
+        /// <summary>
+        /// 用户被锁定
+        /// </summary>
+        public const int SignInUserLockedCode = 203;
+        /// <summary>
+        /// 用户被锁定
+        /// </summary>
+        public const string SignInUserLockedMsg = "对不起，该账号已锁定，请联系管理员";
+        /// <summary>
+        /// 验证码错误
+        /// </summary>
+        public const int SignInCaptchaCodeErrorCode = 204;
+        /// <summary>
+        /// 验证码错误
+        /// </summary>
+        public const string SignInCaptchaCodeErrorMsg = "验证码输入有误";
+        #endregion
     }
 }

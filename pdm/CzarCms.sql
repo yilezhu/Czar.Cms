@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2018/12/11 23:02:45                          */
+/* Created on:     2019/1/22 11:01:15                           */
 /*==============================================================*/
 
 
@@ -1579,14 +1579,14 @@ create table Menu (
    DisplayName          varchar(128)         null,
    IconUrl              varchar(128)         null,
    LinkUrl              varchar(128)         null,
-   Sort                 int                  null,
+   Sort                 int                  null default 0,
    Permission           varchar(256)         null,
    IsDisplay            bit                  not null,
    IsSystem             bit                  not null,
    AddManagerId         int                  not null,
    AddTime              datetime             not null default getdate(),
    ModifyManagerId      int                  null,
-   ModifyTimes          datetime             null,
+   ModifyTime           datetime             null,
    IsDelete             bit                  not null,
    constraint PK_MENU primary key nonclustered (Id)
 )
@@ -1858,13 +1858,13 @@ go
 
 if exists(select 1 from sys.extended_properties p where
       p.major_id = object_id('Menu')
-  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'ModifyTimes')
+  and p.minor_id = (select c.column_id from sys.columns c where c.object_id = p.major_id and c.name = 'ModifyTime')
 )
 begin
    declare @CurrentUser sysname
 select @CurrentUser = user_name()
 execute sp_dropextendedproperty 'MS_Description', 
-   'user', @CurrentUser, 'table', 'Menu', 'column', 'ModifyTimes'
+   'user', @CurrentUser, 'table', 'Menu', 'column', 'ModifyTime'
 
 end
 
@@ -1872,7 +1872,7 @@ end
 select @CurrentUser = user_name()
 execute sp_addextendedproperty 'MS_Description', 
    'ÐÞ¸ÄÊ±¼ä',
-   'user', @CurrentUser, 'table', 'Menu', 'column', 'ModifyTimes'
+   'user', @CurrentUser, 'table', 'Menu', 'column', 'ModifyTime'
 go
 
 if exists(select 1 from sys.extended_properties p where

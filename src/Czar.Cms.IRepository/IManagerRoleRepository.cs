@@ -44,5 +44,19 @@ namespace Czar.Cms.IRepository
         /// <param name="id">主键</param>
         /// <returns>名称</returns>
         Task<string> GetNameByIdAsync(int id);
+
+        /// <summary>
+        /// 事务新增
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        /// <returns></returns>
+        int? InsertByTrans(ManagerRole model);
+
+        /// <summary>
+        /// 事务修改
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        /// <returns></returns>
+        int UpdateByTrans(ManagerRole model);
     }
 }
