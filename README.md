@@ -4,7 +4,7 @@
 > 原文地址：https://www.cnblogs.com/yilezhu/p/9977862.html 
 ## 写在前面
 
-千呼万唤始出来，首先，请允许我长吸一口气！真没想到[一份来自28岁老程序员的自白](https://www.cnblogs.com/yilezhu/p/9966945.html) 这篇文章会这么火，更没想到的是张善友队长的公众号居然也转载了这篇文章，这就导致两天的时间就有两百多位读者朋友加入了.NET Core实战项目交流群（欢迎更多小伙伴进入交流.NET Core经验，QQ群号：637326624）！这让我顿感亚历山大！我自己的文笔有多差我是知道的，所以就有点担心写不好！同时我也得到了很多朋友的鼓励，所以我会很认真的来分享每一篇文章，希望能对大家入门.NET Core有所帮助！当然一个人的能力是有限的，如果我的文章中有出现错误的话，也希望大家能够帮我指正，这样才能更好地服务更多的后来者！
+千呼万唤始出来，首先，请允许我长吸一口气！真没想到[一份来自28岁老程序员的自白](https://www.cnblogs.com/yilezhu/p/9966945.html) 这篇文章会这么火，更没想到的是张善友队长的公众号居然也转载了这篇文章，这就导致两天的时间就有两百多位读者朋友加入了.NET Core实战项目交流群（欢迎更多小伙伴进入交流.NET Core经验，群号：637326624）！这让我顿感亚历山大！我自己的文笔有多差我是知道的，所以就有点担心写不好！同时我也得到了很多朋友的鼓励，所以我会很认真的来分享每一篇文章，希望能对大家入门.NET Core有所帮助！当然一个人的能力是有限的，如果我的文章中有出现错误的话，也希望大家能够帮我指正，这样才能更好地服务更多的后来者！
 同时教程的编写我会采用敏捷开发的思想，先大致梳理下，后期会做持续更新的！这个系列我尽量每周三篇的速度来进行编写！
 
 ##  面向的对象
@@ -37,18 +37,18 @@
 
 ### 开发篇
 顾名思义，带着大家按照我们设计的数据库进行相关功能的开发！
-
 1. *[.NET Core实战项目之CMS 第十一章 开发篇-数据库生成及实体代码生成器开发](https://www.cnblogs.com/yilezhu/p/10112406.html)*
 2. *[.NET Core实战项目之CMS 第十二章 开发篇-Dapper封装CURD及仓储代码生成器实现](https://www.cnblogs.com/yilezhu/p/10146311.html)*
 3. *[.NET Core实战项目之CMS 第十三章 开发篇-在MVC项目结构介绍及应用第三方UI](https://www.cnblogs.com/yilezhu/p/10210732.html)*
 4. *[.NET Core实战项目之CMS 第十四章 开发篇-防止跨站请求伪造（XSRF/CSRF）攻击处理](https://www.cnblogs.com/yilezhu/p/10229954.html)*
-5. *[.NET Core实战项目之CMS 第十五章 各层联动工作实现增删改查业务](https://www.cnblogs.com/yilezhu/p/10263714.html)*
-
+5. *[.NET Core实战项目之CMS 第十五章 开发篇 各层联动工作实现增删改查业务](https://www.cnblogs.com/yilezhu/p/10263714.html)*
+6. *[.NET Core实战项目之CMS 第十六章 用户登录及验证码功能实现](https://www.cnblogs.com/yilezhu/p/10309647.html)*
 待更新
 
 ### 测试篇
 编写相应的测试用例，涉及单元测试，集成测试！
 待更新
+
 ### 部署篇
 对前面开发的系统进行Windows部署或者在Linux系统上进行部署。
 待更新
@@ -67,10 +67,21 @@ git。现代开发如果你还不知道Git我想你真应该考虑下使用这�
 
 
 ## 技术栈
-ASP.NET Core2.2+AutoFac+AutoMapper+ FluentValidation +Dapper+Layui+Redis+SqlServer/Mysql
+ASP.NET Core2.2+AutoFac+AutoMapper+ FluentValidation +Dapper+LayUI+Redis+SqlServer/Mysql
+
+## 开源地址
+
+这个系列教程的源码我会开放在GitHub以及码云上，有兴趣的朋友可以下载查看！觉得不错的欢迎Star
+GitHub：https://github.com/yilezhu/Czar.Cms
+码云：https://gitee.com/yilezhu/Czar.Cms
+如果你觉得这个系列对您有所帮助的话，欢迎以各种方式进行赞助，当然给个Star支持下也是可以滴！另外一种最简单粗暴的方式就是下面这种直接关注我们的公众号了：
+
+![](https://img2018.cnblogs.com/blog/1377250/201812/1377250-20181210000609633-1487983265.png)
 
 ### 效果展示
 这里话不多说，给大家展示下效果吧：
+登录
+![1548230956610](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190123161522795-2083955018.png)
 
 主页
 
@@ -101,20 +112,3 @@ ASP.NET Core2.2+AutoFac+AutoMapper+ FluentValidation +Dapper+Layui+Redis+SqlServ
 ![1546428593869](https://img2018.cnblogs.com/blog/1377250/201901/1377250-20190102194121950-1509022990.png)
 
 目前只实现了这些功能其他后续再展示。
-
-## 开源地址
-
-这个系列教程的源码我会开放在GitHub以及码云上，有兴趣的朋友可以下载查看！觉得不错的欢迎Star
-GitHub：https://github.com/yilezhu/Czar.Cms
-码云：https://gitee.com/yilezhu/Czar.Cms
-
-如果你觉得这个系列对您有所帮助的话，欢迎以各种方式进行赞助，当然给个Star支持下也是可以滴！另外一种最简单粗暴的方式就是下面两种：
-
-如果你觉得这个系列对您有所帮助的话，欢迎以各种方式进行赞助，当然给个Star支持下也是可以滴！另外一种最简单粗暴的方式就是下面两种或者关注我们的微信公众号：
-
-
-![DotNetCore实战公众号](https://www.cnblogs.com/images/cnblogs_com/yilezhu/1359617/o_qrcode_for_gh_3d7593c84946_258.jpg)
-
-![支付宝支付](https://img2018.cnblogs.com/blog/1377250/201812/1377250-20181205220251318-249891081.jpg)
-
-![微信支付](https://img2018.cnblogs.com/blog/1377250/201812/1377250-20181205220301951-1597191961.png)
