@@ -106,25 +106,6 @@ namespace Czar.Cms.Admin.Controllers
                 };
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    //AllowRefresh = <bool>,
-                    // Refreshing the authentication session should be allowed.
-                    IsPersistent = true,
-                    // 验证会话是否在多个请求之间持久化。设置用addcookie设置的cookieAuthenticationOptions的ExpireTimeSpan选项时必需。设置expiresUTC时也需要。
-
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
-                    // 身份验证票证过期的时间。此处设置的值将覆盖用addcookie设置的cookieAuthenticationOptions的ExpireTimeSpan选项。
-
-                    //IssuedUtc = <DateTimeOffset>,
-                    // The time at which the authentication ticket was issued.
-
-                    //RedirectUri = <string>
-                    // The full path or absolute URI to be used as an http 
-                    // redirect response value.
-                };
-
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
