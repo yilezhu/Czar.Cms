@@ -27,6 +27,8 @@ layui.use(['form', 'layer', 'jquery'], function () {
                     window.location.href = $("#ReturnUrl").val();
                 } else {
                     layer.alert(res.ResultMsg, { icon: 5 });
+                    d = new Date();
+                    $("#CaptchaCodeImg").attr("src", "/Account/GetCaptchaImage?" + d.getTime());
                 }
 
             },
