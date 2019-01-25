@@ -77,13 +77,13 @@
             </div>
             <!-- 搜索 -->
             @*<div class="layui-form component">
-                <select name="search" id="search" lay-search lay-filter="searchPage">
-                    <option value="">搜索页面或功能</option>
-                    <option value="1">layer</option>
-                    <option value="2">form</option>
-                </select>
-                <i class="layui-icon">&#xe615;</i>
-            </div>*@
+                    <select name="search" id="search" lay-search lay-filter="searchPage">
+                        <option value="">搜索页面或功能</option>
+                        <option value="1">layer</option>
+                        <option value="2">form</option>
+                    </select>
+                    <i class="layui-icon">&#xe615;</i>
+                </div>*@
             <div class="navBar layui-side-scroll" id="navBar">
                 <ul class="layui-nav layui-nav-tree">
                     <li class="layui-nav-item layui-this">
@@ -126,7 +126,7 @@
     <div class="site-mobile-shade"></div>
 
     <script type="text/javascript" src="~/layui/layui.js"></script>
-    <script type="text/javascript" src="~/js/index.js"></script>
-    <script type="text/javascript" src="~/js/cache.js"></script>
+    <script type="text/javascript" src="~/js/index.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+    <script type="text/javascript" src="~/js/cache.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
 </body>
 </html>

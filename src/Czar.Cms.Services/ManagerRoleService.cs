@@ -13,6 +13,7 @@
 */
 using AutoMapper;
 using Czar.Cms.Core.Extensions;
+using Czar.Cms.Core.Models;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
 using Czar.Cms.Models;
@@ -156,6 +157,30 @@ namespace Czar.Cms.Services
                 count = _repository.RecordCount(conditions),
                 data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc"),
             };
+        }
+
+        public List<MenuNavView> GetMenusByRoleId(int roleId)
+        {
+            var menuList = _repository.GetMenusByRoleId(roleId);
+            if (menuList?.Count() == 0)
+            {
+                return null;
+            }
+            var menuNavViewList = new List<MenuNavView>();
+            menuList.ForEach(x =>
+            {
+                var navView = new MenuNavView()
+                {
+                    Id=x.Id,
+                    ParentId=x.ParentId,
+                    Name = x.Name,
+                    title = x.DisplayName,
+                    icon = x.IconUrl,
+                    href = x.LinkUrl,
+                };
+                menuNavViewList.Add(navView);
+            });
+            return menuNavViewList;
         }
     }
 }

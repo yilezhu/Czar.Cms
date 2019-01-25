@@ -47,5 +47,12 @@ namespace Czar.Cms.IServices
         /// <param name="model">查询实体</param>
         /// <returns>table数据</returns>
         List<ManagerRole> GetListByCondition(ManagerRoleRequestModel model);
+
+        /// <summary>
+        /// 通过角色ID获取角色分配的菜单列表
+        /// </summary>
+        /// <param name="roleId">角色主键</param>
+        /// <returns></returns>
+        List<MenuNavView> GetMenusByRoleId(int roleId);
     }
 }

@@ -14,10 +14,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Czar.Cms.ViewModels.Menu
+namespace Czar.Cms.ViewModels
 {
     public class MenuNavView
     {
+        public int Id { get; set; }
+        public int ParentId { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
@@ -33,7 +36,7 @@ namespace Czar.Cms.ViewModels.Menu
         /// <summary>
         /// 是否展开
         /// </summary>
-        public bool spread { get; set; }
+        public bool spread { get; set; } = false;
         /// <summary>
         /// 是否新开窗口
         /// </summary>

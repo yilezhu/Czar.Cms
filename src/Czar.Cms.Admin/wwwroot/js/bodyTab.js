@@ -25,71 +25,78 @@ layui.define(["element","jquery"],function(exports){
         }else{
             data = strData;
         }
+        console.log(data);
         var ulHtml = '';
         for(var i=0;i<data.length;i++){
-            if(data[i].spread || data[i].spread === undefined){
+            if(data[i].Item.spread || data[i].Item.spread === undefined){
                 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
             }else{
                 ulHtml += '<li class="layui-nav-item">';
             }
-            if(data[i].children != undefined && data[i].children.length > 0){
+            if(data[i].Children != undefined && data[i].Children.length > 0){
                 ulHtml += '<a>';
-                if(data[i].icon != undefined && data[i].icon != ''){
-                    if(data[i].icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].icon+'" data-icon="'+data[i].icon+'"></i>';
+                if(data[i].Item.icon != undefined && data[i].Item.icon != ''){
+                    if(data[i].Item.icon.indexOf("icon-") != -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.icon+'" data-icon="'+data[i].Item.icon+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].icon+'">'+data[i].icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.icon+'">'+data[i].Item.icon+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].title+'</cite>';
+                ulHtml += '<cite>'+data[i].Item.title+'</cite>';
                 ulHtml += '<span class="layui-nav-more"></span>';
                 ulHtml += '</a>';
                 ulHtml += '<dl class="layui-nav-child">';
-                for(var j=0;j<data[i].children.length;j++){
-                    if(data[i].children[j].target == "_blank"){
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'" target="'+data[i].children[j].target+'">';
+                for(var j=0;j<data[i].Children.length;j++){
+                    if (data[i].Children[j].Item.target == "_blank"){
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.href + '" target="' + data[i].Children[j].Item.target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'">';
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.href+'">';
                     }
-                    if(data[i].children[j].icon != undefined && data[i].children[j].icon != ''){
-                        if(data[i].children[j].icon.indexOf("icon-") != -1){
-                            ulHtml += '<i class="seraph '+data[i].children[j].icon+'" data-icon="'+data[i].children[j].icon+'"></i>';
+                    if (data[i].Children[j].Item.icon != undefined && data[i].Children[j].Item.icon != ''){
+                        if (data[i].Children[j].Item.icon.indexOf("icon-") != -1){
+                            ulHtml += '<i class="seraph ' + data[i].Children[j].Item.icon + '" data-icon="' + data[i].Children[j].Item.icon+'"></i>';
                         }else{
-                            ulHtml += '<i class="layui-icon" data-icon="'+data[i].children[j].icon+'">'+data[i].children[j].icon+'</i>';
+                            ulHtml += '<i class="layui-icon" data-icon="' + data[i].Children[j].Item.icon + '">' + data[i].Children[j].Item.icon+'</i>';
                         }
                     }
-                    ulHtml += '<cite>'+data[i].children[j].title+'</cite></a></dd>';
+                    ulHtml += '<cite>' + data[i].Children[j].Item.title+'</cite></a></dd>';
                 }
                 ulHtml += "</dl>";
             }else{
                 if(data[i].target == "_blank"){
-                    ulHtml += '<a data-url="'+data[i].href+'" target="'+data[i].target+'">';
+                    ulHtml += '<a data-url="' + data[i].Item.href + '" target="' + data[i].Item.target+'">';
                 }else{
-                    ulHtml += '<a data-url="'+data[i].href+'">';
+                    ulHtml += '<a data-url="' + data[i].Item.href+'">';
                 }
-                if(data[i].icon != undefined && data[i].icon != ''){
-                    if(data[i].icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].icon+'" data-icon="'+data[i].icon+'"></i>';
+                if(data[i].Item.icon != undefined && data[i].Item.icon != ''){
+                    if(data[i].Item.icon.indexOf("icon-") != -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.icon+'" data-icon="'+data[i].Item.icon+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].icon+'">'+data[i].icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.icon+'">'+data[i].Item.icon+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].title+'</cite></a>';
+                ulHtml += '<cite>'+data[i].Item.title+'</cite></a>';
             }
             ulHtml += '</li>';
         }
         return ulHtml;
     }
 	//获取二级菜单数据
-	Tab.prototype.render = function() {
-		//显示左侧菜单
-		var _this = this;
-		$(".navBar ul").html('<li class="layui-nav-item layui-this"><a data-url="page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a></li>').append(_this.navBar(dataStr)).height($(window).height()-210);
-		element.init();  //初始化页面元素
-		$(window).resize(function(){
-			$(".navBar").height($(window).height()-210);
-		})
-	}
+    Tab.prototype.render = function () {
+        //显示左侧菜单
+        var _this = this;
+        var url = _this.tabConfig.url;
+        $.get(url, function (data) {
+            //显示左侧菜单
+            dataStr = data;
+            $(".navBar ul").html('<li class="layui-nav-item layui-this"><a data-url="page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a></li>').append(_this.navBar(dataStr)).height($(window).height() - 210);
+            element.init();  //初始化页面元素
+            $(window).resize(function () {
+                $(".navBar").height($(window).height() - 210);
+            });
+        });
+
+    };
 
 	//是否点击窗口切换刷新页面
 	Tab.prototype.changeRegresh = function(index){
