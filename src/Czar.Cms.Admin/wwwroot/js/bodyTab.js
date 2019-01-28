@@ -33,10 +33,10 @@ layui.define(["element","jquery"],function(exports){
             }else{
                 ulHtml += '<li class="layui-nav-item">';
             }
-            if(data[i].Children != undefined && data[i].Children.length > 0){
+            if(data[i].Children !== undefined && data[i].Children.length > 0){
                 ulHtml += '<a>';
-                if(data[i].Item.IconUrl != undefined && data[i].Item.IconUrl != ''){
-                    if(data[i].Item.IconUrl.indexOf("icon-") != -1){
+                if(data[i].Item.IconUrl !== undefined && data[i].Item.IconUrl !== ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") !== -1){
                         ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
                         ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
@@ -47,13 +47,13 @@ layui.define(["element","jquery"],function(exports){
                 ulHtml += '</a>';
                 ulHtml += '<dl class="layui-nav-child">';
                 for(var j=0;j<data[i].Children.length;j++){
-                    if (data[i].Children[j].Item.Target == "_blank"){
+                    if (data[i].Children[j].Item.Target === "_blank"){
                         ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl + '" target="' + data[i].Children[j].Item.Target+'">';
                     }else{
                         ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl+'">';
                     }
-                    if (data[i].Children[j].Item.IconUrl != undefined && data[i].Children[j].Item.IconUrl != ''){
-                        if (data[i].Children[j].Item.IconUrl.indexOf("icon-") != -1){
+                    if (data[i].Children[j].Item.IconUrl !== undefined && data[i].Children[j].Item.IconUrl != ''){
+                        if (data[i].Children[j].Item.IconUrl.indexOf("icon-") !== -1){
                             ulHtml += '<i class="seraph ' + data[i].Children[j].Item.IconUrl + '" data-icon="' + data[i].Children[j].Item.IconUrl+'"></i>';
                         }else{
                             ulHtml += '<i class="layui-icon" data-icon="' + data[i].Children[j].Item.IconUrl + '">' + data[i].Children[j].Item.IconUrl+'</i>';
@@ -63,13 +63,13 @@ layui.define(["element","jquery"],function(exports){
                 }
                 ulHtml += "</dl>";
             }else{
-                if(data[i].Target == "_blank"){
+                if(data[i].Target === "_blank"){
                     ulHtml += '<a data-url="' + data[i].Item.LinkUrl + '" target="' + data[i].Item.Target+'">';
                 }else{
                     ulHtml += '<a data-url="' + data[i].Item.LinkUrl+'">';
                 }
-                if(data[i].Item.IconUrl != undefined && data[i].Item.IconUrl != ''){
-                    if(data[i].Item.IconUrl.indexOf("icon-") != -1){
+                if(data[i].Item.IconUrl !== undefined && data[i].Item.IconUrl !== ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") !== -1){
                         ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
                         ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
@@ -99,11 +99,11 @@ layui.define(["element","jquery"],function(exports){
     };
 
 	//是否点击窗口切换刷新页面
-	Tab.prototype.changeRegresh = function(index){
-        if(changeRefreshStr == "true"){
+    Tab.prototype.changeRegresh = function (index) {
+        if (changeRefreshStr === "true") {
             $(".clildFrame .layui-tab-item").eq(index).find("iframe")[0].contentWindow.location.reload();
         }
-	}
+    };
 
 	//参数设置
 	Tab.prototype.set = function(option) {
@@ -115,7 +115,7 @@ layui.define(["element","jquery"],function(exports){
 	//通过title获取lay-id
     Tab.prototype.getLayId = function (title) {
         $(".layui-tab-title.top_tab li").each(function () {
-            if ($(this).find("cite").text() == title) {
+            if ($(this).find("cite").text() === title) {
                 layId = $(this).attr("lay-id");
             }
         });
@@ -125,7 +125,7 @@ layui.define(["element","jquery"],function(exports){
     Tab.prototype.hasTab = function (title) {
         var tabIndex = -1;
         $(".layui-tab-title.top_tab li").each(function () {
-            if ($(this).find("cite").text() == title) {
+            if ($(this).find("cite").text() === title) {
                 tabIndex = 1;
             }
         });
@@ -161,14 +161,14 @@ layui.define(["element","jquery"],function(exports){
 				tabIdIndex++;
 				title += '<cite>'+_this.find("cite").text()+'</cite>';
 				title += '<i class="layui-icon layui-unselect layui-tab-close" data-id="'+tabIdIndex+'">&#x1006;</i>';
-				element.tabAdd(tabFilter, {
-			        title : title,
-			        content :"<iframe src='"+_this.attr("data-url")+"' data-id='"+tabIdIndex+"'></iframe>",
-			        id : new Date().getTime()
-			    })
+                element.tabAdd(tabFilter, {
+                    title: title,
+                    content: "<iframe src='" + _this.attr("data-url") + "' data-id='" + tabIdIndex + "'></iframe>",
+                    id: new Date().getTime()
+                });
 				//当前窗口内容
 				var curmenu = {
-					"icon" : _this.find("i.seraph").attr("data-icon")!=undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
+					"icon" : _this.find("i.seraph").attr("data-icon")!==undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
 					"title" : _this.find("cite").text(),
 					"href" : _this.attr("data-url"),
 					"layId" : new Date().getTime()
@@ -255,11 +255,11 @@ layui.define(["element","jquery"],function(exports){
 				            event.preventDefault();
 				        },false);
 				    }
-				}
+                };
 				//鼠标释放时候的函数
 				function end(){
 				    flag = false;
-				}
+                };
 				//pc端拖动效果
 				topTabs.on("mousedown",down);
 				topTabs.on("mousemove",move);
