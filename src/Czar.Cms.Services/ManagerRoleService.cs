@@ -169,15 +169,7 @@ namespace Czar.Cms.Services
             var menuNavViewList = new List<MenuNavView>();
             menuList.ForEach(x =>
             {
-                var navView = new MenuNavView()
-                {
-                    Id=x.Id,
-                    ParentId=x.ParentId,
-                    Name = x.Name,
-                    title = x.DisplayName,
-                    icon = x.IconUrl,
-                    href = x.LinkUrl,
-                };
+                var navView =_mapper.Map<MenuNavView>(x);
                 menuNavViewList.Add(navView);
             });
             return menuNavViewList;

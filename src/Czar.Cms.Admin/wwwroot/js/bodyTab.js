@@ -28,54 +28,54 @@ layui.define(["element","jquery"],function(exports){
         console.log(data);
         var ulHtml = '';
         for(var i=0;i<data.length;i++){
-            if(data[i].Item.spread || data[i].Item.spread === undefined){
+            if(data[i].Item.Spread || data[i].Item.Spread === undefined){
                 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
             }else{
                 ulHtml += '<li class="layui-nav-item">';
             }
             if(data[i].Children != undefined && data[i].Children.length > 0){
                 ulHtml += '<a>';
-                if(data[i].Item.icon != undefined && data[i].Item.icon != ''){
-                    if(data[i].Item.icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].Item.icon+'" data-icon="'+data[i].Item.icon+'"></i>';
+                if(data[i].Item.IconUrl != undefined && data[i].Item.IconUrl != ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") != -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.icon+'">'+data[i].Item.icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].Item.title+'</cite>';
+                ulHtml += '<cite>'+data[i].Item.DisplayName+'</cite>';
                 ulHtml += '<span class="layui-nav-more"></span>';
                 ulHtml += '</a>';
                 ulHtml += '<dl class="layui-nav-child">';
                 for(var j=0;j<data[i].Children.length;j++){
-                    if (data[i].Children[j].Item.target == "_blank"){
-                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.href + '" target="' + data[i].Children[j].Item.target+'">';
+                    if (data[i].Children[j].Item.Target == "_blank"){
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl + '" target="' + data[i].Children[j].Item.Target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.href+'">';
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl+'">';
                     }
-                    if (data[i].Children[j].Item.icon != undefined && data[i].Children[j].Item.icon != ''){
-                        if (data[i].Children[j].Item.icon.indexOf("icon-") != -1){
-                            ulHtml += '<i class="seraph ' + data[i].Children[j].Item.icon + '" data-icon="' + data[i].Children[j].Item.icon+'"></i>';
+                    if (data[i].Children[j].Item.IconUrl != undefined && data[i].Children[j].Item.IconUrl != ''){
+                        if (data[i].Children[j].Item.IconUrl.indexOf("icon-") != -1){
+                            ulHtml += '<i class="seraph ' + data[i].Children[j].Item.IconUrl + '" data-icon="' + data[i].Children[j].Item.IconUrl+'"></i>';
                         }else{
-                            ulHtml += '<i class="layui-icon" data-icon="' + data[i].Children[j].Item.icon + '">' + data[i].Children[j].Item.icon+'</i>';
+                            ulHtml += '<i class="layui-icon" data-icon="' + data[i].Children[j].Item.IconUrl + '">' + data[i].Children[j].Item.IconUrl+'</i>';
                         }
                     }
-                    ulHtml += '<cite>' + data[i].Children[j].Item.title+'</cite></a></dd>';
+                    ulHtml += '<cite>' + data[i].Children[j].Item.DisplayName+'</cite></a></dd>';
                 }
                 ulHtml += "</dl>";
             }else{
-                if(data[i].target == "_blank"){
-                    ulHtml += '<a data-url="' + data[i].Item.href + '" target="' + data[i].Item.target+'">';
+                if(data[i].Target == "_blank"){
+                    ulHtml += '<a data-url="' + data[i].Item.LinkUrl + '" target="' + data[i].Item.Target+'">';
                 }else{
-                    ulHtml += '<a data-url="' + data[i].Item.href+'">';
+                    ulHtml += '<a data-url="' + data[i].Item.LinkUrl+'">';
                 }
-                if(data[i].Item.icon != undefined && data[i].Item.icon != ''){
-                    if(data[i].Item.icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].Item.icon+'" data-icon="'+data[i].Item.icon+'"></i>';
+                if(data[i].Item.IconUrl != undefined && data[i].Item.IconUrl != ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") != -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.icon+'">'+data[i].Item.icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].Item.title+'</cite></a>';
+                ulHtml += '<cite>'+data[i].Item.DisplayName+'</cite></a>';
             }
             ulHtml += '</li>';
         }
@@ -180,11 +180,11 @@ layui.define(["element","jquery"],function(exports){
 				that.tabMove(); //顶部窗口是否可滚动
 			}else{
 				//当前窗口内容
-				var curmenu = {
-					"icon" : _this.find("i.seraph").attr("data-icon")!=undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
-					"title" : _this.find("cite").text(),
-					"href" : _this.attr("data-url")
-				}
+                 curmenu = {
+                    "icon": _this.find("i.seraph").attr("data-icon") != undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
+                    "title": _this.find("cite").text(),
+                    "href": _this.attr("data-url")
+                };
                 that.changeRegresh(_this.parent('.layui-nav-item').index());
 				window.sessionStorage.setItem("curmenu", JSON.stringify(curmenu));  //当前的窗口
 				element.tabChange(tabFilter, that.getLayId(_this.find("cite").text()));

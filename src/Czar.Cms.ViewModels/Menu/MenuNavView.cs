@@ -24,22 +24,22 @@ namespace Czar.Cms.ViewModels
         /// <summary>
         /// 标题
         /// </summary>
-        public string title { get; set; }
+        public string DisplayName { get; set; }
         /// <summary>
         /// 图标
         /// </summary>
-        public string icon { get; set; }
+        public string IconUrl { get; set; }
         /// <summary>
         /// 链接
         /// </summary>
-        public string href { get; set; }
+        public string LinkUrl { get; set; }
         /// <summary>
         /// 是否展开
         /// </summary>
-        public bool spread { get; set; } = false;
+        public bool Spread { get; set; } = false;
         /// <summary>
         /// 是否新开窗口
         /// </summary>
-        public string target { get; set; }
+        public string Target { get; set; }
     }
 }
