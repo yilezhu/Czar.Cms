@@ -122,13 +122,15 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and DisplayName like '%{model.Key}%'";
+                conditions += $"and DisplayName like '%@Key%'";
             }
            
             return new TableDataModel
             {
                 count = _repository.RecordCount(conditions),
-                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc").ToList(),
+                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc",new {
+                    Key=model.Key,
+                }).ToList(),
             };
         }
 
@@ -187,9 +189,11 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (ParentId >= 0)
             {
-                conditions += " and ParentId ="+ParentId;
+                conditions += " and ParentId =@ParentId";
             }
-            return _repository.GetList(conditions).ToList();
+            return _repository.GetList(conditions,new {
+                ParentId= ParentId
+            }).ToList();
            
         }
     }
