@@ -61,5 +61,7 @@ namespace Czar.Cms.IRepository
         /// <param name="status">更改后的状态</param>
         /// <returns></returns>
         Task<Int32> ChangeLockStatusByIdAsync(Int32 id, bool status);
+
+
     }
 }

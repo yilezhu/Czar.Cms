@@ -20,6 +20,7 @@ using System;
 using System.Threading.Tasks;
 using Dapper;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Czar.Cms.Repository.SqlServer
 {
@@ -148,6 +149,24 @@ VALUES   (@RoleId,@MenuId, '')";
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 通过角色ID获取角色分配的菜单列表
+        /// </summary>
+        /// <param name="roleId">角色主键</param>
+        /// <returns></returns>
+        public List<Menu> GetMenusByRoleId(int roleId)
+        {
+            string sql = @"SELECT   m.Id, m.ParentId, m.Name, m.DisplayName, m.IconUrl, m.LinkUrl, m.Sort, rp.Permission, m.IsDisplay, m.IsSystem, 
+                m.AddManagerId, m.AddTime, m.ModifyManagerId, m.ModifyTime, m.IsDelete
+FROM      RolePermission AS rp INNER JOIN
+                Menu AS m ON rp.MenuId = m.Id
+WHERE   (rp.RoleId = @RoleId) AND (m.IsDelete = 0)";
+            return _dbConnection.Query<Menu>(sql, new {
+                RoleId = roleId,
+            }).ToList();
+
         }
     }
 }

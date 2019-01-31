@@ -13,6 +13,7 @@
 */
 using AutoMapper;
 using Czar.Cms.Core.Extensions;
+using Czar.Cms.Core.Models;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
 using Czar.Cms.Models;
@@ -132,9 +133,11 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and RoleName like '%{model.Key}%'";
+                conditions += $"and RoleName like '%@Key%'";
             }
-            return _repository.GetList(conditions).ToList();
+            return _repository.GetList(conditions,new {
+                Key=model.Key,
+            }).ToList();
         }
 
 
@@ -149,13 +152,31 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and RoleName like '%{model.Key}%'";
+                conditions += $"and RoleName like '%@Key%'";
             }
             return new TableDataModel
             {
                 count = _repository.RecordCount(conditions),
-                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc"),
+                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc",new {
+                    Key=model.Key,
+                }),
             };
+        }
+
+        public List<MenuNavView> GetMenusByRoleId(int roleId)
+        {
+            var menuList = _repository.GetMenusByRoleId(roleId);
+            if (menuList?.Count() == 0)
+            {
+                return null;
+            }
+            var menuNavViewList = new List<MenuNavView>();
+            menuList.ForEach(x =>
+            {
+                var navView =_mapper.Map<MenuNavView>(x);
+                menuNavViewList.Add(navView);
+            });
+            return menuNavViewList;
         }
     }
 }

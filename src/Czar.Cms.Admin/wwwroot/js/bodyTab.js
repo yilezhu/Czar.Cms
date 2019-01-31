@@ -25,78 +25,85 @@ layui.define(["element","jquery"],function(exports){
         }else{
             data = strData;
         }
+        console.log(data);
         var ulHtml = '';
         for(var i=0;i<data.length;i++){
-            if(data[i].spread || data[i].spread === undefined){
+            if(data[i].Item.Spread || data[i].Item.Spread === undefined){
                 ulHtml += '<li class="layui-nav-item layui-nav-itemed">';
             }else{
                 ulHtml += '<li class="layui-nav-item">';
             }
-            if(data[i].children != undefined && data[i].children.length > 0){
+            if(data[i].Children !== undefined && data[i].Children.length > 0){
                 ulHtml += '<a>';
-                if(data[i].icon != undefined && data[i].icon != ''){
-                    if(data[i].icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].icon+'" data-icon="'+data[i].icon+'"></i>';
+                if(data[i].Item.IconUrl !== undefined && data[i].Item.IconUrl !== ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") !== -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].icon+'">'+data[i].icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].title+'</cite>';
+                ulHtml += '<cite>'+data[i].Item.DisplayName+'</cite>';
                 ulHtml += '<span class="layui-nav-more"></span>';
                 ulHtml += '</a>';
                 ulHtml += '<dl class="layui-nav-child">';
-                for(var j=0;j<data[i].children.length;j++){
-                    if(data[i].children[j].target == "_blank"){
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'" target="'+data[i].children[j].target+'">';
+                for(var j=0;j<data[i].Children.length;j++){
+                    if (data[i].Children[j].Item.Target === "_blank"){
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl + '" target="' + data[i].Children[j].Item.Target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'">';
+                        ulHtml += '<dd><a data-url="' + data[i].Children[j].Item.LinkUrl+'">';
                     }
-                    if(data[i].children[j].icon != undefined && data[i].children[j].icon != ''){
-                        if(data[i].children[j].icon.indexOf("icon-") != -1){
-                            ulHtml += '<i class="seraph '+data[i].children[j].icon+'" data-icon="'+data[i].children[j].icon+'"></i>';
+                    if (data[i].Children[j].Item.IconUrl !== undefined && data[i].Children[j].Item.IconUrl != ''){
+                        if (data[i].Children[j].Item.IconUrl.indexOf("icon-") !== -1){
+                            ulHtml += '<i class="seraph ' + data[i].Children[j].Item.IconUrl + '" data-icon="' + data[i].Children[j].Item.IconUrl+'"></i>';
                         }else{
-                            ulHtml += '<i class="layui-icon" data-icon="'+data[i].children[j].icon+'">'+data[i].children[j].icon+'</i>';
+                            ulHtml += '<i class="layui-icon" data-icon="' + data[i].Children[j].Item.IconUrl + '">' + data[i].Children[j].Item.IconUrl+'</i>';
                         }
                     }
-                    ulHtml += '<cite>'+data[i].children[j].title+'</cite></a></dd>';
+                    ulHtml += '<cite>' + data[i].Children[j].Item.DisplayName+'</cite></a></dd>';
                 }
                 ulHtml += "</dl>";
             }else{
-                if(data[i].target == "_blank"){
-                    ulHtml += '<a data-url="'+data[i].href+'" target="'+data[i].target+'">';
+                if(data[i].Target === "_blank"){
+                    ulHtml += '<a data-url="' + data[i].Item.LinkUrl + '" target="' + data[i].Item.Target+'">';
                 }else{
-                    ulHtml += '<a data-url="'+data[i].href+'">';
+                    ulHtml += '<a data-url="' + data[i].Item.LinkUrl+'">';
                 }
-                if(data[i].icon != undefined && data[i].icon != ''){
-                    if(data[i].icon.indexOf("icon-") != -1){
-                        ulHtml += '<i class="seraph '+data[i].icon+'" data-icon="'+data[i].icon+'"></i>';
+                if(data[i].Item.IconUrl !== undefined && data[i].Item.IconUrl !== ''){
+                    if(data[i].Item.IconUrl.indexOf("icon-") !== -1){
+                        ulHtml += '<i class="seraph '+data[i].Item.IconUrl+'" data-icon="'+data[i].Item.IconUrl+'"></i>';
                     }else{
-                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].icon+'">'+data[i].icon+'</i>';
+                        ulHtml += '<i class="layui-icon" data-icon="'+data[i].Item.IconUrl+'">'+data[i].Item.IconUrl+'</i>';
                     }
                 }
-                ulHtml += '<cite>'+data[i].title+'</cite></a>';
+                ulHtml += '<cite>'+data[i].Item.DisplayName+'</cite></a>';
             }
             ulHtml += '</li>';
         }
         return ulHtml;
     }
 	//获取二级菜单数据
-	Tab.prototype.render = function() {
-		//显示左侧菜单
-		var _this = this;
-		$(".navBar ul").html('<li class="layui-nav-item layui-this"><a data-url="page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a></li>').append(_this.navBar(dataStr)).height($(window).height()-210);
-		element.init();  //初始化页面元素
-		$(window).resize(function(){
-			$(".navBar").height($(window).height()-210);
-		})
-	}
+    Tab.prototype.render = function () {
+        //显示左侧菜单
+        var _this = this;
+        var url = _this.tabConfig.url;
+        $.get(url, function (data) {
+            //显示左侧菜单
+            dataStr = data;
+            $(".navBar ul").html('<li class="layui-nav-item layui-this"><a data-url="page/main.html"><i class="layui-icon" data-icon=""></i><cite>后台首页</cite></a></li>').append(_this.navBar(dataStr)).height($(window).height() - 210);
+            element.init();  //初始化页面元素
+            $(window).resize(function () {
+                $(".navBar").height($(window).height() - 210);
+            });
+        });
+
+    };
 
 	//是否点击窗口切换刷新页面
-	Tab.prototype.changeRegresh = function(index){
-        if(changeRefreshStr == "true"){
+    Tab.prototype.changeRegresh = function (index) {
+        if (changeRefreshStr === "true") {
             $(".clildFrame .layui-tab-item").eq(index).find("iframe")[0].contentWindow.location.reload();
         }
-	}
+    };
 
 	//参数设置
 	Tab.prototype.set = function(option) {
@@ -108,7 +115,7 @@ layui.define(["element","jquery"],function(exports){
 	//通过title获取lay-id
     Tab.prototype.getLayId = function (title) {
         $(".layui-tab-title.top_tab li").each(function () {
-            if ($(this).find("cite").text() == title) {
+            if ($(this).find("cite").text() === title) {
                 layId = $(this).attr("lay-id");
             }
         });
@@ -118,7 +125,7 @@ layui.define(["element","jquery"],function(exports){
     Tab.prototype.hasTab = function (title) {
         var tabIndex = -1;
         $(".layui-tab-title.top_tab li").each(function () {
-            if ($(this).find("cite").text() == title) {
+            if ($(this).find("cite").text() === title) {
                 tabIndex = 1;
             }
         });
@@ -154,14 +161,14 @@ layui.define(["element","jquery"],function(exports){
 				tabIdIndex++;
 				title += '<cite>'+_this.find("cite").text()+'</cite>';
 				title += '<i class="layui-icon layui-unselect layui-tab-close" data-id="'+tabIdIndex+'">&#x1006;</i>';
-				element.tabAdd(tabFilter, {
-			        title : title,
-			        content :"<iframe src='"+_this.attr("data-url")+"' data-id='"+tabIdIndex+"'></iframe>",
-			        id : new Date().getTime()
-			    })
+                element.tabAdd(tabFilter, {
+                    title: title,
+                    content: "<iframe src='" + _this.attr("data-url") + "' data-id='" + tabIdIndex + "'></iframe>",
+                    id: new Date().getTime()
+                });
 				//当前窗口内容
 				var curmenu = {
-					"icon" : _this.find("i.seraph").attr("data-icon")!=undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
+					"icon" : _this.find("i.seraph").attr("data-icon")!==undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
 					"title" : _this.find("cite").text(),
 					"href" : _this.attr("data-url"),
 					"layId" : new Date().getTime()
@@ -173,11 +180,11 @@ layui.define(["element","jquery"],function(exports){
 				that.tabMove(); //顶部窗口是否可滚动
 			}else{
 				//当前窗口内容
-				var curmenu = {
-					"icon" : _this.find("i.seraph").attr("data-icon")!=undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
-					"title" : _this.find("cite").text(),
-					"href" : _this.attr("data-url")
-				}
+                 curmenu = {
+                    "icon": _this.find("i.seraph").attr("data-icon") != undefined ? _this.find("i.seraph").attr("data-icon") : _this.find("i.layui-icon").attr("data-icon"),
+                    "title": _this.find("cite").text(),
+                    "href": _this.attr("data-url")
+                };
                 that.changeRegresh(_this.parent('.layui-nav-item').index());
 				window.sessionStorage.setItem("curmenu", JSON.stringify(curmenu));  //当前的窗口
 				element.tabChange(tabFilter, that.getLayId(_this.find("cite").text()));
@@ -248,11 +255,11 @@ layui.define(["element","jquery"],function(exports){
 				            event.preventDefault();
 				        },false);
 				    }
-				}
+                };
 				//鼠标释放时候的函数
 				function end(){
 				    flag = false;
-				}
+                };
 				//pc端拖动效果
 				topTabs.on("mousedown",down);
 				topTabs.on("mousemove",move);

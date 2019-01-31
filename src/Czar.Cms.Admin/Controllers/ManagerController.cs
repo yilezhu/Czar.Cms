@@ -91,5 +91,10 @@ namespace Czar.Cms.Admin.Controllers
             }
             return JsonHelper.ObjectToJSON(result);
         }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
     }
 }

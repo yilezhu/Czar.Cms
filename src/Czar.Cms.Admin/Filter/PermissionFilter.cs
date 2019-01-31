@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Czar.Cms.Admin.Filter
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class OnActionExecution : ActionFilterAttribute
+    public class OnActionExecution : Attribute,IAsyncAuthorizationFilter
     {
         private readonly IManagerService _managerService;
 
@@ -20,24 +20,11 @@ namespace Czar.Cms.Admin.Filter
             _managerService = managerService;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var identity = context.RouteData.Values["controller"] + "/" + context.RouteData.Values["action"];
 
-
-            //if (_managerService.Count(
-            //        m => m.Identity.Equals(identity, StringComparison.OrdinalIgnoreCase) && m.Activable) <= 0)
-            //{
-
-            //        context.Result = new ViewResult() { ViewName = "无权访问" };
-            //        context.HttpContext.Response.StatusCode = HttpStatusCode.NotFound.GetHashCode();
-
-            //}
-
-            base.OnActionExecuting(context);
+            throw new NotImplementedException();
         }
-
-
-
     }
 }

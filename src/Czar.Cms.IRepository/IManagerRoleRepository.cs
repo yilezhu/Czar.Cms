@@ -14,6 +14,7 @@ using Czar.Cms.Core.Repository;
 using Czar.Cms.Models;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Czar.Cms.IRepository
 {
@@ -46,17 +47,24 @@ namespace Czar.Cms.IRepository
         Task<string> GetNameByIdAsync(int id);
 
         /// <summary>
-        /// 事务新增
+        /// 事务新增,并保存关联表数据
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
         int? InsertByTrans(ManagerRole model);
 
         /// <summary>
-        /// 事务修改
+        /// 事务修改，并保存关联表数据
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
         int UpdateByTrans(ManagerRole model);
+
+        /// <summary>
+        /// 通过角色ID获取角色分配的菜单列表
+        /// </summary>
+        /// <param name="roleId">角色主键</param>
+        /// <returns></returns>
+        List<Menu> GetMenusByRoleId(int roleId);
     }
 }

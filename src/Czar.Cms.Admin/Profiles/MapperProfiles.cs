@@ -25,7 +25,7 @@ namespace Czar.Cms.Admin.Profiles
             #endregion
             #region Menu
             CreateMap<MenuAddOrModifyModel, Menu>();
-
+            CreateMap<Menu, MenuNavView>();
             #endregion
         }
     }

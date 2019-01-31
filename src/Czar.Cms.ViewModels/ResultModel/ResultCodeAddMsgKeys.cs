@@ -98,6 +98,15 @@ namespace Czar.Cms.ViewModels
         /// 验证码错误
         /// </summary>
         public const string SignInCaptchaCodeErrorMsg = "验证码输入有误";
+
+        /// <summary>
+        /// 未分配角色
+        /// </summary>
+        public const int SignInNoRoleErrorCode = 205;
+        /// <summary>
+        /// 未分配角色
+        /// </summary>
+        public const string SignInNoRoleErrorMsg = "暂未分配角色，不能进行登录，请联系管理员";
         #endregion
     }
 }
