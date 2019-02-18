@@ -11,7 +11,7 @@ layui.use(['form', 'layer', 'jquery'], function () {
 
     //登录按钮
     form.on("submit(login)", function (data) {
-        console.log(data);
+        //console.log(data);
         var obj = $(this);
         obj.text("登录中...").attr("disabled", "disabled").addClass("layui-disabled");
         $.ajax({
@@ -24,7 +24,7 @@ layui.use(['form', 'layer', 'jquery'], function () {
             },
             success: function (res) {//res为相应体,function为回调函数
                 if (res.ResultCode === 0) {
-                    window.location.href = "/Home/Index";
+                    window.location.href = "/";
                 } else {
                     layer.alert(res.ResultMsg, { icon: 5 });
                     d = new Date();

@@ -107,6 +107,15 @@ namespace Czar.Cms.ViewModels
         /// 未分配角色
         /// </summary>
         public const string SignInNoRoleErrorMsg = "暂未分配角色，不能进行登录，请联系管理员";
+
+        /// <summary>
+        /// 旧密码输入错误
+        /// </summary>
+        public const int PasswordOldErrorCode = 206;
+        /// <summary>
+        /// 旧密码输入错误
+        /// </summary>
+        public const string PasswordOldErrorMsg = "旧密码输入错误";
         #endregion
     }
 }

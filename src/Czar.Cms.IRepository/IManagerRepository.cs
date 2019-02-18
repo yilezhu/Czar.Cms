@@ -62,6 +62,20 @@ namespace Czar.Cms.IRepository
         /// <returns></returns>
         Task<Int32> ChangeLockStatusByIdAsync(Int32 id, bool status);
 
+        /// <summary>
+        /// 通过主键获取密码
+        /// </summary>
+        /// <param name="Id">主键</param>
+        /// <returns></returns>
+        string GetPasswordById(Int32 Id);
+
+        /// <summary>
+        /// 通过主键获取密码
+        /// </summary>
+        /// <param name="Id">主键</param>
+        /// <returns></returns>
+        int ChangePasswordById(Int32 Id,string Password);
+
 
     }
 }

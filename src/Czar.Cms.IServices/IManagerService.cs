@@ -54,5 +54,12 @@ namespace Czar.Cms.IServices
         /// <param name="model">登陆实体</param>
         /// <returns>实体对象</returns>
         Manager SignIn(LoginModel model);
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="model">修改密码实体</param>
+        /// <returns>结果</returns>
+        BaseResult ChangePassword(ChangePasswordModel model);
     }
 }

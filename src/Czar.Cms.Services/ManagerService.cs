@@ -202,5 +202,36 @@ namespace Czar.Cms.Services
             }
             return manager;
         }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="model">修改密码实体</param>
+        /// <returns>结果</returns>
+        public BaseResult ChangePassword(ChangePasswordModel model)
+        {
+            BaseResult result = new BaseResult();
+            string oldPwd = _repository.GetPasswordById(model.Id);//数据库中的密码
+            if (oldPwd == AESEncryptHelper.Encode(model.OldPassword, CzarCmsKeys.AesEncryptKeys))
+            {
+                var count = _repository.ChangePasswordById(model.Id, AESEncryptHelper.Encode(model.NewPassword.Trim(), CzarCmsKeys.AesEncryptKeys));
+                if (count > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.PasswordOldErrorCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.PasswordOldErrorMsg;
+            }
+            return result;
+        }
     }
 }
