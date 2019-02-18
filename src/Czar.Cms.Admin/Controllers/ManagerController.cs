@@ -110,16 +110,6 @@ namespace Czar.Cms.Admin.Controllers
                 result.ResultMsg = ToErrorString(ModelState,"||");
             }
             result=_service.ChangePassword(item);
-            //ChangePasswordModelValidation validationRules = new ChangePasswordModelValidation();
-            //ValidationResult results = validationRules.Validate(item);
-            //if (results.IsValid)
-            //{
-            //}
-            //else
-            //{
-            //    result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-            //    result.ResultMsg = results.ToString("||");
-            //}
             return JsonHelper.ObjectToJSON(result);
         }
 

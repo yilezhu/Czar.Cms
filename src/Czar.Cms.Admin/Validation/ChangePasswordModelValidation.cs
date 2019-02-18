@@ -21,11 +21,24 @@ namespace Czar.Cms.Admin.Validation
             RuleFor(x => x.NewPasswordRe).NotEmpty().Must(ReEqualsNew).WithMessage("新密码不能跟旧密码一样");
 
         }
+
+        /// <summary>
+        /// 判断新旧密码是否一样
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        /// <param name="newPwd">新密码</param>
+        /// <returns>结果</returns>
         private bool NewNotEqualsOld(ChangePasswordModel model , string newPwd)
         {
             return model.OldPassword!=newPwd;
         }
 
+        /// <summary>
+        /// 判断新密码与重复密码是否一样
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="newPwdRe"></param>
+        /// <returns></returns>
         private bool ReEqualsNew(ChangePasswordModel model, string newPwdRe)
         {
             return model.NewPassword == newPwdRe;

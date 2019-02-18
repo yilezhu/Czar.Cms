@@ -18,6 +18,9 @@ namespace Czar.Cms.ViewModels
 {
     public class ChangePasswordModel
     {
+        /// <summary>
+        /// 当前管理员主键
+        /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// 旧密码
