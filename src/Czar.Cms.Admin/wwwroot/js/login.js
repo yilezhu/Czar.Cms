@@ -24,10 +24,11 @@ layui.use(['form', 'layer', 'jquery'], function () {
             },
             success: function (res) {//res为相应体,function为回调函数
                 if (res.ResultCode === 0) {
-                    window.location.href = $("#ReturnUrl").val();
+                    window.location.href = "/Home/Index";
                 } else {
                     layer.alert(res.ResultMsg, { icon: 5 });
                     d = new Date();
+                    $("#Password").val('');
                     $("#CaptchaCodeImg").attr("src", "/Account/GetCaptchaImage?" + d.getTime());
                 }
 

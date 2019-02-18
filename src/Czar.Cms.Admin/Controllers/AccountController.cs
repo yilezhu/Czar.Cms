@@ -30,13 +30,8 @@ namespace Czar.Cms.Admin.Controllers
             _service = service;
         }
 
-        public IActionResult Index(string returnUrl)
+        public IActionResult Index()
         {
-            if (returnUrl.IsNullOrWhiteSpace())
-            {
-                returnUrl = "/";
-            }
-            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
