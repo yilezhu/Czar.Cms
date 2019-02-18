@@ -107,9 +107,12 @@ namespace Czar.Cms.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = ToErrorString(ModelState,"||");
+                result.ResultMsg = ToErrorString(ModelState, "||");
             }
-            result=_service.ChangePassword(item);
+            else
+            {
+                result = _service.ChangePassword(item);
+            }
             return JsonHelper.ObjectToJSON(result);
         }
 

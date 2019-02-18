@@ -49,13 +49,16 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
             success: function (res) {//res为相应体,function为回调函数
                 if (res.ResultCode === 0) {
                     layer.alert(res.ResultMsg, { icon: 1 }, function (index) {
-                        parent.location.href = "/Account/SignOut";
                         layer.close(index);
+                        parent.location.href = "/Account/SignOut";
+                        
                     }); 
 
                 } else {
-                    layer.alert(res.ResultMsg, { icon: 5 });
-                    location.reload();
+                    layer.alert(res.ResultMsg, { icon: 5 }, function (index) {
+                        layer.close(index);
+                        location.reload();
+                    }); 
                 }
 
             },
