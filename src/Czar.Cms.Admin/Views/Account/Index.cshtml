@@ -22,7 +22,6 @@
 <body class="loginBody">
     <form class="layui-form">
         @Html.AntiForgeryToken()
-        @Html.Hidden("ReturnUrl",ViewData["ReturnUrl"]);
         <div class="login_face"><img src="~/images/face.jpg" class="userAvatar"></div>
         <div class="layui-form-item input-item">
             <label for="userName">用户名</label>

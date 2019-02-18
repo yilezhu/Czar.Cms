@@ -70,5 +70,29 @@ namespace Czar.Cms.Core.Extensions
             }
             return resStr;
         }
+
+        /// <summary>
+        /// 把数组转为split分割后连接的字符串
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="Str"></param>
+        /// <returns></returns>
+        public static string ArrayToString(this IEnumerable collection,string split)
+        {
+            string resStr = "";
+            if (split.IsNullOrEmpty())
+            {
+                split = ",";
+            }
+            foreach (var item in collection)
+            {
+                if (resStr != "")
+                {
+                    resStr += split;
+                }
+                resStr += item;
+            }
+            return resStr;
+        }
     }
 }

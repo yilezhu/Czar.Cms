@@ -89,5 +89,24 @@ namespace Czar.Cms.Repository.SqlServer
                 Id = id,
             });
         }
+
+        public string GetPasswordById(Int32 Id)
+        {
+            string sql = "select Password from Manager where Id=@Id and IsDelete=0";
+            return  _dbConnection.QueryFirstOrDefault<string>(sql, new
+            {
+                Id = Id,
+            });
+        }
+
+        public int ChangePasswordById(Int32 Id, string Password)
+        {
+            string sql = "update Manager set Password=@Password where Id = @Id";
+            return  _dbConnection.Execute(sql, new
+            {
+                Password= Password,
+                Id = Id
+            });
+        }
     }
 }

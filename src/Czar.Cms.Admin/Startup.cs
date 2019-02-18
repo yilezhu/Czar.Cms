@@ -73,7 +73,9 @@ namespace Czar.Cms.Admin
                 .AddControllersAsServices()
                 .AddFluentValidation(fv =>
                 {
+                    //程序集方式引入
                     fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>();
+                    //去掉其他的验证，只使用FluentValidation的验证规则
                     fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                 });
             //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile

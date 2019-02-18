@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace Czar.Cms.Admin.Filter
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public class OnActionExecution : Attribute,IAsyncAuthorizationFilter
+    public class PermissionFilter : Attribute,IAsyncAuthorizationFilter
     {
         private readonly IManagerService _managerService;
 
-        public OnActionExecution(IManagerService managerService)
+        public PermissionFilter(IManagerService managerService)
         {
             _managerService = managerService;
         }

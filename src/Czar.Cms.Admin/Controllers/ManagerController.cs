@@ -94,7 +94,27 @@ namespace Czar.Cms.Admin.Controllers
 
         public IActionResult ChangePassword()
         {
+            ViewData["NickName"] = User.Claims.FirstOrDefault(x => x.Type == "NickName")?.Value;
+            ViewData["Id"] = User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value;
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string ChangePassword([FromForm]ChangePasswordModel item)
+        {
+            var result = new BaseResult();
+            if (!ModelState.IsValid)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
+                result.ResultMsg = ToErrorString(ModelState, "||");
+            }
+            else
+            {
+                result = _service.ChangePassword(item);
+            }
+            return JsonHelper.ObjectToJSON(result);
+        }
+
     }
 }
