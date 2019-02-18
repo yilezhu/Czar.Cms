@@ -51,6 +51,8 @@
 
 ### 部署篇
 对前面开发的系统进行Windows部署或者在Linux系统上进行部署。
+1. *[.NET Core实战项目之CMS 第十七章 CMS网站系统的部署](https://www.cnblogs.com/yilezhu/p/10366679.html)*
+2. *[如何优雅的利用Windows服务来部署ASP.NET Core程序](https://www.cnblogs.com/yilezhu/p/10380887.html)*
 待更新
 
 ## 开发工具
