@@ -132,7 +132,7 @@ namespace Czar.Cms.Services
             }
             var list = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", model).ToList();
             var viewList = new List<ManagerListModel>();
-            list.ForEach(x =>
+            list?.ForEach(x =>
             {
                 var item = _mapper.Map<ManagerListModel>(x);
                 item.RoleName = _roleRepository.GetNameById(x.RoleId);
@@ -232,6 +232,12 @@ namespace Czar.Cms.Services
                 result.ResultMsg = ResultCodeAddMsgKeys.PasswordOldErrorMsg;
             }
             return result;
+        }
+
+        public Manager GetManagerById(int id)
+        {
+           
+           return _repository.Get(id);
         }
     }
 }

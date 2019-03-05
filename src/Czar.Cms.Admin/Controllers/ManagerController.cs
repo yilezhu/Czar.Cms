@@ -116,5 +116,21 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result);
         }
 
+        public IActionResult ManagerInfo()
+        {
+            var Id=User.Claims.FirstOrDefault(x => x.Type == "Id");
+            if (Id == null)
+            {
+            }
+            var model = _service.GetManagerById(int.Parse(Id.Value));
+            if (model == null)
+            {
+                return RedirectToAction("SignOut", "Account");
+
+            }
+           
+            return View(model);
+        }
+
     }
 }

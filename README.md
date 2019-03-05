@@ -43,6 +43,7 @@
 4. *[.NET Core实战项目之CMS 第十四章 开发篇-防止跨站请求伪造（XSRF/CSRF）攻击处理](https://www.cnblogs.com/yilezhu/p/10229954.html)*
 5. *[.NET Core实战项目之CMS 第十五章 开发篇 各层联动工作实现增删改查业务](https://www.cnblogs.com/yilezhu/p/10263714.html)*
 6. *[.NET Core实战项目之CMS 第十六章 用户登录及验证码功能实现](https://www.cnblogs.com/yilezhu/p/10309647.html)*
+7. *[.NET Core中的验证组件FluentValidation的实战分享](https://www.cnblogs.com/yilezhu/p/10397393.html)*
 待更新
 
 ### 测试篇

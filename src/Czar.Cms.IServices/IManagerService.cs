@@ -61,5 +61,7 @@ namespace Czar.Cms.IServices
         /// <param name="model">修改密码实体</param>
         /// <returns>结果</returns>
         BaseResult ChangePassword(ChangePasswordModel model);
+
+        Manager GetManagerById(int id);
     }
 }
