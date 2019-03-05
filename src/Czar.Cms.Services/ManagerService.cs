@@ -233,5 +233,11 @@ namespace Czar.Cms.Services
             }
             return result;
         }
+
+        public Manager GetManagerById(int id)
+        {
+           
+           return _repository.Get(id);
+        }
     }
 }
