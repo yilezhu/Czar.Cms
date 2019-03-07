@@ -123,7 +123,7 @@ namespace Czar.Cms.Admin.Controllers
             {
                 return RedirectToAction("SignOut", "Account");
             }
-            var model = _service.GetManagerById(int.Parse(Id.Value));
+            var model = _service.GetManagerContainRoleNameById(int.Parse(Id.Value));
             if (model == null)
             {
                 return RedirectToAction("SignOut", "Account");

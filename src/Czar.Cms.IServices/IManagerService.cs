@@ -63,5 +63,7 @@ namespace Czar.Cms.IServices
         BaseResult ChangePassword(ChangePasswordModel model);
 
         Manager GetManagerById(int id);
+
+        Manager GetManagerContainRoleNameById(int id);
     }
 }

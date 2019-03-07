@@ -239,5 +239,10 @@ namespace Czar.Cms.Services
            
            return _repository.Get(id);
         }
+
+        public Manager GetManagerContainRoleNameById(int id)
+        {
+            return _repository.GetManagerContainRoleNameById(id);
+        }
     }
 }

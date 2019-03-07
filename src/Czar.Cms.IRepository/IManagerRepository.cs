@@ -76,6 +76,8 @@ namespace Czar.Cms.IRepository
         /// <returns></returns>
         int ChangePasswordById(Int32 Id,string Password);
 
+        Manager GetManagerContainRoleNameById(int id);
+
 
     }
 }
