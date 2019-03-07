@@ -91,7 +91,6 @@ namespace Czar.Cms.Admin.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    
                     new Claim(ClaimTypes.Name, manager.UserName),
                     new Claim(ClaimTypes.MobilePhone, manager.Mobile),
                     new Claim(ClaimTypes.Role,manager.RoleId.ToString()),

@@ -121,6 +121,7 @@ namespace Czar.Cms.Admin.Controllers
             var Id=User.Claims.FirstOrDefault(x => x.Type == "Id");
             if (Id == null)
             {
+                return RedirectToAction("SignOut", "Account");
             }
             var model = _service.GetManagerById(int.Parse(Id.Value));
             if (model == null)

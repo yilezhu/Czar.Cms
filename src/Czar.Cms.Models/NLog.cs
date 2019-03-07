@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //                          _ooOoo_                               //
 //                         o8888888o                              //
 //                         88" . "88                              //
@@ -23,30 +23,78 @@
 
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：{Comment}                                                    
-*│　作    者：{Author}                                              
+*│　描    述：                                                    
+*│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
-*│　创建时间：{GeneratorTime}                            
+*│　创建时间：2019-03-07 16:05:34                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间: {ModelsNamespace}                                  
-*│　类    名：{ModelName}                                     
+*│　命名空间: Czar.Cms.Models                                  
+*│　类    名：NLog                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace {ModelsNamespace}
+namespace Czar.Cms.Models
 {
 	/// <summary>
-	/// {Author}
-	/// {GeneratorTime}
-	/// {Comment}
+	/// yilezhu
+	/// 2019-03-07 16:05:34
+	/// 
 	/// </summary>
-	[Table("{ModelName}")]
-	public partial class {ModelName}
+	[Table("NLog")]
+	public partial class NLog
 	{
-{ModelProperties}
+		/// <summary>
+		///  
+		/// </summary>
+		[Key]
+		public Int32 Id {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(50)]
+		public String Application {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(23)]
+		public DateTime? Logged {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(50)]
+		public String Level {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Message {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(250)]
+		public String Logger {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Callsite {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Exception {get;set;}
+
+
 	}
 }
