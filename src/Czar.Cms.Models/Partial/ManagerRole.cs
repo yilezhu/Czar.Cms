@@ -23,14 +23,14 @@
 
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：角色权限表                                                    
+*│　描    述：后台管理员角色                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
 *│　创建时间：2019-03-07 16:50:56                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：RolePermission                                     
+*│　类    名：ManagerRole                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -42,36 +42,13 @@ namespace Czar.Cms.Models
 	/// <summary>
 	/// yilezhu
 	/// 2019-03-07 16:50:56
-	/// 角色权限表
+	/// 后台管理员角色
 	/// </summary>
-	public partial class RolePermission
+	public partial class ManagerRole
 	{
-		/// <summary>
-		/// 主键
-		/// </summary>
-		[Key]
-		public Int32 Id {get;set;}
-
-		/// <summary>
-		/// 角色主键
-		/// </summary>
-		[Required]
-		[MaxLength(10)]
-		public Int32 RoleId {get;set;}
-
-		/// <summary>
-		/// 菜单主键
-		/// </summary>
-		[Required]
-		[MaxLength(10)]
-		public Int32 MenuId {get;set;}
-
-		/// <summary>
-		/// 操作类型（功能权限）
-		/// </summary>
-		[MaxLength(128)]
-		public String Permission {get;set;}
-
-
-	}
+        /// <summary>
+        /// 菜单ID数组  
+        /// </summary>
+        public virtual int[] MenuIds { get; set; }
+    }
 }

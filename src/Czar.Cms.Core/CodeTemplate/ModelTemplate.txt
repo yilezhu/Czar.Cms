@@ -44,7 +44,6 @@ namespace {ModelsNamespace}
 	/// {GeneratorTime}
 	/// {Comment}
 	/// </summary>
-	[Table("{ModelName}")]
 	public partial class {ModelName}
 	{
 {ModelProperties}
