@@ -29,6 +29,8 @@ namespace Czar.Cms.Admin.Controllers
         public IActionResult Index()
         {
             ViewData["NickName"] = User.Claims.FirstOrDefault(x => x.Type == "NickName")?.Value;
+            ViewData["Avatar"] = User.Claims.FirstOrDefault(x => x.Type == "Avatar")?.Value;
+
             return View();
         }
 

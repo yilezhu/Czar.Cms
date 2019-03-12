@@ -65,5 +65,12 @@ namespace Czar.Cms.IServices
         Manager GetManagerById(int id);
 
         Manager GetManagerContainRoleNameById(int id);
+
+        /// <summary>
+        /// 个人资料修改
+        /// </summary>
+        /// <param name="model">个人资料修改实体</param>
+        /// <returns>结果</returns>
+        BaseResult UpdateManagerInfo(ChangeInfoModel model);
     }
 }

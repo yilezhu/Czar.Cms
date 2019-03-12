@@ -21,7 +21,8 @@ namespace Czar.Cms.Admin.Controllers
         }
 
 
-        /// layui在线编辑器里的上传图片功能
+        /// <summary>
+        /// 图片上传功能
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -50,11 +51,7 @@ namespace Czar.Cms.Admin.Controllers
                 {
                     return Json(new { code = 1, msg = "只允许上传小于 1MB 的图片.", });
                 }
-
                 #endregion
-
-
-
                 var filename1 =DateTime.Now.ToString("yyyyMMddHHmmssfff")+new Random().Next(1000,9999)+ extname;
                 tempname = filename1;
                 var path = hostingEnv.WebRootPath;

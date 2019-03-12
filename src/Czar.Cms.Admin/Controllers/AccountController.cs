@@ -97,6 +97,7 @@ namespace Czar.Cms.Admin.Controllers
                     new Claim("Id", manager.Id.ToString()),
                     new Claim("NickName",manager.NickName),
                     new Claim("Email", manager.Email),
+                    new Claim("Avatar", manager.Avatar??"/images/userface1.jpg"),
                     new Claim("LoginCount",manager.LoginCount.ToString()),
                     new Claim("LoginLastIp",manager.LoginLastIp),
                     new Claim("LoginLastTime",manager.LoginLastTime?.ToString("yyyy-MM-dd HH:mm:ss")),

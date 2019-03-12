@@ -13,6 +13,7 @@ using Czar.Cms.Core.Extensions;
 using Czar.Cms.Core.Helper;
 using AutoMapper;
 using Czar.Cms.IServices;
+using System.Security.Claims;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -41,8 +42,9 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel {
-                Key=null
+            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel
+            {
+                Key = null
             });
             return View(roleList);
         }
@@ -118,7 +120,7 @@ namespace Czar.Cms.Admin.Controllers
 
         public IActionResult ManagerInfo()
         {
-            var Id=User.Claims.FirstOrDefault(x => x.Type == "Id");
+            var Id = User.Claims.FirstOrDefault(x => x.Type == "Id");
             if (Id == null)
             {
                 return RedirectToAction("SignOut", "Account");
@@ -127,10 +129,29 @@ namespace Czar.Cms.Admin.Controllers
             if (model == null)
             {
                 return RedirectToAction("SignOut", "Account");
-
             }
-           
+            model.Avatar = model.Avatar ?? "/images/userface1.jpg";
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string ManagerInfo([FromForm]ChangeInfoModel item)
+        {
+            
+            var result = new BaseResult();
+            if (ModelState.IsValid)
+            {
+                item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
+                item.ModifyTime = DateTime.Now;
+                result = _service.UpdateManagerInfo(item);
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
+                result.ResultMsg = ToErrorString(ModelState, "||");
+            }
+            return JsonHelper.ObjectToJSON(result);
         }
 
     }
