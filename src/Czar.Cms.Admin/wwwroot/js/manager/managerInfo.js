@@ -54,7 +54,7 @@ layui.use(['form', 'layer', 'upload'], function () {
                         //刷新父页面
                         parent.location.reload();
                     });
-                    //$("#res").click();//调用重置按钮将表单数据清空
+          
                 } else if (res.ResultCode === 102) {
                     layer.alert(res.ResultMsg, { icon: 5 }, function () {
                         layer.closeAll("iframe");

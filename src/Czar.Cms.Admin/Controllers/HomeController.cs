@@ -10,17 +10,22 @@ using Czar.Cms.Core.Extensions;
 using Czar.Cms.ViewModels;
 using Czar.Cms.IServices;
 using Czar.Cms.Core.Helper;
+using Microsoft.AspNetCore.Http;
 
 namespace Czar.Cms.Admin.Controllers
 {
     public class HomeController : BaseController
     {
         private readonly IManagerRoleService _managerRoleService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(IManagerRoleService managerRoleService)
+        public HomeController(IManagerRoleService managerRoleService, IHttpContextAccessor httpContextAccessor)
         {
             _managerRoleService = managerRoleService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+
 
         /// <summary>
         /// 主界面
@@ -28,8 +33,8 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = User.Claims.FirstOrDefault(x => x.Type == "NickName")?.Value;
-            ViewData["Avatar"] = User.Claims.FirstOrDefault(x => x.Type == "Avatar")?.Value;
+            ViewData["NickName"] = _httpContextAccessor.HttpContext.Session.GetString("NickName");
+            ViewData["Avatar"] = _httpContextAccessor.HttpContext.Session.GetString("Avatar");
 
             return View();
         }

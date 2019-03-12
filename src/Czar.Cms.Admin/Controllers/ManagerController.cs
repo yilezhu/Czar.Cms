@@ -14,6 +14,8 @@ using Czar.Cms.Core.Helper;
 using AutoMapper;
 using Czar.Cms.IServices;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -21,11 +23,13 @@ namespace Czar.Cms.Admin.Controllers
     {
         private readonly IManagerService _service;
         private readonly IManagerRoleService _roleService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ManagerController(IManagerService service, IManagerRoleService roleService)
+        public ManagerController(IManagerService service, IManagerRoleService roleService, IHttpContextAccessor httpContextAccessor)
         {
             _service = service;
             _roleService = roleService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -145,12 +149,17 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = _service.UpdateManagerInfo(item);
+                _httpContextAccessor.HttpContext.Session.SetString("NickName", item.NickName ?? "匿名");
+                _httpContextAccessor.HttpContext.Session.SetString("Email", item.Email ?? "");
+                _httpContextAccessor.HttpContext.Session.SetString("Avatar", item.Avatar ?? "/images/userface1.jpg");
+                _httpContextAccessor.HttpContext.Session.SetString("Mobile", item.Mobile ?? "");
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
                 result.ResultMsg = ToErrorString(ModelState, "||");
             }
+            
             return JsonHelper.ObjectToJSON(result);
         }
 
