@@ -1,0 +1,63 @@
+﻿@model Czar.Cms.Models.Manager
+@{
+    ViewData["Title"] = "个人信息";
+}
+<form class="layui-form layui-row">
+    <div class="layui-col-md3 layui-col-xs12 user_right">
+        <div class="layui-upload-list">
+            <img src="@Model.Avatar" class="layui-upload-img layui-circle userFaceBtn userAvatar" id="userFace">
+        </div>
+        <button type="button" class="layui-btn layui-btn-primary userFaceBtn"><i class="layui-icon">&#xe67c;</i> 掐指一算，我要换一个头像了</button>
+        @Html.Hidden("Avatar", Model.Avatar)
+        @Html.Hidden("Id", Model.Id)
+        @Html.AntiForgeryToken()
+    </div>
+    <div class="layui-col-md6 layui-col-xs12">
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">用户账号</label>
+            <div class="layui-input-block">
+                <input type="text" value="@Model.UserName" name="UserName" ,id="UserName" disabled class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">用户角色</label>
+            <div class="layui-input-block">
+                <input type="text" value="@Model.RoleName" name="RoleName" id="RoleName" disabled class="layui-input layui-disabled">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">真实姓名</label>
+            <div class="layui-input-block">
+                <input type="text" value="@Model.NickName" name="NickName" id="NickName" placeholder="请输入真实姓名" lay-verify="required" class="layui-input realName">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-block">
+                <input type="tel" value="@Model.Mobile" name="Mobile" id="Mobile" placeholder="请输入手机号码" lay-verify="phone" class="layui-input userPhone">
+            </div>
+        </div>
+        <div class="layui-form-item" pane="">
+            <label class="layui-form-label">电子邮箱</label>
+            <div class="layui-input-block">
+                <input type="tel" value="@Model.Email" name="Email" id="Email" placeholder="请输入电子邮箱" lay-verify="email" class="layui-input userPhone">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="Remark" id="Remark" class="layui-textarea myself">@Model.Remark</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="changeManager">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/manager/managerInfo.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}

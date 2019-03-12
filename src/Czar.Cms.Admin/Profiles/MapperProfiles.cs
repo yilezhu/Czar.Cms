@@ -19,9 +19,8 @@ namespace Czar.Cms.Admin.Profiles
             #endregion
             #region Manager
             CreateMap<Manager, ManagerListModel>();
-
             CreateMap<ManagerAddOrModifyModel, Manager>();
-
+            CreateMap<ChangeInfoModel, Manager>();
             #endregion
             #region Menu
             CreateMap<MenuAddOrModifyModel, Menu>();

@@ -85,16 +85,7 @@ namespace Czar.Cms.Core.CodeGenerator
         /// <param name="isCoveredExsited">是否覆盖</param>
         private void GenerateEntity(DbTable table, bool isCoveredExsited = true)
         {
-            var modelPath = _options.OutputPath + Delimiter + "Models"; ;
-            if (!Directory.Exists(modelPath))
-            {
-                Directory.CreateDirectory(modelPath);
-            }
-
-            var fullPath = modelPath + Delimiter + table.TableName + ".cs";
-            if (File.Exists(fullPath) && !isCoveredExsited)
-                return;
-
+           
             var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
             var sb = new StringBuilder();
             foreach (var column in table.Columns)
@@ -102,6 +93,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 var tmp = GenerateEntityProperty(table.TableName, column);
                 sb.AppendLine(tmp);
             }
+            GenerateModelpath(table, out string path, out string pathP);
             var content = ReadTemplate("ModelTemplate.txt");
             content = content.Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                 .Replace("{ModelsNamespace}", _options.ModelsNamespace)
@@ -109,7 +101,17 @@ namespace Czar.Cms.Core.CodeGenerator
                 .Replace("{Comment}", table.TableComment)
                 .Replace("{ModelName}", table.TableName)
                 .Replace("{ModelProperties}", sb.ToString());
-            WriteAndSave(fullPath, content);
+            WriteAndSave(path, content);
+            #region 新建一个部分类来添加一些扩展属性
+            var contentP = ReadTemplate("ModelTemplate.txt");
+            contentP = contentP.Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{ModelsNamespace}", _options.ModelsNamespace)
+                .Replace("{Author}", _options.Author)
+                .Replace("{Comment}", table.TableComment)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{ModelProperties}","");
+            WriteAndSave(pathP, contentP);
+            #endregion
         }
 
         /// <summary>
@@ -266,6 +268,35 @@ namespace Czar.Cms.Core.CodeGenerator
         }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 根据表格信息生成实体路径
+        /// </summary>
+        /// <param name="table">表信息</param>
+        /// <param name="path">实体路径</param>
+        /// <param name="pathP">部分类路径</param>
+        private void GenerateModelpath(DbTable table,out string path,out string pathP)
+        {
+            var modelPath = _options.OutputPath + Delimiter + "Models"; ;
+            if (!Directory.Exists(modelPath))
+            {
+                Directory.CreateDirectory(modelPath);
+            }
+            StringBuilder fullPath = new StringBuilder();
+            fullPath.Append(modelPath);
+            fullPath.Append(Delimiter);
+            fullPath.Append("Partial");
+            if (!Directory.Exists(fullPath.ToString()))
+            {
+                Directory.CreateDirectory(fullPath.ToString());
+            }
+            fullPath.Append(Delimiter);
+            fullPath.Append(table.TableName);
+            fullPath.Append(".cs");
+            pathP = fullPath.ToString();
+            path = fullPath.Replace("Partial"+Delimiter, "").ToString();
+  
         }
 
         /// <summary>

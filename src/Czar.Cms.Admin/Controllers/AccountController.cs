@@ -24,10 +24,12 @@ namespace Czar.Cms.Admin.Controllers
         private readonly string ManagerSignInErrorTimes = "ManagerSignInErrorTimes";
         private readonly int MaxErrorTimes = 3;
         private readonly IManagerService _service;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(IManagerService service)
+        public AccountController(IManagerService service, IHttpContextAccessor httpContextAccessor)
         {
             _service = service;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -91,13 +93,10 @@ namespace Czar.Cms.Admin.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    
                     new Claim(ClaimTypes.Name, manager.UserName),
-                    new Claim(ClaimTypes.MobilePhone, manager.Mobile),
-                    new Claim(ClaimTypes.Role,manager.RoleId.ToString()),
-                    new Claim("Id", manager.Id.ToString()),
-                    new Claim("NickName",manager.NickName),
-                    new Claim("Email", manager.Email),
+                    new Claim(ClaimTypes.Role, manager.RoleId.ToString()),
+
+                    new Claim("Id",manager.Id.ToString()),
                     new Claim("LoginCount",manager.LoginCount.ToString()),
                     new Claim("LoginLastIp",manager.LoginLastIp),
                     new Claim("LoginLastTime",manager.LoginLastTime?.ToString("yyyy-MM-dd HH:mm:ss")),
@@ -107,6 +106,14 @@ namespace Czar.Cms.Admin.Controllers
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
+                _httpContextAccessor.HttpContext.Session.SetInt32("Id", manager.Id);
+                _httpContextAccessor.HttpContext.Session.SetInt32("RoleId", manager.RoleId);
+                _httpContextAccessor.HttpContext.Session.SetString("NickName", manager.NickName??"匿名");
+                _httpContextAccessor.HttpContext.Session.SetString("Email", manager.Email??"");
+                _httpContextAccessor.HttpContext.Session.SetString("Avatar", manager.Avatar ?? "/images/userface1.jpg");
+                _httpContextAccessor.HttpContext.Session.SetString("Mobile", manager.Mobile??"");
+
+
             }
             return JsonHelper.ObjectToJSON(result);
         }

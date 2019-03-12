@@ -108,5 +108,20 @@ namespace Czar.Cms.Repository.SqlServer
                 Id = Id
             });
         }
+
+        public Manager GetManagerContainRoleNameById(int id)
+        {
+            string sql = @"SELECT   mr.RoleName, m.Id, m.RoleId, m.UserName, m.Password, m.Avatar, m.NickName, m.Mobile, m.Email, m.LoginCount, 
+                m.LoginLastIp, m.LoginLastTime, m.AddManagerId, m.AddTime, m.ModifyManagerId, m.ModifyTime, m.IsLock, 
+                m.IsDelete, m.Remark
+FROM      Manager AS m INNER JOIN
+                ManagerRole AS mr ON m.RoleId = mr.Id where m.Id=@Id and m.IsDelete=0 ";
+            return _dbConnection.QueryFirstOrDefault<Manager>(sql, new
+            {
+                Id = id
+            });
+        }
+
+        
     }
 }

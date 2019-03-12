@@ -132,7 +132,7 @@ namespace Czar.Cms.Services
             }
             var list = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", model).ToList();
             var viewList = new List<ManagerListModel>();
-            list.ForEach(x =>
+            list?.ForEach(x =>
             {
                 var item = _mapper.Map<ManagerListModel>(x);
                 item.RoleName = _roleRepository.GetNameById(x.RoleId);
@@ -230,6 +230,49 @@ namespace Czar.Cms.Services
             {
                 result.ResultCode = ResultCodeAddMsgKeys.PasswordOldErrorCode;
                 result.ResultMsg = ResultCodeAddMsgKeys.PasswordOldErrorMsg;
+            }
+            return result;
+        }
+
+        public Manager GetManagerById(int id)
+        {
+
+            return _repository.Get(id);
+        }
+
+        public Manager GetManagerContainRoleNameById(int id)
+        {
+            return _repository.GetManagerContainRoleNameById(id);
+        }
+
+        /// <summary>
+        /// 个人资料修改
+        /// </summary>
+        /// <param name="model">个人资料修改实体</param>
+        /// <returns>结果</returns>
+        public BaseResult UpdateManagerInfo(ChangeInfoModel model)
+        {
+            BaseResult result = new BaseResult();
+            //TODO Modify
+            var manager = _repository.Get(model.Id);
+            if (manager != null)
+            {
+                _mapper.Map(model, manager);
+                if (_repository.Update(manager) > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonFailNoDataCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonFailNoDataMsg;
             }
             return result;
         }

@@ -23,14 +23,14 @@
 
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：角色权限表                                                    
+*│　描    述：                                                    
 *│　作    者：yilezhu                                              
 *│　版    本：1.0   模板代码自动生成                                              
 *│　创建时间：2019-03-07 16:50:56                            
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
 *│　命名空间: Czar.Cms.Models                                  
-*│　类    名：RolePermission                                     
+*│　类    名：NLog                                     
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
@@ -42,35 +42,57 @@ namespace Czar.Cms.Models
 	/// <summary>
 	/// yilezhu
 	/// 2019-03-07 16:50:56
-	/// 角色权限表
+	/// 
 	/// </summary>
-	public partial class RolePermission
+	public partial class NLog
 	{
 		/// <summary>
-		/// 主键
+		///  
 		/// </summary>
 		[Key]
 		public Int32 Id {get;set;}
 
 		/// <summary>
-		/// 角色主键
+		///  
 		/// </summary>
-		[Required]
-		[MaxLength(10)]
-		public Int32 RoleId {get;set;}
+		[MaxLength(50)]
+		public String Application {get;set;}
 
 		/// <summary>
-		/// 菜单主键
+		///  
 		/// </summary>
-		[Required]
-		[MaxLength(10)]
-		public Int32 MenuId {get;set;}
+		[MaxLength(23)]
+		public DateTime? Logged {get;set;}
 
 		/// <summary>
-		/// 操作类型（功能权限）
+		///  
 		/// </summary>
-		[MaxLength(128)]
-		public String Permission {get;set;}
+		[MaxLength(50)]
+		public String Level {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Message {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(250)]
+		public String Logger {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Callsite {get;set;}
+
+		/// <summary>
+		///  
+		/// </summary>
+		[MaxLength(512)]
+		public String Exception {get;set;}
 
 
 	}
