@@ -115,7 +115,7 @@ namespace Czar.Cms.Repository.SqlServer
                 m.LoginLastIp, m.LoginLastTime, m.AddManagerId, m.AddTime, m.ModifyManagerId, m.ModifyTime, m.IsLock, 
                 m.IsDelete, m.Remark
 FROM      Manager AS m INNER JOIN
-                ManagerRole AS mr ON m.RoleId = mr.Id where m.Id=@Id and IsDelete=0 ";
+                ManagerRole AS mr ON m.RoleId = mr.Id where m.Id=@Id and m.IsDelete=0 ";
             return _dbConnection.QueryFirstOrDefault<Manager>(sql, new
             {
                 Id = id

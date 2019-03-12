@@ -34,6 +34,7 @@
 *└──────────────────────────────────────────────────────────────┘
 */
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -49,6 +50,7 @@ namespace Czar.Cms.Models
         /// <summary>
         /// 角色名称
         /// </summary>
+        [NotMapped]
         public String RoleName { get; set; }
     }
 }
