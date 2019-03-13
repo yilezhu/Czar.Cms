@@ -1,0 +1,84 @@
+﻿@using Czar.Cms.Models
+@model List<Menu>
+@{
+    ViewData["Title"] = "定时任务";
+}
+
+<form class="layui-form layui-form-pane" style="width:90%;">
+    @Html.AntiForgeryToken()
+    @Html.Hidden("Id")
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">调用别名</label>
+        <div class="layui-input-block">
+            <input type="text" name="Name" class="layui-input Name" lay-verify="required|userName" placeholder="只允许字母数字下划线">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">分组名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="Group" class="layui-input Group" lay-verify="required" placeholder="请输入显示名称">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">程序集路径</label>
+        <div class="layui-input-block">
+            <input type="text" name="Assembly" class="layui-input Assembly" lay-verify="required" placeholder="请输入显示名称">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">完整类名</label>
+        <div class="layui-input-block">
+            <input type="text" name="ClassName" class="layui-input ClassName" lay-verify="required" placeholder="请输入显示名称">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">Cron表达式</label>
+        <div class="layui-input-block">
+            <input type="text" name="ClassName" class="layui-input ClassName" lay-verify="required" placeholder="请输入显示名称">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">任务状态</label>
+        <div class="layui-input-block">
+            <select name="Status" class="Status" lay-filter="Status">
+                <option value="0">执行中</option>
+                <option value="1">已完成</option>
+                <option value="2">已停止</option>
+                <option value="3">系统停止</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">开始时间</label>
+        <div class="layui-input-block">
+            <input type="text" value="" name="StartTime" placeholder="请输入开始时间" lay-verify="StartTime" readonly class="layui-input StartTime">
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <label class="layui-form-label">结束时间</label>
+        <div class="layui-input-block">
+            <input type="text" value="" name="EndTime" placeholder="请输入结束时间" lay-verify="EndTime" readonly class="layui-input EndTime">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text layui-col-xs12">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入描述信息" name="Description" class="layui-textarea Description"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-row layui-col-xs12">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="addTask">确定</button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    <script type="text/javascript" src="~/layui/layui.js"></script>
+    <script type="text/javascript" src="~/js/task/taskAdd.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>
+}
+
+
+

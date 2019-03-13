@@ -41,44 +41,31 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         }
     });
 
-    //添加用户
-    function addMenu(edit) {
-        var tit = "添加菜单";
+    //添加任务
+    function addTask(edit) {
+        var tit = "添加任务";
         if (edit) {
-            tit = "编辑菜单";
+            tit = "编辑任务";
         }
         var index = layui.layer.open({
             title: tit,
             type: 2,
             anim: 1,
             area: ['600px', '80%'],
-            content: "/Menu/AddOrModify/",
+            content: "/TaskInfo/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
                     body.find("#Id").val(edit.Id);
                     body.find(".Name").val(edit.Name);
-                    body.find(".DisplayName").val(edit.DisplayName);
-                    body.find(".IconUrl").val(edit.IconUrl);
-                    body.find(".LinkUrl").val(edit.LinkUrl);
-                    body.find(".Sort").val(edit.Sort);
-                    body.find(".DisplayName").val(edit.DisplayName);
-                    if (edit.IsSystem === true) {
-                        body.find(".IsSystem input[value=1]").prop("checked", "checked");
-                    }
-                    else {
-                        body.find(".IsSystem input[value=0]").prop("checked", "checked");
-
-                    }
-                    if (edit.IsDisplay === true) {
-                        body.find(".IsDisplay input[value=1]").prop("checked", "checked");
-                    }
-                    else {
-                        body.find(".IsDisplay input[value=0]").prop("checked", "checked");
-
-                    }
-                    body.find(".ParentId").val(edit.ParentId);
-                    body.find(".Remark").text(edit.Remark);    //角色备注
+                    body.find(".Group").val(edit.Group);
+                    body.find(".Assembly").val(edit.Assembly);
+                    body.find(".ClassName").val(edit.ClassName);
+                    body.find(".Cron").val(edit.Cron);
+                    body.find(".StartTime").val(edit.StartTime);
+                    body.find(".EndTime").val(edit.EndTime);
+                    body.find(".Status").val(edit.Status);
+                    body.find(".Description").text(edit.Description);
                     form.render();
 
                 }
@@ -86,7 +73,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     }
     $(".addTask_btn").click(function () {
-        addMenu();
+        addTask();
     });
 
     //批量删除
@@ -113,7 +100,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             data = obj.data;
 
         if (layEvent === 'edit') { //编辑
-            addMenu(data);
+            addTask(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此任务？', { icon: 3, title: '提示信息' }, function (index) {
                 del(data.Id);

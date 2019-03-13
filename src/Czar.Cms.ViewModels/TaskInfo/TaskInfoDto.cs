@@ -37,7 +37,5 @@ namespace Czar.Cms.ViewModels
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
 
-        public DateTime? NextTime { get; set; }
-
     }
 }

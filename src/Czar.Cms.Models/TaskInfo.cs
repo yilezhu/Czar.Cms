@@ -116,12 +116,6 @@ namespace Czar.Cms.Models
 		///  
 		/// </summary>
 		[MaxLength(23)]
-		public DateTime? NextTime {get;set;}
-
-		/// <summary>
-		///  
-		/// </summary>
-		[MaxLength(23)]
 		public DateTime? AddTime {get;set;}
 
 		/// <summary>
