@@ -37,6 +37,7 @@ using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.IServices
 {
@@ -47,6 +48,23 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="model">查询实体</param>
         /// <returns>table数据</returns>
-        TableDataModel LoadData(TaskInfoRequestModel model);
+         Task<TableDataModel> LoadDataAsync(TaskInfoRequestModel model);
+
+        /// <summary>
+        /// 应用程序停止时暂停所有任务
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> SystemStoppedAsync();
+        /// <summary>
+        /// 应用程序启动时启动所有任务
+        /// </summary>
+        /// <returns></returns>
+        Task<bool> ResumeSystemStoppedAsync();
+        /// <summary>
+        /// 根据状态获取所有的任务列表
+        /// </summary>
+        /// <param name="jobStatu"></param>
+        /// <returns></returns>
+        //Task<List<JobInfoDto>> GetListByJobStatuAsync(JobStatu jobStatu);
     }
 }

@@ -41,6 +41,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
@@ -53,7 +54,7 @@ namespace Czar.Cms.Services
             _repository = repository;
         }
 
-        public TableDataModel LoadData(TaskInfoRequestModel model)
+        public async Task<TableDataModel> LoadDataAsync(TaskInfoRequestModel model)
         {
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
@@ -63,12 +64,23 @@ namespace Czar.Cms.Services
 
             return new TableDataModel
             {
-                count = _repository.RecordCount(conditions),
-                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", new
+                count = await _repository.RecordCountAsync(conditions),
+                data = await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new
                 {
                     Key = model.Key,
-                }).ToList(),
+                }),
             };
+        }
+
+        public Task<bool> ResumeSystemStoppedAsync()
+        {
+            return _repository.ResumeSystemStoppedAsync(); 
+        }
+
+        public Task<bool> SystemStoppedAsync()
+        {
+            return _repository.SystemStoppedAsync();
+
         }
     }
 }

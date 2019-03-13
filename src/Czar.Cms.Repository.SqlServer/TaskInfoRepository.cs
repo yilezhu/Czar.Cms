@@ -41,15 +41,17 @@ using Czar.Cms.Models;
 using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Czar.Cms.Repository.SqlServer
 {
-    public class TaskInfoRepository:BaseRepository<TaskInfo,Int32>, ITaskInfoRepository
+    public class TaskInfoRepository : BaseRepository<TaskInfo, Int32>, ITaskInfoRepository
     {
         public TaskInfoRepository(IOptionsSnapshot<DbOption> options)
         {
-            _dbOption =options.Get("CzarCms");
+            _dbOption = options.Get("CzarCms");
             if (_dbOption == null)
             {
                 throw new ArgumentNullException(nameof(DbOption));
@@ -57,7 +59,7 @@ namespace Czar.Cms.Repository.SqlServer
             _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
 
-		public int DeleteLogical(int[] ids)
+        public int DeleteLogical(int[] ids)
         {
             string sql = "update TaskInfo set IsDelete=1 where Id in @Ids";
             return _dbConnection.Execute(sql, new
@@ -75,5 +77,43 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
+        public async Task<bool> ResumeSystemStoppedAsync()
+        {
+            string sql = "update TaskInfo set Status=0 where Status=3";
+            return await _dbConnection.ExecuteAsync(sql) > 0;
+        }
+
+        public async Task<bool> SystemStoppedAsync()
+        {
+            string sql = "update TaskInfo set Status=3 where Status=0";
+            return await _dbConnection.ExecuteAsync(sql) > 0;
+        }
+
+        public async Task<bool> UpdateStatusByIdsAsync(int[] ids, int Status)
+        {
+            string sql = "update TaskInfo set Status=@Status where Id in @Ids";
+            return await _dbConnection.ExecuteAsync(sql, new
+            {
+                Status = Status,
+                Ids = ids,
+            }) > 0;
+        }
+
+        public async Task<List<TaskInfo>> GetListByJobStatuAsync(int Status)
+        {
+            string sql = "select * from TaskInfo where Status=@Status and IsDelete=0";
+            var result = await _dbConnection.QueryAsync<TaskInfo>(sql, new
+            {
+                Status = Status,
+            });
+            if (result != null)
+            {
+                return result.ToList();
+            }
+            else
+            {
+                return new List<TaskInfo>();
+            }
+        }
     }
 }
