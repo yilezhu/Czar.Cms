@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Test", "6.Test", "{37A51F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Test", "src\Czar.Cms.Test\Czar.Cms.Test.csproj", "{E4611F25-31C1-4FD3-9D8A-06B008185770}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Czar.Cms.Quartz", "Czar.Cms.Quartz\Czar.Cms.Quartz.csproj", "{8ABC4036-4BDC-4139-B91C-6215164CE94F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{E4611F25-31C1-4FD3-9D8A-06B008185770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4611F25-31C1-4FD3-9D8A-06B008185770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4611F25-31C1-4FD3-9D8A-06B008185770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +102,7 @@ Global
 		{4B43E6E2-309E-444B-AE96-64C7AAA9B4F8} = {B3C624C6-D7C7-47F8-9261-62019B64329D}
 		{F0520647-AAC3-45BA-AC34-530D62056034} = {B3C624C6-D7C7-47F8-9261-62019B64329D}
 		{E4611F25-31C1-4FD3-9D8A-06B008185770} = {37A51F27-296D-4764-B28C-E76E9C1E219B}
+		{8ABC4036-4BDC-4139-B91C-6215164CE94F} = {A5C69751-CF8C-4D8B-9481-244B07AB0E05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E85E2D46-2E45-4B7D-8767-D1D8E8D63809}
