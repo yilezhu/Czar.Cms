@@ -33,6 +33,7 @@
 *│　类    名： TaskInfoService                                    
 *└──────────────────────────────────────────────────────────────┘
 */
+using AutoMapper;
 using Czar.Cms.Core.Extensions;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
@@ -48,10 +49,12 @@ namespace Czar.Cms.Services
     public class TaskInfoService: ITaskInfoService
     {
         private readonly ITaskInfoRepository _repository;
+        private readonly IMapper _mapper;
 
-        public TaskInfoService(ITaskInfoRepository repository)
+        public TaskInfoService(ITaskInfoRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<TableDataModel> LoadDataAsync(TaskInfoRequestModel model)
@@ -77,10 +80,22 @@ namespace Czar.Cms.Services
             return _repository.ResumeSystemStoppedAsync(); 
         }
 
-        public Task<bool> SystemStoppedAsync()
+        public async Task<bool> SystemStoppedAsync()
         {
-            return _repository.SystemStoppedAsync();
+            return await _repository.SystemStoppedAsync();
 
+        }
+
+        public async Task<bool> UpdateStatusByIdsAsync(int[] ids, int Status)
+        {
+            return await _repository.UpdateStatusByIdsAsync(ids,Status);
+        }
+
+
+        public async Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status)
+        {
+            var result= await _repository.GetListByJobStatuAsync(Status);
+            return _mapper.Map<List<TaskInfoDto>>(result);
         }
     }
 }

@@ -61,10 +61,17 @@ namespace Czar.Cms.IServices
         /// <returns></returns>
         Task<bool> ResumeSystemStoppedAsync();
         /// <summary>
-        /// 根据状态获取所有的任务列表
+        /// 根据ids更新状态
         /// </summary>
-        /// <param name="jobStatu"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
-        //Task<List<JobInfoDto>> GetListByJobStatuAsync(JobStatu jobStatu);
+        Task<bool> UpdateStatusByIdsAsync(Int32[] ids, int Status);
+
+        /// <summary>
+        /// 根据状态获取任务列表
+        /// </summary>
+        /// <param name="Status">定时任务状态</param>
+        /// <returns></returns>
+        Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status);
     }
 }
