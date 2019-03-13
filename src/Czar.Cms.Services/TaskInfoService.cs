@@ -33,10 +33,13 @@
 *│　类    名： TaskInfoService                                    
 *└──────────────────────────────────────────────────────────────┘
 */
+using Czar.Cms.Core.Extensions;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
+using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Czar.Cms.Services
@@ -48,6 +51,24 @@ namespace Czar.Cms.Services
         public TaskInfoService(ITaskInfoRepository repository)
         {
             _repository = repository;
+        }
+
+        public TableDataModel LoadData(TaskInfoRequestModel model)
+        {
+            string conditions = "where IsDelete=0 ";//未删除的
+            if (!model.Key.IsNullOrWhiteSpace())
+            {
+                conditions += $"and Name like '%@Key%'";
+            }
+
+            return new TableDataModel
+            {
+                count = _repository.RecordCount(conditions),
+                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", new
+                {
+                    Key = model.Key,
+                }).ToList(),
+            };
         }
     }
 }
