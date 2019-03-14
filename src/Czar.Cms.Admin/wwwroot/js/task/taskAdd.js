@@ -4,11 +4,22 @@ layui.config({
 }).extend({
     "authtree": "authtree"
 });
-layui.use(['form', 'layer', 'authtree'], function () {
+layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
+        laydate = layui.laydate,
         $ = layui.jquery, authtree = layui.authtree;
-    form.on("submit(addMenu)", function (data) {
+    //同时绑定多个
+    lay('.Time').each(function () {
+        laydate.render({
+            elem: this,
+            format: 'yyyy-MM-dd HH:mm:ss',
+            type: 'datetime'
+        });
+    }); 
+   
+       
+    form.on("submit(addTask)", function (data) {
         //获取防伪标记
         $.ajax({
             type: 'POST',
