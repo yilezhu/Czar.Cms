@@ -67,19 +67,19 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
         return false;
     });
     form.verify({
-        userName: function (value, item) { //value：表单的值、item：表单的DOM对象
+        Name: function (value, item) { //value：表单的值、item：表单的DOM对象
             if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                return '菜单别名不能有特殊字符';
+                return '任务别名不能有特殊字符';
             }
             if (/(^\_)|(\__)|(\_+$)/.test(value)) {
-                return '菜单别名首尾不能出现下划线\'_\'';
+                return '任务别名首尾不能出现下划线\'_\'';
             }
             if (/^\d+\d+\d$/.test(value)) {
-                return '菜单别名不能全为数字';
+                return '任务别名不能全为数字';
             }
             var msg;
             $.ajax({
-                url: "/Menu/IsExistsName/",
+                url: "/TaskInfo/IsExistsName/",
                 async: false,
                 data: {
                     Name: value,
@@ -88,7 +88,7 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
                 dataType: 'json',
                 success: function (res) {
                     if (res.Data === true) {
-                        msg= "系统已存在相同的别名的菜单，请修改后再进行操作";
+                        msg= "系统已存在相同的别名的任务，请修改后再进行操作";
                     }
                 },
                 error: function (xml, errstr, err) {

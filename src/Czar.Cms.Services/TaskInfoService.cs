@@ -97,5 +97,28 @@ namespace Czar.Cms.Services
             var result= await _repository.GetListByJobStatuAsync(Status);
             return _mapper.Map<List<TaskInfoDto>>(result);
         }
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public async Task<BooleanResult> IsExistsNameAsync(TaskInfoAddOrModifyModel item)
+        {
+            bool data = false;
+            if (item.Id > 0)
+            {
+                data = await _repository.IsExistsNameAsync(item.Name, item.Id);
+            }
+            else
+            {
+                data = await _repository.IsExistsNameAsync(item.Name);
+
+            }
+            return new BooleanResult
+            {
+                Data = data,
+            };
+        }
     }
 }

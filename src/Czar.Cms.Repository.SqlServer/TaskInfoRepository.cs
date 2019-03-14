@@ -115,5 +115,41 @@ namespace Czar.Cms.Repository.SqlServer
                 return new List<TaskInfo>();
             }
         }
+
+
+        public async Task<bool> IsExistsNameAsync(string Name)
+        {
+            string sql = "select Id from TaskInfo where Name=@Name and IsDelete=0";
+            var result = await _dbConnection.QueryAsync<int>(sql, new
+            {
+                Name = Name,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsExistsNameAsync(string Name, Int32 Id)
+        {
+            string sql = "select Id from TaskInfo where Name=@Name and Id <> @Id and IsDelete=0";
+            var result = await _dbConnection.QueryAsync<int>(sql, new
+            {
+                Name = Name,
+                Id = Id,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

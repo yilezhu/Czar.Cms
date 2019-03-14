@@ -10,7 +10,7 @@
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">调用别名</label>
         <div class="layui-input-block">
-            <input type="text" name="Name" class="layui-input Name" lay-verify="required|userName" placeholder="只允许字母数字下划线">
+            <input type="text" name="Name" class="layui-input Name" lay-verify="required|Name" placeholder="只允许字母数字下划线">
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
@@ -37,29 +37,16 @@
             <input type="text" name="ClassName" class="layui-input ClassName" lay-verify="required" placeholder="请输入显示名称">
         </div>
     </div>
-
-    <div class="layui-form-item layui-row layui-col-xs12">
-        <label class="layui-form-label">任务状态</label>
-        <div class="layui-input-block">
-            <select name="Status" class="Status" lay-filter="Status">
-                <option value="0">执行中</option>
-                <option value="1">已完成</option>
-                <option value="2">已停止</option>
-                <option value="3">系统停止</option>
-
-            </select>
-        </div>
-    </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">开始时间</label>
         <div class="layui-input-block">
-            <input type="text" value="" name="StartTime" placeholder="请输入开始时间" lay-verify="StartTime" readonly class="layui-input Time">
+            <input type="text" value="" name="StartTime" placeholder="请输入开始时间" readonly class="layui-input Time">
         </div>
     </div>
     <div class="layui-form-item layui-row layui-col-xs12">
         <label class="layui-form-label">结束时间</label>
         <div class="layui-input-block">
-            <input type="text" value="" name="EndTime" placeholder="请输入结束时间" lay-verify="EndTime" readonly class="layui-input Time">
+            <input type="text" value="" name="EndTime" placeholder="请输入结束时间" readonly class="layui-input Time">
         </div>
     </div>
     <div class="layui-form-item layui-form-text layui-col-xs12">

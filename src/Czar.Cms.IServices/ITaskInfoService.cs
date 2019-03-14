@@ -73,5 +73,12 @@ namespace Czar.Cms.IServices
         /// <param name="Status">定时任务状态</param>
         /// <returns></returns>
         Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status);
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        Task<BooleanResult> IsExistsNameAsync(TaskInfoAddOrModifyModel item);
     }
 }

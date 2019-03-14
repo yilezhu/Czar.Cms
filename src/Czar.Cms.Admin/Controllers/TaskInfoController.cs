@@ -86,10 +86,10 @@ namespace Czar.Cms.Admin.Controllers
         }
 
         [HttpGet]
-        public string IsExistsName([FromQuery]MenuAddOrModifyModel item)
+        public string IsExistsName([FromQuery]TaskInfoAddOrModifyModel item)
         {
-            //var result = _service.IsExistsName(item);
-            return JsonHelper.ObjectToJSON("");
+            var result = _service.IsExistsNameAsync(item);
+            return JsonHelper.ObjectToJSON(result);
         }
     }
 }
