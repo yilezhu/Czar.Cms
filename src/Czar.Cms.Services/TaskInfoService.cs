@@ -37,6 +37,7 @@ using AutoMapper;
 using Czar.Cms.Core.Extensions;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
+using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -119,6 +120,56 @@ namespace Czar.Cms.Services
             {
                 Data = data,
             };
+        }
+
+        public async Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel item)
+        {
+            var result = new BaseResult();
+            TaskInfo model;
+            if (item.Id == 0)
+            {
+                //TODO ADD
+                model = _mapper.Map<TaskInfo>(item);
+                model.AddManagerId = 1;
+                model.IsDelete = false;
+                model.AddTime = DateTime.Now;
+                model.Status = (int)TaskInfoStatus.Stopped;
+                if (await _repository.InsertAsync(model) > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                //TODO Modify
+                model = await _repository.GetAsync(item.Id);
+                if (model != null)
+                {
+                    _mapper.Map(item, model);
+                    if (await _repository.UpdateAsync(model) > 0)
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                    }
+                    else
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                    }
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonFailNoDataCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonFailNoDataMsg;
+                }
+            }
+            return result;
         }
     }
 }

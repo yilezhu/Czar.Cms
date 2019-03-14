@@ -35,46 +35,6 @@ layui.use(['form', 'layer', 'upload'], function () {
         }
     });
 
-
-    form.on("submit(changeManager)", function (data) {
-        //获取防伪标记
-        $.ajax({
-            type: 'POST',
-            url: '/Manager/ManagerInfo/',
-            data: data.data,
-            dataType: "json",
-            headers: {
-                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
-            },
-            success: function (res) {//res为相应体,function为回调函数
-
-                if (res.ResultCode === 0) {
-                    layer.alert(res.ResultMsg, { icon: 1 }, function () {
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    });
-          
-                } else if (res.ResultCode === 102) {
-                    layer.alert(res.ResultMsg, { icon: 5 }, function () {
-                        layer.closeAll("iframe");
-                        //刷新父页面
-                        parent.location.reload();
-                    });
-                }
-                else {
-                    layer.alert(res.ResultMsg, { icon: 5 });
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
-            }
-        });
-        return false;
-    });
-
-
-
     form.on("submit(changeManager)", function (data) {
         var obj = $(this);
         obj.text("提交中...").attr("disabled", "disabled").addClass("layui-disabled");

@@ -80,5 +80,12 @@ namespace Czar.Cms.IServices
         /// <param name="Name"></param>
         /// <returns></returns>
         Task<BooleanResult> IsExistsNameAsync(TaskInfoAddOrModifyModel item);
+
+        /// <summary>
+        /// 新增或者修改服务
+        /// </summary>
+        /// <param name="item">新增或者修改实体</param>
+        /// <returns>结果实体</returns>
+        Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel model);
     }
 }

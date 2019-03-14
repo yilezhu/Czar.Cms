@@ -23,29 +23,19 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
         //获取防伪标记
         $.ajax({
             type: 'POST',
-            url: '/Menu/AddOrModify/',
-            data: {
-                Id: $("#Id").val(),  //主键
-                Name: $(".Name").val(),
-                DisplayName: $(".DisplayName").val(),
-                IconUrl: $(".IconUrl").val(),
-                LinkUrl: $(".LinkUrl").val(),
-                Sort: $(".Sort").val(),
-                ParentId: $(".ParentId").val(),
-                IsSystem: $("input[name='IsSystem']:checked").val() === "0" ? false : true,
-                IsDisplay: $("input[name='IsDisplay']:checked").val() === "0" ? false : true
-            },
+            url: '/TaskInfo/AddOrModify/',
+            data: data.field,
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (res) {//res为相应体,function为回调函数
                 if (res.ResultCode === 0) {
-                    var alertIndex = layer.alert(res.ResultMsg, { icon: 1 }, function () {
+                    layer.alert(res.ResultMsg, { icon: 1 }, function () {
                         layer.closeAll("iframe");
                         //刷新父页面
                         parent.location.reload();
-                        top.layer.close(alertIndex);
+                        //top.layer.close(alertIndex);
                     });
                     //$("#res").click();//调用重置按钮将表单数据清空
                 } else if (res.ResultCode === 102) {
@@ -53,7 +43,7 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
                         layer.closeAll("iframe");
                         //刷新父页面
                         parent.location.reload();
-                        top.layer.close(alertIndex);
+                        //top.layer.close(alertIndex);
                     });
                 }
                 else {

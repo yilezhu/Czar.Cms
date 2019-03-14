@@ -40,19 +40,19 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]MenuAddOrModifyModel item)
+        public async Task<string> AddOrModifyAsync([FromForm]TaskInfoAddOrModifyModel item)
         {
             var result = new BaseResult();
-            MenuValidation validationRules = new MenuValidation();
-            ValidationResult results = validationRules.Validate(item);
-            if (results.IsValid)
+            //MenuValidation validationRules = new MenuValidation();
+            //ValidationResult results = validationRules.Validate(item);
+            if (ModelState.IsValid)
             {
-                //result = _service.AddOrModify(item);
+                result = await _service.AddOrModifyAsync(item);
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = results.ToString("||");
+                result.ResultMsg = ToErrorString(ModelState, "||");
             }
             return JsonHelper.ObjectToJSON(result);
         }
@@ -80,7 +80,7 @@ namespace Czar.Cms.Admin.Controllers
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = results.ToString("||");
+                result.ResultMsg = ToErrorString(ModelState, "||");
             }
             return JsonHelper.ObjectToJSON(result);
         }
