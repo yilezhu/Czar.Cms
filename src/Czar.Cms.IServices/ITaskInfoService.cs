@@ -65,7 +65,7 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        Task<bool> UpdateStatusByIdsAsync(Int32[] ids, int Status);
+        Task<BooleanResult> UpdateStatusByIdsAsync(Int32[] ids, int Status);
 
         /// <summary>
         /// 根据状态获取任务列表
@@ -87,5 +87,7 @@ namespace Czar.Cms.IServices
         /// <param name="item">新增或者修改实体</param>
         /// <returns>结果实体</returns>
         Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel model);
+
+        Task<BooleanResult> DeleteAsync(int Id);
     }
 }

@@ -76,23 +76,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         addTask();
     });
 
-    //批量删除
-    $(".stopAll_btn").click(function () {
-        var checkStatus = table.checkStatus('taskTable'),
-            data = checkStatus.data,
-            roleId = [];
-        if (data.length > 0) {
-            for (var i in data) {
-                roleId.push(data[i].Id);
-            }
-            layer.confirm('确定删除选中的菜单？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(roleId);
-            });
-        } else {
-            layer.msg("请选择需要删除的菜单");
-        }
-    });
 
     //列表操作
     table.on('tool(taskList)', function (obj) {
@@ -108,11 +91,29 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         }
     });
 
-    function del(menuId) {
+    //批量暂停
+    $(".stopAll_btn").click(function () {
+        var checkStatus = table.checkStatus('taskTable'),
+            data = checkStatus.data,
+            ids = [];
+        if (data.length > 0) {
+            for (var i in data) {
+                ids.push(data[i].Id);
+            }
+            layer.confirm('确定停止选中的任务吗？', { icon: 3, title: '提示信息' }, function (index) {
+                //获取防伪标记
+                goStop(ids);
+            });
+        } else {
+            layer.msg("请选择需要停止的任务");
+        }
+    });
+
+    function goStop(ids) {
         $.ajax({
             type: 'POST',
-            url: '/Menu/Delete/',
-            data: { menuId: menuId },
+            url: '/TaskInfo/Stop/',
+            data: { Ids: id },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -122,7 +123,68 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     time: 2000 //20s后自动关闭
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
+    }
+
+    //批量启动
+    $(".startAll_btn").click(function () {
+        var checkStatus = table.checkStatus('taskTable'),
+            data = checkStatus.data,
+            ids = [];
+        if (data.length > 0) {
+            for (var i in data) {
+                ids.push(data[i].Id);
+            }
+            layer.confirm('确定启动选中的任务吗？', { icon: 3, title: '提示信息' }, function (index) {
+                //获取防伪标记
+                goStart(ids);
+            });
+        } else {
+            layer.msg("请选择需要启动的任务");
+        }
+    });
+
+    function goStart(ids) {
+        $.ajax({
+            type: 'POST',
+            url: '/TaskInfo/Start/',
+            data: { Ids: id },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+            }
+        });
+    }
+
+    function del(Id) {
+        $.ajax({
+            type: 'POST',
+            url: '/TaskInfo/Delete/',
+            data: { Id: id },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

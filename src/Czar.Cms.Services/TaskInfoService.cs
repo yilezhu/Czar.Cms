@@ -47,7 +47,7 @@ using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
-    public class TaskInfoService: ITaskInfoService
+    public class TaskInfoService : ITaskInfoService
     {
         private readonly ITaskInfoRepository _repository;
         private readonly IMapper _mapper;
@@ -78,7 +78,7 @@ namespace Czar.Cms.Services
 
         public Task<bool> ResumeSystemStoppedAsync()
         {
-            return _repository.ResumeSystemStoppedAsync(); 
+            return _repository.ResumeSystemStoppedAsync();
         }
 
         public async Task<bool> SystemStoppedAsync()
@@ -87,15 +87,18 @@ namespace Czar.Cms.Services
 
         }
 
-        public async Task<bool> UpdateStatusByIdsAsync(int[] ids, int Status)
+        public async Task<BooleanResult> UpdateStatusByIdsAsync(int[] ids, int Status)
         {
-            return await _repository.UpdateStatusByIdsAsync(ids,Status);
+            return new BooleanResult
+            {
+                Data = await _repository.UpdateStatusByIdsAsync(ids, Status)
+            };
         }
 
 
         public async Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status)
         {
-            var result= await _repository.GetListByJobStatuAsync(Status);
+            var result = await _repository.GetListByJobStatuAsync(Status);
             return _mapper.Map<List<TaskInfoDto>>(result);
         }
 
@@ -167,6 +170,13 @@ namespace Czar.Cms.Services
                 }
             }
             return result;
+        }
+
+        public async Task<BooleanResult> DeleteAsync(int Id)
+        {
+            return new BooleanResult {
+                Data=await _repository.DeleteAsync(Id)>0,
+            };
         }
     }
 }

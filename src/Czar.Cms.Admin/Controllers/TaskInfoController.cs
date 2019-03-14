@@ -61,11 +61,27 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] menuId)
+        [Route("Stop")]
+        public async Task<string> StopAsync(int[] Ids)
         {
-            //return JsonHelper.ObjectToJSON(_service.DeleteIds(menuId));
-            return JsonHelper.ObjectToJSON("");
+            return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids,(int)TaskInfoStatus.Stopped));
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Start")]
+        public async Task<string> StartAsync(int[] Ids)
+        {
+            return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Running));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("Delete")]
+        public async Task<string> DeleteAsync(int Id)
+        {
+            return JsonHelper.ObjectToJSON(await _service.DeleteAsync(Id));
         }
 
         [HttpPost]
