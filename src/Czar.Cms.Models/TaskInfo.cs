@@ -104,18 +104,6 @@ namespace Czar.Cms.Models
 		///  
 		/// </summary>
 		[MaxLength(23)]
-		public DateTime? StartTime {get;set;}
-
-		/// <summary>
-		///  
-		/// </summary>
-		[MaxLength(23)]
-		public DateTime? EndTime {get;set;}
-
-		/// <summary>
-		///  
-		/// </summary>
-		[MaxLength(23)]
 		public DateTime? AddTime {get;set;}
 
 		/// <summary>
@@ -125,12 +113,6 @@ namespace Czar.Cms.Models
 		[MaxLength(10)]
 		public Int32 AddManagerId {get;set;}
 
-		/// <summary>
-		///  
-		/// </summary>
-		[Required]
-		[MaxLength(1)]
-		public Boolean IsDelete {get;set;}
 
 
 	}

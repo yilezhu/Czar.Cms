@@ -79,7 +79,7 @@ namespace Czar.Cms.Quartz
         /// <param name="StarTime">开始时间</param>
         /// <param name="EndTime">结束时间</param>
         /// <returns></returns>
-        public async Task<ScheduleResult> AddJobAsync(String JobName, String JobGroup, String JobNamespaceAndClassName, String JobAssemblyName, string CronExpress, DateTime StarTime, DateTime EndTime)
+        public async Task<ScheduleResult> AddJobAsync(String JobName, String JobGroup, String JobNamespaceAndClassName, String JobAssemblyName, string CronExpress)
         {
             ScheduleResult result = new ScheduleResult();
             try
@@ -90,15 +90,8 @@ namespace Czar.Cms.Quartz
                     result.ResultMsg = $"参数不能为空";
                     return result;//出现异常
                 }
-                if (StarTime == null)
-                {
-                    StarTime = DateTime.Now;
-                }
-                DateTimeOffset starRunTime = DateBuilder.NextGivenSecondDate(StarTime, 1);
-                if (EndTime == null)
-                {
-                    EndTime = DateTime.MaxValue.AddDays(-1);
-                }
+                var starRunTime = DateTime.Now;
+                var EndTime = DateTime.MaxValue.AddDays(-1);
                 DateTimeOffset endRunTime = DateBuilder.NextGivenSecondDate(EndTime, 1);
                 JobKey jobKey = new JobKey(JobName, JobGroup);
                 if (await Scheduler.CheckExists(jobKey))
@@ -131,7 +124,7 @@ namespace Czar.Cms.Quartz
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,nameof(AddJobAsync));
+                _logger.LogError(ex, nameof(AddJobAsync));
                 result.ResultCode = -4;
                 result.ResultMsg = ex.ToString();
                 return result;//出现异常

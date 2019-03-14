@@ -4,21 +4,11 @@ layui.config({
 }).extend({
     "authtree": "authtree"
 });
-layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
+layui.use(['form', 'layer'], function () {
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
-        laydate = layui.laydate,
-        $ = layui.jquery, authtree = layui.authtree;
-    //同时绑定多个
-    lay('.Time').each(function () {
-        laydate.render({
-            elem: this,
-            format: 'yyyy-MM-dd HH:mm:ss',
-            type: 'datetime'
-        });
-    }); 
-   
-       
+        $ = layui.jquery;
+
     form.on("submit(addTask)", function (data) {
         //获取防伪标记
         $.ajax({
@@ -30,20 +20,21 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (res) {//res为相应体,function为回调函数
+                var alertIndex;
                 if (res.ResultCode === 0) {
-                    layer.alert(res.ResultMsg, { icon: 1 }, function () {
+                    alertIndex = layer.alert(res.ResultMsg, { icon: 1 }, function () {
                         layer.closeAll("iframe");
                         //刷新父页面
                         parent.location.reload();
-                        //top.layer.close(alertIndex);
+                        top.layer.close(alertIndex);
                     });
                     //$("#res").click();//调用重置按钮将表单数据清空
                 } else if (res.ResultCode === 102) {
-                    layer.alert(res.ResultMsg, { icon: 5 }, function () {
+                    alertIndex = layer.alert(res.ResultMsg, { icon: 5 }, function () {
                         layer.closeAll("iframe");
                         //刷新父页面
                         parent.location.reload();
-                        //top.layer.close(alertIndex);
+                        top.layer.close(alertIndex);
                     });
                 }
                 else {
@@ -70,7 +61,7 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
             var msg;
             $.ajax({
                 url: "/TaskInfo/IsExistsName/",
-                async: false,
+                async: true,
                 data: {
                     Name: value,
                     Id: $("#Id").val()
@@ -78,16 +69,16 @@ layui.use(['form', 'layer', 'authtree', 'laydate'], function () {
                 dataType: 'json',
                 success: function (res) {
                     if (res.Data === true) {
-                        msg= "系统已存在相同的别名的任务，请修改后再进行操作";
+                        msg = "系统已存在相同的别名的任务，请修改后再进行操作";
                     }
                 },
                 error: function (xml, errstr, err) {
-                    msg= "系统异常，请稍候再试";
+                    msg = "系统异常，请稍候再试";
                 }
             });
             if (msg) {
                 return msg;
             }
         }
-    });      
+    });
 });

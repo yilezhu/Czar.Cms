@@ -18,16 +18,14 @@ namespace Czar.Cms.ViewModels
 {
     public class TaskInfoAddOrModifyModel
     {
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
         public String Name { get; set; }
         public String Group { get; set; }
         public String Description { get; set; }
         public String Assembly { get; set; }
         public String ClassName { get; set; }
         public String Cron { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
         public DateTime? AddTime { get; set; }
-        public Int32 AddManagerId { get; set; }
+        public int AddManagerId { get; set; }
     }
 }

@@ -34,8 +34,5 @@ namespace Czar.Cms.ViewModels
 
         public String Cron { get; set; }
 
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-
     }
 }

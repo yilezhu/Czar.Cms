@@ -40,13 +40,15 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<string> AddOrModifyAsync([FromForm]TaskInfoAddOrModifyModel item)
+        public async Task<string> AddOrModify([FromForm]TaskInfoAddOrModifyModel item)
         {
             var result = new BaseResult();
-            //MenuValidation validationRules = new MenuValidation();
-            //ValidationResult results = validationRules.Validate(item);
-            if (ModelState.IsValid)
+            TaskInfoValidation validationRules = new TaskInfoValidation();
+            ValidationResult results = validationRules.Validate(item);
+            if (results.IsValid)
             {
+                item.AddManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
+                item.AddTime = DateTime.Now;
                 result = await _service.AddOrModifyAsync(item);
             }
             else
@@ -86,9 +88,9 @@ namespace Czar.Cms.Admin.Controllers
         }
 
         [HttpGet]
-        public string IsExistsName([FromQuery]TaskInfoAddOrModifyModel item)
+        public async Task<string> IsExistsName([FromQuery]TaskInfoAddOrModifyModel item)
         {
-            var result = _service.IsExistsNameAsync(item);
+            var result = await _service.IsExistsNameAsync(item);
             return JsonHelper.ObjectToJSON(result);
         }
     }

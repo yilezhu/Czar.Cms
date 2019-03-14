@@ -48,16 +48,19 @@ layui.use(['form', 'layer', 'upload'], function () {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (res) {//res为相应体,function为回调函数
+                var alertIndex;
                 if (res.ResultCode === 0) {
-                    layer.alert(res.ResultMsg, { icon: 1 }, function (index) {
+                    alertIndex=layer.alert(res.ResultMsg, { icon: 1 }, function (index) {
                         layer.close(index);
-
+                        parent.parent.location.reload();
+                        top.layer.close(alertIndex);
                     });
 
                 } else {
-                    layer.alert(res.ResultMsg, { icon: 5 }, function (index) {
+                    alertIndex=layer.alert(res.ResultMsg, { icon: 5 }, function (index) {
                         layer.close(index);
                         location.reload();
+                        top.layer.close(alertIndex);
                     });
                 }
 

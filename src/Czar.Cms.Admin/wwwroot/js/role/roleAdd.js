@@ -27,19 +27,23 @@ layui.use(['form', 'layer', 'authtree'], function () {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
             success: function (res) {//res为相应体,function为回调函数
-          
+                var alertIndex;
                 if (res.ResultCode === 0) {
-                   layer.alert(res.ResultMsg, { icon: 1 }, function () {
+                    alertIndex = layer.alert(res.ResultMsg, { icon: 1 }, function () {
                         layer.closeAll("iframe");
                         //刷新父页面
                         parent.location.reload();
+                        top.layer.close(alertIndex);
+
                     });
                     //$("#res").click();//调用重置按钮将表单数据清空
                 } else if (res.ResultCode === 102) {
-                   layer.alert(res.ResultMsg, { icon: 5 }, function () {
+                   alertIndex=layer.alert(res.ResultMsg, { icon: 5 }, function () {
                         layer.closeAll("iframe");
                         //刷新父页面
-                        parent.location.reload();
+                       parent.location.reload();
+                       top.layer.close(alertIndex);
+
                     });
                 }
                 else {

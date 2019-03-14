@@ -60,10 +60,10 @@ namespace Czar.Cms.Services
 
         public async Task<TableDataModel> LoadDataAsync(TaskInfoRequestModel model)
         {
-            string conditions = "where IsDelete=0 ";//未删除的
+            string conditions = "";
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and Name like '%@Key%'";
+                conditions += $"where Name like '%@Key%'";
             }
 
             return new TableDataModel
@@ -130,9 +130,6 @@ namespace Czar.Cms.Services
             {
                 //TODO ADD
                 model = _mapper.Map<TaskInfo>(item);
-                model.AddManagerId = 1;
-                model.IsDelete = false;
-                model.AddTime = DateTime.Now;
                 model.Status = (int)TaskInfoStatus.Stopped;
                 if (await _repository.InsertAsync(model) > 0)
                 {
