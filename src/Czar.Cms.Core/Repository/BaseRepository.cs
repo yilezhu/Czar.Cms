@@ -103,12 +103,12 @@ namespace Czar.Cms.Core.Repository
         }
         public async Task<int> DeleteAsync(TKey id)
         {
-            return await _dbConnection.DeleteAsync(id);
+            return await _dbConnection.DeleteAsync<T>(id);
         }
 
         public async Task<int> DeleteAsync(T entity)
         {
-            return await _dbConnection.DeleteAsync(entity);
+            return await _dbConnection.DeleteAsync<T>(entity);
         }
 
 
