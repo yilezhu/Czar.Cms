@@ -27,6 +27,13 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="IsRun">
+    {{#  if(d.Status ===0){ }}
+    <input type="checkbox" name="IsRun" value="{{d.Id}}" lay-filter="IsRun" lay-skin="switch" lay-text="启动|停止" checked>
+    {{#  } else{ }}
+    <input type="checkbox" name="IsRun" value="{{d.Id}}" lay-filter="IsRun" lay-skin="switch" lay-text="启动|停止">
+    {{#  }}}
+</script>
 @section Scripts{
     <script type="text/javascript" src="~/layui/layui.js"></script>
     <script type="text/javascript" src="~/js/task/taskList.js?_=@DateTime.Now.ToString("yyyyMMddHHmmss")"></script>

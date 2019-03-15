@@ -61,7 +61,7 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Stop")]
+        [Route("/TaskInfo/Stop/")]
         public async Task<string> StopAsync(int[] Ids)
         {
             return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids,(int)TaskInfoStatus.Stopped));
@@ -69,7 +69,7 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Start")]
+        [Route("/TaskInfo/Start/")]
         public async Task<string> StartAsync(int[] Ids)
         {
             return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Running));
@@ -78,7 +78,7 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("Delete")]
+        [Route("/TaskInfo/Delete/")]
         public async Task<string> DeleteAsync(int Id)
         {
             return JsonHelper.ObjectToJSON(await _service.DeleteAsync(Id));
@@ -86,19 +86,28 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeDisplayStatus([FromForm]ChangeStatusModel item)
+        [Route("/TaskInfo/ChangeStatus/")]
+        public async Task<string> ChangeStatusAsync([FromForm]ChangeStatusModel item)
         {
-            var result = new BaseResult();
-            ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
-            ValidationResult results = validationRules.Validate(item);
-            if (results.IsValid)
+            var result = new BooleanResult();
+         
+            if (ModelState.IsValid)
             {
-               // result = _service.ChangeDisplayStatus(item);
+                int[] ids = { item.Id };
+                if (item.Status)
+                {
+                    result= await _service.UpdateStatusByIdsAsync(ids, (int)TaskInfoStatus.Running);
+                }
+                else
+                {
+                    result= await _service.UpdateStatusByIdsAsync(ids, (int)TaskInfoStatus.Stopped);
+                }
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
                 result.ResultMsg = ToErrorString(ModelState, "||");
+                result.Data = false;
             }
             return JsonHelper.ObjectToJSON(result);
         }

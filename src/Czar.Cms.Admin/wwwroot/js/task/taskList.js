@@ -21,7 +21,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             { field: 'Name', title: '名称', minWidth: 50, align: "center" },
             { field: 'Group', title: '分组', minWidth: 50, align: "center" },
             { field: 'Cron', title: 'Cron', minWidth: 80, align: "center" },
-            { field: 'Status', title: '状态', minWidth: 80, align: 'center' },
+            { field: 'Status', title: '状态', minWidth: 100, fixed: "right", align: "center", templet: '#IsRun' },
             { title: '操作', minWidth: 80, templet: '#taskBar', fixed: "right", align: "center" }
         ]]
     });
@@ -113,7 +113,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         $.ajax({
             type: 'POST',
             url: '/TaskInfo/Stop/',
-            data: { Ids: id },
+            data: { Ids: ids },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -123,10 +123,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     time: 2000 //20s后自动关闭
                 }, function () {
                     tableIns.reload();
-                });
+                    });
+                layer.close(index);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
             }
         });
     }
@@ -143,6 +145,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             layer.confirm('确定启动选中的任务吗？', { icon: 3, title: '提示信息' }, function (index) {
                 //获取防伪标记
                 goStart(ids);
+
             });
         } else {
             layer.msg("请选择需要启动的任务");
@@ -153,7 +156,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         $.ajax({
             type: 'POST',
             url: '/TaskInfo/Start/',
-            data: { Ids: id },
+            data: { Ids: ids },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -163,15 +166,17 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     time: 2000 //20s后自动关闭
                 }, function () {
                     tableIns.reload();
-                });
+                    });
+                layer.close(index);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
             }
         });
     }
 
-    function del(Id) {
+    function del(id) {
         $.ajax({
             type: 'POST',
             url: '/TaskInfo/Delete/',
@@ -185,18 +190,20 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     time: 2000 //20s后自动关闭
                 }, function () {
                     tableIns.reload();
-                });
+                    });
+                layer.close(index);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
             }
         });
     }
 
-    form.on('switch(IsDisplay)', function (data) {
-        var tipText = '确定显示当前菜单吗？';
+    form.on('switch(IsRun)', function (data) {
+        var tipText = '确定启动当前任务吗？';
         if (!data.elem.checked) {
-            tipText = '确定关闭当前菜单吗？';
+            tipText = '确定停止当前任务吗？';
         }
         layer.confirm(tipText, {
             icon: 3,
@@ -207,7 +214,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 layer.close(index);
             }
         }, function (index) {
-            changeDisplayStatus(data.value, data.elem.checked);
+            changeStatus(data.value, data.elem.checked);
             layer.close(index);
         }, function (index) {
             data.elem.checked = !data.elem.checked;
@@ -216,11 +223,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     });
 
-    function changeDisplayStatus(menuId, status) {
+    function changeStatus(id, status) {
         $.ajax({
             type: 'POST',
-            url: '/Menu/ChangeDisplayStatus/',
-            data: { Id: menuId, Status: status },
+            url: '/TaskInfo/ChangeStatus/',
+            data: { Id: id, Status: status },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -235,6 +242,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                data.elem.checked = !data.elem.checked;
             }
         });
     }
