@@ -81,5 +81,20 @@ namespace Czar.Cms.IRepository
         /// <param name="Status"></param>
         /// <returns></returns>
         Task<List<TaskInfo>> GetListByJobStatuAsync(int Status);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="Name">别名</param>
+        /// <returns></returns>
+        Task<Boolean> IsExistsNameAsync(string Name);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="Name">别名</param>
+        /// <param name="Id">主键</param>
+        /// <returns></returns>
+        Task<Boolean> IsExistsNameAsync(string Name, Int32 Id);
     }
 }

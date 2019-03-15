@@ -101,7 +101,7 @@ namespace Czar.Cms.Repository.SqlServer
 
         public async Task<List<TaskInfo>> GetListByJobStatuAsync(int Status)
         {
-            string sql = "select * from TaskInfo where Status=@Status and IsDelete=0";
+            string sql = "select * from TaskInfo where Status=@Status ";
             var result = await _dbConnection.QueryAsync<TaskInfo>(sql, new
             {
                 Status = Status,
@@ -113,6 +113,42 @@ namespace Czar.Cms.Repository.SqlServer
             else
             {
                 return new List<TaskInfo>();
+            }
+        }
+
+
+        public async Task<bool> IsExistsNameAsync(string Name)
+        {
+            string sql = "select Id from TaskInfo where Name=@Name";
+            var result = await _dbConnection.QueryAsync<int>(sql, new
+            {
+                Name = Name,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsExistsNameAsync(string Name, Int32 Id)
+        {
+            string sql = "select Id from TaskInfo where Name=@Name and Id <> @Id ";
+            var result = await _dbConnection.QueryAsync<int>(sql, new
+            {
+                Name = Name,
+                Id = Id,
+            });
+            if (result != null && result.Count() > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

@@ -65,7 +65,7 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        Task<bool> UpdateStatusByIdsAsync(Int32[] ids, int Status);
+        Task<BooleanResult> UpdateStatusByIdsAsync(Int32[] ids, int Status);
 
         /// <summary>
         /// 根据状态获取任务列表
@@ -73,5 +73,21 @@ namespace Czar.Cms.IServices
         /// <param name="Status">定时任务状态</param>
         /// <returns></returns>
         Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status);
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        Task<BooleanResult> IsExistsNameAsync(TaskInfoAddOrModifyModel item);
+
+        /// <summary>
+        /// 新增或者修改服务
+        /// </summary>
+        /// <param name="item">新增或者修改实体</param>
+        /// <returns>结果实体</returns>
+        Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel model);
+
+        Task<BooleanResult> DeleteAsync(int Id);
     }
 }

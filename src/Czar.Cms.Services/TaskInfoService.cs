@@ -37,6 +37,7 @@ using AutoMapper;
 using Czar.Cms.Core.Extensions;
 using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
+using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
-    public class TaskInfoService: ITaskInfoService
+    public class TaskInfoService : ITaskInfoService
     {
         private readonly ITaskInfoRepository _repository;
         private readonly IMapper _mapper;
@@ -59,10 +60,10 @@ namespace Czar.Cms.Services
 
         public async Task<TableDataModel> LoadDataAsync(TaskInfoRequestModel model)
         {
-            string conditions = "where IsDelete=0 ";//未删除的
+            string conditions = "";
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and Name like '%@Key%'";
+                conditions += $"where Name like '%@Key%'";
             }
 
             return new TableDataModel
@@ -77,7 +78,7 @@ namespace Czar.Cms.Services
 
         public Task<bool> ResumeSystemStoppedAsync()
         {
-            return _repository.ResumeSystemStoppedAsync(); 
+            return _repository.ResumeSystemStoppedAsync();
         }
 
         public async Task<bool> SystemStoppedAsync()
@@ -86,16 +87,96 @@ namespace Czar.Cms.Services
 
         }
 
-        public async Task<bool> UpdateStatusByIdsAsync(int[] ids, int Status)
+        public async Task<BooleanResult> UpdateStatusByIdsAsync(int[] ids, int Status)
         {
-            return await _repository.UpdateStatusByIdsAsync(ids,Status);
+            return new BooleanResult
+            {
+                Data = await _repository.UpdateStatusByIdsAsync(ids, Status)
+            };
         }
 
 
         public async Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status)
         {
-            var result= await _repository.GetListByJobStatuAsync(Status);
+            var result = await _repository.GetListByJobStatuAsync(Status);
             return _mapper.Map<List<TaskInfoDto>>(result);
+        }
+
+        /// <summary>
+        /// 判断是否存在名为Name的菜单
+        /// </summary>
+        /// <param name="Name"></param>
+        /// <returns></returns>
+        public async Task<BooleanResult> IsExistsNameAsync(TaskInfoAddOrModifyModel item)
+        {
+            bool data = false;
+            if (item.Id > 0)
+            {
+                data = await _repository.IsExistsNameAsync(item.Name, item.Id);
+            }
+            else
+            {
+                data = await _repository.IsExistsNameAsync(item.Name);
+
+            }
+            return new BooleanResult
+            {
+                Data = data,
+            };
+        }
+
+        public async Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel item)
+        {
+            var result = new BaseResult();
+            TaskInfo model;
+            if (item.Id == 0)
+            {
+                //TODO ADD
+                model = _mapper.Map<TaskInfo>(item);
+                model.Status = (int)TaskInfoStatus.Stopped;
+                if (await _repository.InsertAsync(model) > 0)
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                }
+            }
+            else
+            {
+                //TODO Modify
+                model = await _repository.GetAsync(item.Id);
+                if (model != null)
+                {
+                    _mapper.Map(item, model);
+                    if (await _repository.UpdateAsync(model) > 0)
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+                    }
+                    else
+                    {
+                        result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                        result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
+                    }
+                }
+                else
+                {
+                    result.ResultCode = ResultCodeAddMsgKeys.CommonFailNoDataCode;
+                    result.ResultMsg = ResultCodeAddMsgKeys.CommonFailNoDataMsg;
+                }
+            }
+            return result;
+        }
+
+        public async Task<BooleanResult> DeleteAsync(int Id)
+        {
+            return new BooleanResult {
+                Data=await _repository.DeleteAsync(Id)>0,
+            };
         }
     }
 }

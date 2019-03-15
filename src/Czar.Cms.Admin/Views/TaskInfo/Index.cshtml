@@ -16,6 +16,9 @@
         <div class="layui-inline">
             <a class="layui-btn layui-btn-normal layui-btn-normal stopAll_btn"><i class="layui-icon layui-icon-normal"></i>批量停止</a>
         </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-normal layui-btn-normal startAll_btn"><i class="layui-icon layui-icon-normal"></i>批量启动</a>
+        </div>
     </form>
 </blockquote>
 <table id="taskList" lay-filter="taskList"></table>
@@ -23,7 +26,13 @@
 <script type="text/html" id="taskBar">
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">启动</a>
+</script>
+<script type="text/html" id="IsRun">
+    {{#  if(d.Status ===0){ }}
+    <input type="checkbox" name="IsRun" value="{{d.Id}}" lay-filter="IsRun" lay-skin="switch" lay-text="启动|停止" checked>
+    {{#  } else{ }}
+    <input type="checkbox" name="IsRun" value="{{d.Id}}" lay-filter="IsRun" lay-skin="switch" lay-text="启动|停止">
+    {{#  }}}
 </script>
 @section Scripts{
     <script type="text/javascript" src="~/layui/layui.js"></script>

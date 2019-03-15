@@ -26,6 +26,11 @@ namespace Czar.Cms.Admin.Profiles
             CreateMap<MenuAddOrModifyModel, Menu>();
             CreateMap<Menu, MenuNavView>();
             #endregion
+
+            #region Menu
+            CreateMap<TaskInfoAddOrModifyModel, TaskInfo>();
+            CreateMap<TaskInfo, TaskInfoDto>();
+            #endregion
         }
     }
 }

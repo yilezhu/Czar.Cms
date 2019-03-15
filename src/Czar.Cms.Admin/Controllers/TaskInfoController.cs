@@ -40,56 +40,83 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]MenuAddOrModifyModel item)
+        public async Task<string> AddOrModify([FromForm]TaskInfoAddOrModifyModel item)
         {
             var result = new BaseResult();
-            MenuValidation validationRules = new MenuValidation();
+            TaskInfoValidation validationRules = new TaskInfoValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                //result = _service.AddOrModify(item);
+                item.AddManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
+                item.AddTime = DateTime.Now;
+                result = await _service.AddOrModifyAsync(item);
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = results.ToString("||");
+                result.ResultMsg = ToErrorString(ModelState, "||");
             }
             return JsonHelper.ObjectToJSON(result);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] menuId)
+        [Route("/TaskInfo/Stop/")]
+        public async Task<string> StopAsync(int[] Ids)
         {
-            //return JsonHelper.ObjectToJSON(_service.DeleteIds(menuId));
-            return JsonHelper.ObjectToJSON("");
-
+            return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids,(int)TaskInfoStatus.Stopped));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeDisplayStatus([FromForm]ChangeStatusModel item)
+        [Route("/TaskInfo/Start/")]
+        public async Task<string> StartAsync(int[] Ids)
         {
-            var result = new BaseResult();
-            ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
-            ValidationResult results = validationRules.Validate(item);
-            if (results.IsValid)
+            return JsonHelper.ObjectToJSON(await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Running));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/TaskInfo/Delete/")]
+        public async Task<string> DeleteAsync(int Id)
+        {
+            return JsonHelper.ObjectToJSON(await _service.DeleteAsync(Id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("/TaskInfo/ChangeStatus/")]
+        public async Task<string> ChangeStatusAsync([FromForm]ChangeStatusModel item)
+        {
+            var result = new BooleanResult();
+         
+            if (ModelState.IsValid)
             {
-               // result = _service.ChangeDisplayStatus(item);
+                int[] ids = { item.Id };
+                if (item.Status)
+                {
+                    result= await _service.UpdateStatusByIdsAsync(ids, (int)TaskInfoStatus.Running);
+                }
+                else
+                {
+                    result= await _service.UpdateStatusByIdsAsync(ids, (int)TaskInfoStatus.Stopped);
+                }
             }
             else
             {
                 result.ResultCode = ResultCodeAddMsgKeys.CommonModelStateInvalidCode;
-                result.ResultMsg = results.ToString("||");
+                result.ResultMsg = ToErrorString(ModelState, "||");
+                result.Data = false;
             }
             return JsonHelper.ObjectToJSON(result);
         }
 
         [HttpGet]
-        public string IsExistsName([FromQuery]MenuAddOrModifyModel item)
+        public async Task<string> IsExistsName([FromQuery]TaskInfoAddOrModifyModel item)
         {
-            //var result = _service.IsExistsName(item);
-            return JsonHelper.ObjectToJSON("");
+            var result = await _service.IsExistsNameAsync(item);
+            return JsonHelper.ObjectToJSON(result);
         }
     }
 }

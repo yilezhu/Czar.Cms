@@ -21,7 +21,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             { field: 'Name', title: '名称', minWidth: 50, align: "center" },
             { field: 'Group', title: '分组', minWidth: 50, align: "center" },
             { field: 'Cron', title: 'Cron', minWidth: 80, align: "center" },
-            { field: 'Status', title: '状态', minWidth: 80, align: 'center' },
+            { field: 'Status', title: '状态', minWidth: 100, fixed: "right", align: "center", templet: '#IsRun' },
             { title: '操作', minWidth: 80, templet: '#taskBar', fixed: "right", align: "center" }
         ]]
     });
@@ -76,23 +76,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         addTask();
     });
 
-    //批量删除
-    $(".stopAll_btn").click(function () {
-        var checkStatus = table.checkStatus('taskTable'),
-            data = checkStatus.data,
-            roleId = [];
-        if (data.length > 0) {
-            for (var i in data) {
-                roleId.push(data[i].Id);
-            }
-            layer.confirm('确定删除选中的菜单？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(roleId);
-            });
-        } else {
-            layer.msg("请选择需要删除的菜单");
-        }
-    });
 
     //列表操作
     table.on('tool(taskList)', function (obj) {
@@ -108,11 +91,29 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         }
     });
 
-    function del(menuId) {
+    //批量暂停
+    $(".stopAll_btn").click(function () {
+        var checkStatus = table.checkStatus('taskTable'),
+            data = checkStatus.data,
+            ids = [];
+        if (data.length > 0) {
+            for (var i in data) {
+                ids.push(data[i].Id);
+            }
+            layer.confirm('确定停止选中的任务吗？', { icon: 3, title: '提示信息' }, function (index) {
+                //获取防伪标记
+                goStop(ids);
+            });
+        } else {
+            layer.msg("请选择需要停止的任务");
+        }
+    });
+
+    function goStop(ids) {
         $.ajax({
             type: 'POST',
-            url: '/Menu/Delete/',
-            data: { menuId: menuId },
+            url: '/TaskInfo/Stop/',
+            data: { Ids: ids },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -122,19 +123,87 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     time: 2000 //20s后自动关闭
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
-                });
+                    });
+                layer.close(index);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
             }
         });
     }
 
-    form.on('switch(IsDisplay)', function (data) {
-        var tipText = '确定显示当前菜单吗？';
+    //批量启动
+    $(".startAll_btn").click(function () {
+        var checkStatus = table.checkStatus('taskTable'),
+            data = checkStatus.data,
+            ids = [];
+        if (data.length > 0) {
+            for (var i in data) {
+                ids.push(data[i].Id);
+            }
+            layer.confirm('确定启动选中的任务吗？', { icon: 3, title: '提示信息' }, function (index) {
+                //获取防伪标记
+                goStart(ids);
+
+            });
+        } else {
+            layer.msg("请选择需要启动的任务");
+        }
+    });
+
+    function goStart(ids) {
+        $.ajax({
+            type: 'POST',
+            url: '/TaskInfo/Start/',
+            data: { Ids: ids },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                    });
+                layer.close(index);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
+            }
+        });
+    }
+
+    function del(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/TaskInfo/Delete/',
+            data: { Id: id },
+            dataType: "json",
+            headers: {
+                "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
+            },
+            success: function (data) {//res为相应体,function为回调函数
+                layer.msg(data.ResultMsg, {
+                    time: 2000 //20s后自动关闭
+                }, function () {
+                    tableIns.reload();
+                    });
+                layer.close(index);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                layer.close(index);
+            }
+        });
+    }
+
+    form.on('switch(IsRun)', function (data) {
+        var tipText = '确定启动当前任务吗？';
         if (!data.elem.checked) {
-            tipText = '确定关闭当前菜单吗？';
+            tipText = '确定停止当前任务吗？';
         }
         layer.confirm(tipText, {
             icon: 3,
@@ -145,7 +214,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 layer.close(index);
             }
         }, function (index) {
-            changeDisplayStatus(data.value, data.elem.checked);
+            changeStatus(data.value, data.elem.checked);
             layer.close(index);
         }, function (index) {
             data.elem.checked = !data.elem.checked;
@@ -154,11 +223,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     });
 
-    function changeDisplayStatus(menuId, status) {
+    function changeStatus(id, status) {
         $.ajax({
             type: 'POST',
-            url: '/Menu/ChangeDisplayStatus/',
-            data: { Id: menuId, Status: status },
+            url: '/TaskInfo/ChangeStatus/',
+            data: { Id: id, Status: status },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -173,6 +242,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
+                data.elem.checked = !data.elem.checked;
             }
         });
     }
