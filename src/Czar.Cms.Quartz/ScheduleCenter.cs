@@ -17,6 +17,7 @@ using Quartz.Impl;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -99,7 +100,9 @@ namespace Czar.Cms.Quartz
                     await Scheduler.PauseJob(jobKey);
                     await Scheduler.DeleteJob(jobKey);
                 }
-                var jobType = Type.GetType(JobNamespaceAndClassName + "," + JobAssemblyName);
+                Assembly assembly = Assembly.LoadFile(JobAssemblyName);
+                Type jobType = assembly.GetType(JobNamespaceAndClassName);
+                //var jobType = Type.GetType(JobNamespaceAndClassName + "," + JobAssemblyName);
                 if (jobType == null)
                 {
                     result.ResultCode = -1;

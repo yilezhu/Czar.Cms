@@ -35,7 +35,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Test", "6.Test", "{37A51F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Test", "src\Czar.Cms.Test\Czar.Cms.Test.csproj", "{E4611F25-31C1-4FD3-9D8A-06B008185770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Czar.Cms.Quartz", "Czar.Cms.Quartz\Czar.Cms.Quartz.csproj", "{8ABC4036-4BDC-4139-B91C-6215164CE94F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Quartz", "src\Czar.Cms.Quartz\Czar.Cms.Quartz.csproj", "{8ABC4036-4BDC-4139-B91C-6215164CE94F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Czar.Cms.Job", "src\Czar.Cms.Job\Czar.Cms.Job.csproj", "{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,10 @@ Global
 		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8ABC4036-4BDC-4139-B91C-6215164CE94F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{F0520647-AAC3-45BA-AC34-530D62056034} = {B3C624C6-D7C7-47F8-9261-62019B64329D}
 		{E4611F25-31C1-4FD3-9D8A-06B008185770} = {37A51F27-296D-4764-B28C-E76E9C1E219B}
 		{8ABC4036-4BDC-4139-B91C-6215164CE94F} = {A5C69751-CF8C-4D8B-9481-244B07AB0E05}
+		{45EC5E92-DD94-4F72-9F38-2C8D91959A7D} = {AF230497-3B8B-4226-82C4-F60BF94A58D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E85E2D46-2E45-4B7D-8767-D1D8E8D63809}
