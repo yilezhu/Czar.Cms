@@ -21,6 +21,9 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using AutoMapper;
 using Czar.Cms.Services;
+using Czar.Cms.IServices;
+using Czar.Cms.Quartz;
+using Czar.Cms.ViewModels;
 
 namespace Czar.Cms.Admin
 {
@@ -92,7 +95,10 @@ namespace Czar.Cms.Admin
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app
+            , IHostingEnvironment env
+            , ILoggerFactory loggerFactory
+            ,IApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -102,7 +108,39 @@ namespace Czar.Cms.Admin
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            var jobInfoAppService = app.ApplicationServices.GetRequiredService<ITaskInfoService>();
+            var scheduleCenter = app.ApplicationServices.GetRequiredService<ScheduleCenter>();
+            applicationLifetime.ApplicationStarted.Register(async () =>
+            {
+                var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.SystemStopped);
+                if (list?.Count() > 0)
+                {
+                    list.ForEach(async x =>
+                    {
+                        await scheduleCenter.AddJobAsync(x.Name,
+                                                x.Group,
+                                                x.ClassName,
+                                                x.Assembly,
+                                                x.Cron);
+                    });
+                    await jobInfoAppService.ResumeSystemStoppedAsync();
+                }
 
+            });
+            applicationLifetime.ApplicationStopped.Register(async () =>
+            {
+                var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.Running);
+                if (list?.Count() > 0)
+                {
+                    list.ForEach(async x =>
+                    {
+                        await scheduleCenter.DeleteJobAsync(x.Name, x.Group);
+                    });
+                    await jobInfoAppService.SystemStoppedAsync();
+                }
+
+
+            });
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
