@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Czar.Cms.ViewModels\Czar.Cms.ViewModels.csproj" />
+    <ProjectReference Include="..\Czar.Cms.ViewModels\Czar.Cms.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
