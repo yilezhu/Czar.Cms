@@ -134,7 +134,7 @@ namespace Czar.Cms.Services
             {
                 //TODO ADD
                 model = _mapper.Map<TaskInfo>(item);
-                model.Status = (int)TaskInfoStatus.Running;
+                model.Status = (int)TaskInfoStatus.Stopped;
                 if (await _repository.InsertAsync(model) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;

@@ -139,11 +139,11 @@ namespace Czar.Cms.Admin
                     var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.Running);
                     if (list?.Count() > 0)
                     {
+                        await jobInfoAppService.SystemStoppedAsync();
                         list.ForEach(async x =>
                         {
                             await scheduleCenter.DeleteJobAsync(x.Name, x.Group);
                         });
-                        await jobInfoAppService.SystemStoppedAsync();
                     }
 
 

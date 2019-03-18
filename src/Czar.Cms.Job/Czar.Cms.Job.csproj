@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="Quartz" Version="3.0.7" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

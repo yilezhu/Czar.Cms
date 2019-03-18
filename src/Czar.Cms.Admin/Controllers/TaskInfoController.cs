@@ -50,23 +50,11 @@ namespace Czar.Cms.Admin.Controllers
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                var jobResult = await _scheduleCenter.AddJobAsync(item.Name,
-                   item.Group,
-                   item.ClassName,
-                   item.Assembly,
-                   item.Cron
-                );
-                if (jobResult.ResultCode == 0)
-                {
+           
                     item.AddManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                     item.AddTime = DateTime.Now;
                     result = await _service.AddOrModifyAsync(item);
-                }
-                else
-                {
-                    result.ResultCode = jobResult.ResultCode;
-                    result.ResultMsg = jobResult.ResultMsg;
-                }
+               
 
             }
             else
@@ -108,7 +96,7 @@ namespace Czar.Cms.Admin.Controllers
             {
                 list.ForEach(async x =>
                 {
-                    await _scheduleCenter.ResumeJobAsync(x.Name, x.Group);
+                    await _scheduleCenter.AddJobAsync(x.Name, x.Group,x.ClassName,x.Assembly,x.Cron);
                 });
                 result = await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Running);
             }
@@ -154,7 +142,8 @@ namespace Czar.Cms.Admin.Controllers
                     int[] ids = { item.Id };
                     if (item.Status)
                     {
-                        await _scheduleCenter.ResumeJobAsync(model.Name, model.Group);
+                        await _scheduleCenter.AddJobAsync(model.Name, model.Group, model.ClassName, model.Assembly, model.Cron);
+
                         result = await _service.UpdateStatusByIdsAsync(ids, (int)TaskInfoStatus.Running);
                     }
                     else

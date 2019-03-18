@@ -242,7 +242,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 layer.alert('操作失败！！！' + XMLHttpRequest.status + "|" + XMLHttpRequest.readyState + "|" + textStatus, { icon: 5 });
-                data.elem.checked = !data.elem.checked;
+                
             }
         });
     }
