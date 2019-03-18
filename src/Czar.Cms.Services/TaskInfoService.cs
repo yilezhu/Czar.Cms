@@ -178,5 +178,19 @@ namespace Czar.Cms.Services
                 Data=await _repository.DeleteAsync(Id)>0,
             };
         }
+
+        public async Task<List<TaskInfoDto>> GetListByIdsAsync(int[] ids)
+        {
+            string conditions = "where Id in @ids";
+            var lst = await _repository.GetListAsync(conditions, new { ids = ids });
+            return _mapper.Map<List<TaskInfoDto>>(lst);
+        }
+
+        public async Task<TaskInfoDto> GetByIdAsync(int id)
+        {
+
+            var item = await _repository.GetAsync(id);
+            return _mapper.Map<TaskInfoDto>(item);
+        }
     }
 }

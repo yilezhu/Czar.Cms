@@ -83,6 +83,7 @@ namespace Czar.Cms.Admin
                 });
             //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile
             services.AddAutoMapper();
+            services.AddSingleton<ScheduleCenter>();
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)
@@ -91,6 +92,7 @@ namespace Czar.Cms.Admin
             builder.RegisterAssemblyTypes(typeof(ManagerRoleService).Assembly)
                  .Where(t => t.Name.EndsWith("Service"))
                  .AsImplementedInterfaces();
+
             return new AutofacServiceProvider(builder.Build());
         }
 

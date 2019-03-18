@@ -47,7 +47,7 @@ namespace Czar.Cms.Quartz
                 ////是否配置集群
                 //["quartz.jobStore.clustered"] = "true",
                 ////线程池个数
-                //["quartz.threadPool.threadCount"] = "20",
+                ["quartz.threadPool.threadCount"] = "20",
                 ////类型为JobStoreXT,事务
                 //["quartz.jobStore.type"] = "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz",
                 ////以下配置需要数据库表配合使用，表结构sql地址：https://github.com/quartznet/quartznet/tree/master/database/tables
