@@ -30,7 +30,7 @@ namespace Czar.Cms.Admin.Profiles
             #region TaskInfo
             CreateMap<TaskInfoAddOrModifyModel, TaskInfo>();
             CreateMap<TaskInfo, TaskInfoDto>();
-            CreateMap<List<TaskInfo>,List<TaskInfoDto>>();
+
             #endregion
         }
     }

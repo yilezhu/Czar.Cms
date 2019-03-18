@@ -24,11 +24,13 @@ using Czar.Cms.Services;
 using Czar.Cms.IServices;
 using Czar.Cms.Quartz;
 using Czar.Cms.ViewModels;
+using NLog;
 
 namespace Czar.Cms.Admin
 {
     public class Startup
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             env.ConfigureNLog("Nlog.config");
@@ -110,39 +112,49 @@ namespace Czar.Cms.Admin
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            var jobInfoAppService = app.ApplicationServices.GetRequiredService<ITaskInfoService>();
-            var scheduleCenter = app.ApplicationServices.GetRequiredService<ScheduleCenter>();
-            applicationLifetime.ApplicationStarted.Register(async () =>
+            try
             {
-                var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.SystemStopped);
-                if (list?.Count() > 0)
+                logger.Info("正在启动停止的程序");
+                var jobInfoAppService = app.ApplicationServices.GetRequiredService<ITaskInfoService>();
+                var scheduleCenter = app.ApplicationServices.GetRequiredService<ScheduleCenter>();
+                applicationLifetime.ApplicationStarted.Register(async () =>
                 {
-                    list.ForEach(async x =>
+                    var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.SystemStopped);
+                    if (list?.Count() > 0)
                     {
-                        await scheduleCenter.AddJobAsync(x.Name,
-                                                x.Group,
-                                                x.ClassName,
-                                                x.Assembly,
-                                                x.Cron);
-                    });
-                    await jobInfoAppService.ResumeSystemStoppedAsync();
-                }
+                        list.ForEach(async x =>
+                        {
+                            await scheduleCenter.AddJobAsync(x.Name,
+                                                    x.Group,
+                                                    x.ClassName,
+                                                    x.Assembly,
+                                                    x.Cron);
+                        });
+                        await jobInfoAppService.ResumeSystemStoppedAsync();
+                    }
 
-            });
-            applicationLifetime.ApplicationStopped.Register(async () =>
+                });
+                applicationLifetime.ApplicationStopping.Register(async () =>
+                {
+                    var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.Running);
+                    if (list?.Count() > 0)
+                    {
+                        list.ForEach(async x =>
+                        {
+                            await scheduleCenter.DeleteJobAsync(x.Name, x.Group);
+                        });
+                        await jobInfoAppService.SystemStoppedAsync();
+                    }
+
+
+                });
+            }
+            catch (Exception ex)
             {
-                var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.Running);
-                if (list?.Count() > 0)
-                {
-                    list.ForEach(async x =>
-                    {
-                        await scheduleCenter.DeleteJobAsync(x.Name, x.Group);
-                    });
-                    await jobInfoAppService.SystemStoppedAsync();
-                }
 
-
-            });
+                logger.Error(ex, nameof(Startup));
+            }
+            
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();

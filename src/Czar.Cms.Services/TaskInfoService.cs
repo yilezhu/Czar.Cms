@@ -99,6 +99,7 @@ namespace Czar.Cms.Services
         public async Task<List<TaskInfoDto>> GetListByJobStatuAsync(int Status)
         {
             var result = await _repository.GetListByJobStatuAsync(Status);
+          
             return _mapper.Map<List<TaskInfoDto>>(result);
         }
 

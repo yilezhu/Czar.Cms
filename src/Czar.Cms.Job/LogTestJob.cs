@@ -11,7 +11,7 @@
 *└──────────────────────────────────────────────────────────────┘
 */
 using Quartz;
-using Serilog;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +21,7 @@ namespace Czar.Cms.Job
 {
     public class LogTestJob : IJob
     {
+        public static Logger logger = LogManager.GetCurrentClassLogger();
         public async Task Execute(IJobExecutionContext context)
         {
             JobDataMap dataMap = context.JobDetail.JobDataMap;
@@ -29,7 +30,7 @@ namespace Czar.Cms.Job
             {
                 serverName = "kong";
             }
-            Log.Information(serverName);
+            logger.Info(serverName);
             await Task.CompletedTask;
         }
     }
