@@ -33,28 +33,6 @@ namespace Czar.Cms.Job
             {
                 serverName = "kong";
             }
-            //实例化一个文件流--->与写入文件相关联
-            var filepath = AppDomain.CurrentDomain.BaseDirectory+DateTime.Now.ToString("yyyy-MM-dd");
-            if (!Directory.Exists(filepath))
-            {
-                Directory.CreateDirectory(filepath);
-            }
-            using (var fs = new FileStream(filepath+ "\\testLog.txt", FileMode.Append, FileAccess.Write))
-            {
-                //实例化一个StreamWriter-->与fs相关联
-                using (var sw = new StreamWriter(fs))
-                {
-                    //开始写入
-                    await sw.WriteLineAsync($"Hello, {serverName},at {DateTime.Now.ToString("")}");
-                    //清空缓冲区
-                    await sw.FlushAsync();
-                    //关闭流
-                    sw.Close();
-                    fs.Close();
-                }
-            }
-
-
             logger.Error($"Hello, {serverName},at {DateTime.Now.ToString()}");
             await Task.CompletedTask;
         }
