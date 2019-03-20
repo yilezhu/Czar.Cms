@@ -114,7 +114,6 @@ namespace Czar.Cms.Admin
             }
             try
             {
-                logger.Info("正在启动停止的程序");
                 var jobInfoAppService = app.ApplicationServices.GetRequiredService<ITaskInfoService>();
                 var scheduleCenter = app.ApplicationServices.GetRequiredService<ScheduleCenter>();
                 applicationLifetime.ApplicationStarted.Register(async () =>

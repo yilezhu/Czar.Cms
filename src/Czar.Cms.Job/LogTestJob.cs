@@ -10,8 +10,8 @@
 *│　类    名： LogTestJob                                      
 *└──────────────────────────────────────────────────────────────┘
 */
+using NLog;
 using Quartz;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +22,9 @@ namespace Czar.Cms.Job
 {
     public class LogTestJob : IJob
     {
-        
+        public static Logger logger = LogManager.GetCurrentClassLogger();
+
+     
         public async Task Execute(IJobExecutionContext context)
         {
             JobDataMap dataMap = context.JobDetail.JobDataMap;
@@ -53,7 +55,7 @@ namespace Czar.Cms.Job
             }
 
 
-
+            logger.Error($"Hello, {serverName},at {DateTime.Now.ToString()}");
             await Task.CompletedTask;
         }
     }
