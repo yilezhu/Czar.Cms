@@ -29,6 +29,13 @@ namespace Czar.Cms.Core.Repository
         /// <returns></returns>
         T Get(TKey id);
         /// <summary>
+        /// 条件获取第一个数据
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        T Get(string conditions, object parameters = null);
+        /// <summary>
         /// 获取所有的数据
         /// </summary>
         /// <returns></returns>
@@ -112,6 +119,13 @@ namespace Czar.Cms.Core.Repository
         /// <param name="id">主键ID</param>
         /// <returns></returns>
         Task<T> GetAsync(TKey id);
+        /// <summary>
+        /// 条件获取第一个
+        /// </summary>
+        /// <param name="conditions"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task<T> GetAsync(string conditions, object parameters = null);
         /// <summary>
         /// 获取所有的数据
         /// </summary>

@@ -38,6 +38,7 @@ namespace Czar.Cms.Core.Repository
         #region 同步
 
         public T Get(TKey id) => _dbConnection.Get<T>(id);
+        public T Get(string conditions, object parameters = null) => _dbConnection.QueryFirstOrDefault<T>(conditions,parameters);
         public IEnumerable<T> GetList() => _dbConnection.GetList<T>();
 
         public IEnumerable<T> GetList(object whereConditions) => _dbConnection.GetList<T>(whereConditions);
@@ -74,6 +75,9 @@ namespace Czar.Cms.Core.Repository
         {
             return await _dbConnection.GetAsync<T>(id);
         }
+
+        public async Task<T> GetAsync(string conditions, object parameters = null) => await _dbConnection.QueryFirstOrDefaultAsync<T>(conditions, parameters);
+
 
         public async Task<IEnumerable<T>> GetListAsync()
         {
