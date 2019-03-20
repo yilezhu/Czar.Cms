@@ -89,5 +89,9 @@ namespace Czar.Cms.IServices
         Task<BaseResult> AddOrModifyAsync(TaskInfoAddOrModifyModel model);
 
         Task<BooleanResult> DeleteAsync(int Id);
+
+        Task<List<TaskInfoDto>> GetListByIdsAsync(int[] ids);
+
+        Task<TaskInfoDto> GetByIdAsync(int id);
     }
 }

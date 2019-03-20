@@ -17,6 +17,7 @@ using Quartz.Impl;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@ namespace Czar.Cms.Quartz
                 ////是否配置集群
                 //["quartz.jobStore.clustered"] = "true",
                 ////线程池个数
-                //["quartz.threadPool.threadCount"] = "20",
+                ["quartz.threadPool.threadCount"] = "20",
                 ////类型为JobStoreXT,事务
                 //["quartz.jobStore.type"] = "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz",
                 ////以下配置需要数据库表配合使用，表结构sql地址：https://github.com/quartznet/quartznet/tree/master/database/tables
@@ -99,7 +100,9 @@ namespace Czar.Cms.Quartz
                     await Scheduler.PauseJob(jobKey);
                     await Scheduler.DeleteJob(jobKey);
                 }
-                var jobType = Type.GetType(JobNamespaceAndClassName + "," + JobAssemblyName);
+                Assembly assembly = Assembly.LoadFile(JobAssemblyName);
+                Type jobType = assembly.GetType(JobNamespaceAndClassName);
+                //var jobType = Type.GetType(JobNamespaceAndClassName + "," + JobAssemblyName);
                 if (jobType == null)
                 {
                     result.ResultCode = -1;

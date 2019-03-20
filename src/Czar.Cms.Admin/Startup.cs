@@ -21,11 +21,16 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using AutoMapper;
 using Czar.Cms.Services;
+using Czar.Cms.IServices;
+using Czar.Cms.Quartz;
+using Czar.Cms.ViewModels;
+using NLog;
 
 namespace Czar.Cms.Admin
 {
     public class Startup
     {
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             env.ConfigureNLog("Nlog.config");
@@ -80,6 +85,7 @@ namespace Czar.Cms.Admin
                 });
             //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile
             services.AddAutoMapper();
+            services.AddSingleton<ScheduleCenter>();
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterAssemblyTypes(typeof(ManagerRoleRepository).Assembly)
@@ -88,11 +94,15 @@ namespace Czar.Cms.Admin
             builder.RegisterAssemblyTypes(typeof(ManagerRoleService).Assembly)
                  .Where(t => t.Name.EndsWith("Service"))
                  .AsImplementedInterfaces();
+
             return new AutofacServiceProvider(builder.Build());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app
+            , IHostingEnvironment env
+            , ILoggerFactory loggerFactory
+            ,IApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -102,7 +112,48 @@ namespace Czar.Cms.Admin
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            try
+            {
+                var jobInfoAppService = app.ApplicationServices.GetRequiredService<ITaskInfoService>();
+                var scheduleCenter = app.ApplicationServices.GetRequiredService<ScheduleCenter>();
+                applicationLifetime.ApplicationStarted.Register(async () =>
+                {
+                    var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.SystemStopped);
+                    if (list?.Count() > 0)
+                    {
+                        list.ForEach(async x =>
+                        {
+                            await scheduleCenter.AddJobAsync(x.Name,
+                                                    x.Group,
+                                                    x.ClassName,
+                                                    x.Assembly,
+                                                    x.Cron);
+                        });
+                        await jobInfoAppService.ResumeSystemStoppedAsync();
+                    }
 
+                });
+                applicationLifetime.ApplicationStopping.Register(async () =>
+                {
+                    var list = await jobInfoAppService.GetListByJobStatuAsync((int)TaskInfoStatus.Running);
+                    if (list?.Count() > 0)
+                    {
+                        await jobInfoAppService.SystemStoppedAsync();
+                        list.ForEach(async x =>
+                        {
+                            await scheduleCenter.DeleteJobAsync(x.Name, x.Group);
+                        });
+                    }
+
+
+                });
+            }
+            catch (Exception ex)
+            {
+
+                logger.Error(ex, nameof(Startup));
+            }
+            
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
