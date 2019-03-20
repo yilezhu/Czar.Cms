@@ -15,6 +15,7 @@ using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.IServices
 {
@@ -25,52 +26,52 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="model">查询实体</param>
         /// <returns>table数据</returns>
-        TableDataModel LoadData(ManagerRequestModel model);
+        Task<TableDataModel> LoadDataAsync(ManagerRequestModel model);
 
         /// <summary>
         /// 新增或者修改服务
         /// </summary>
         /// <param name="item">新增或者修改试图实体</param>
         /// <returns>结果实体</returns>
-        BaseResult AddOrModify(ManagerAddOrModifyModel model);
+        Task<BaseResult> AddOrModifyAsync(ManagerAddOrModifyModel model);
 
         /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="Ids">主键id数组</param>
         /// <returns>结果实体</returns>
-        BaseResult DeleteIds(int[] Ids);
+        Task<BaseResult> DeleteIdsAsync(int[] Ids);
 
         /// <summary>
         /// 修改锁定状态
         /// </summary>
         /// <param name="model">修改锁定状态实体</param>
         /// <returns>结果</returns>
-        BaseResult ChangeLockStatus(ChangeStatusModel model);
+        Task<BaseResult> ChangeLockStatusAsync(ChangeStatusModel model);
 
         /// <summary>
         /// 登录操作，成功则写日志
         /// </summary>
         /// <param name="model">登陆实体</param>
         /// <returns>实体对象</returns>
-        Manager SignIn(LoginModel model);
+        Task<Manager> SignInAsync(LoginModel model);
 
         /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="model">修改密码实体</param>
         /// <returns>结果</returns>
-        BaseResult ChangePassword(ChangePasswordModel model);
+        Task<BaseResult> ChangePasswordAsync(ChangePasswordModel model);
 
-        Manager GetManagerById(int id);
+        Task<Manager> GetManagerByIdAsync(int id);
 
-        Manager GetManagerContainRoleNameById(int id);
+        Task<Manager> GetManagerContainRoleNameByIdAsync(int id);
 
         /// <summary>
         /// 个人资料修改
         /// </summary>
         /// <param name="model">个人资料修改实体</param>
         /// <returns>结果</returns>
-        BaseResult UpdateManagerInfo(ChangeInfoModel model);
+        Task<BaseResult> UpdateManagerInfoAsync(ChangeInfoModel model);
     }
 }

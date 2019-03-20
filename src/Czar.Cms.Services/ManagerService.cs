@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
@@ -40,7 +41,7 @@ namespace Czar.Cms.Services
             _managerLogRepository = managerLogRepository;
         }
 
-        public BaseResult AddOrModify(ManagerAddOrModifyModel item)
+        public async Task<BaseResult> AddOrModifyAsync(ManagerAddOrModifyModel item)
         {
             var result = new BaseResult();
             Manager manager;
@@ -53,7 +54,7 @@ namespace Czar.Cms.Services
                 manager.AddManagerId = 1;
                 manager.IsDelete = false;
                 manager.AddTime = DateTime.Now;
-                if (_repository.Insert(manager) > 0)
+                if ( await _repository.InsertAsync(manager) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -67,7 +68,7 @@ namespace Czar.Cms.Services
             else
             {
                 //TODO Modify
-                manager = _repository.Get(item.Id);
+                manager = await _repository.GetAsync(item.Id);
                 if (manager != null)
                 {
                     _mapper.Map(item, manager);
@@ -93,7 +94,7 @@ namespace Czar.Cms.Services
             return result;
         }
 
-        public BaseResult DeleteIds(int[] Ids)
+        public async Task<BaseResult> DeleteIdsAsync(int[] Ids)
         {
             var result = new BaseResult();
             if (Ids.Count() == 0)
@@ -104,7 +105,7 @@ namespace Czar.Cms.Services
             }
             else
             {
-                var count = _repository.DeleteLogical(Ids);
+                var count = await _repository.DeleteLogicalAsync(Ids);
                 if (count > 0)
                 {
                     //成功
@@ -123,14 +124,14 @@ namespace Czar.Cms.Services
             return result;
         }
 
-        public TableDataModel LoadData(ManagerRequestModel model)
+        public async Task<TableDataModel> LoadDataAsync(ManagerRequestModel model)
         {
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
                 conditions += $"and (UserName like '%@Key%' or NickName like '%@Key%' or Remark like '%@Key%' or Mobile like '%@Key%' or Email like '%@Key%')";
             }
-            var list = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc", model).ToList();
+            var list = (await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", model)).ToList();
             var viewList = new List<ManagerListModel>();
             list?.ForEach(x =>
             {
@@ -140,19 +141,19 @@ namespace Czar.Cms.Services
             });
             return new TableDataModel
             {
-                count = _repository.RecordCount(conditions),
+                count = await _repository.RecordCountAsync(conditions),
                 data = viewList,
             };
         }
 
-        public BaseResult ChangeLockStatus(ChangeStatusModel model)
+        public async Task<BaseResult> ChangeLockStatusAsync(ChangeStatusModel model)
         {
             var result = new BaseResult();
             //判断状态是否发生变化，没有则修改，有则返回状态已变化无法更改状态的提示
-            var isLock = _repository.GetLockStatusById(model.Id);
+            var isLock = await _repository.GetLockStatusByIdAsync(model.Id);
             if (isLock == !model.Status)
             {
-                var count = _repository.ChangeLockStatusById(model.Id, model.Status);
+                var count = await _repository.ChangeLockStatusByIdAsync(model.Id, model.Status);
                 if (count > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
@@ -177,20 +178,20 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="model">登陆实体</param>
         /// <returns>状态</returns>
-        public Manager SignIn(LoginModel model)
+        public async Task<Manager> SignInAsync(LoginModel model)
         {
             model.Password = AESEncryptHelper.Encode(model.Password.Trim(), CzarCmsKeys.AesEncryptKeys);
             model.UserName = model.UserName.Trim();
             string conditions = "where IsDelete=0 ";//未删除的
             conditions += $"and (UserName = @UserName or Mobile =@UserName or Email =@UserName) and Password=@Password";
-            var manager = _repository.GetList(conditions, model).FirstOrDefault();
+            var manager = await _repository.GetAsync(conditions, model);
             if (manager != null)
             {
                 manager.LoginLastIp = model.Ip;
                 manager.LoginCount += 1;
                 manager.LoginLastTime = DateTime.Now;
                 _repository.Update(manager);
-                _managerLogRepository.Insert(new ManagerLog()
+               await _managerLogRepository.InsertAsync(new ManagerLog()
                 {
                     ActionType = CzarCmsEnums.ActionEnum.SignIn.ToString(),
                     AddManageId = manager.Id,
@@ -208,13 +209,13 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="model">修改密码实体</param>
         /// <returns>结果</returns>
-        public BaseResult ChangePassword(ChangePasswordModel model)
+        public async Task<BaseResult> ChangePasswordAsync(ChangePasswordModel model)
         {
             BaseResult result = new BaseResult();
-            string oldPwd = _repository.GetPasswordById(model.Id);//数据库中的密码
+            string oldPwd = await _repository.GetPasswordByIdAsync(model.Id);//数据库中的密码
             if (oldPwd == AESEncryptHelper.Encode(model.OldPassword, CzarCmsKeys.AesEncryptKeys))
             {
-                var count = _repository.ChangePasswordById(model.Id, AESEncryptHelper.Encode(model.NewPassword.Trim(), CzarCmsKeys.AesEncryptKeys));
+                var count = await _repository.ChangePasswordByIdAsync(model.Id, AESEncryptHelper.Encode(model.NewPassword.Trim(), CzarCmsKeys.AesEncryptKeys));
                 if (count > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
@@ -234,15 +235,15 @@ namespace Czar.Cms.Services
             return result;
         }
 
-        public Manager GetManagerById(int id)
+        public async Task<Manager> GetManagerByIdAsync(int id)
         {
 
-            return _repository.Get(id);
+            return await _repository.GetAsync(id);
         }
 
-        public Manager GetManagerContainRoleNameById(int id)
+        public async Task<Manager> GetManagerContainRoleNameByIdAsync(int id)
         {
-            return _repository.GetManagerContainRoleNameById(id);
+            return await _repository.GetManagerContainRoleNameByIdAsync(id);
         }
 
         /// <summary>
@@ -250,15 +251,15 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="model">个人资料修改实体</param>
         /// <returns>结果</returns>
-        public BaseResult UpdateManagerInfo(ChangeInfoModel model)
+        public async Task<BaseResult> UpdateManagerInfoAsync(ChangeInfoModel model)
         {
             BaseResult result = new BaseResult();
             //TODO Modify
-            var manager = _repository.Get(model.Id);
+            var manager = await _repository.GetAsync(model.Id);
             if (manager != null)
             {
                 _mapper.Map(model, manager);
-                if (_repository.Update(manager) > 0)
+                if (await _repository.UpdateAsync(manager) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;

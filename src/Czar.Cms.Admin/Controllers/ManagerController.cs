@@ -40,7 +40,7 @@ namespace Czar.Cms.Admin.Controllers
 
         public string LoadData([FromQuery]ManagerRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadData(model));
+            return JsonHelper.ObjectToJSON(_service.LoadDataAsync(model));
         }
 
         [HttpGet]
@@ -55,14 +55,15 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]ManagerAddOrModifyModel item)
+        [Route("/Manager/AddOrModify")]
+        public async Task<string> AddOrModifyAsync([FromForm]ManagerAddOrModifyModel item)
         {
             var result = new BaseResult();
             ManagerValidation validationRules = new ManagerValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.AddOrModify(item);
+                result = await _service.AddOrModifyAsync(item);
             }
             else
             {
@@ -76,19 +77,20 @@ namespace Czar.Cms.Admin.Controllers
         [ValidateAntiForgeryToken]
         public string Delete(int[] roleId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIds(roleId));
+            return JsonHelper.ObjectToJSON(_service.DeleteIdsAsync(roleId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeLockStatus([FromForm]ChangeStatusModel item)
+        [Route("/Manager/ChangeLockStatus")]
+        public async Task<string> ChangeLockStatusAsync([FromForm]ChangeStatusModel item)
         {
             var result = new BaseResult();
             ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.ChangeLockStatus(item);
+                result = await _service.ChangeLockStatusAsync(item);
             }
             else
             {
@@ -107,7 +109,8 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangePassword([FromForm]ChangePasswordModel item)
+        [Route("/Manager/ChangePassword")]
+        public async Task<string> ChangePasswordAsync([FromForm]ChangePasswordModel item)
         {
             var result = new BaseResult();
             if (!ModelState.IsValid)
@@ -117,19 +120,20 @@ namespace Czar.Cms.Admin.Controllers
             }
             else
             {
-                result = _service.ChangePassword(item);
+                result = await _service.ChangePasswordAsync(item);
             }
             return JsonHelper.ObjectToJSON(result);
         }
 
-        public IActionResult ManagerInfo()
+        [Route("/Manager/ManagerInfo")]
+        public async Task<IActionResult> ManagerInfoAsync()
         {
             var Id = User.Claims.FirstOrDefault(x => x.Type == "Id");
             if (Id == null)
             {
                 return RedirectToAction("SignOut", "Account");
             }
-            var model = _service.GetManagerContainRoleNameById(int.Parse(Id.Value));
+            var model = await _service.GetManagerContainRoleNameByIdAsync(int.Parse(Id.Value));
             if (model == null)
             {
                 return RedirectToAction("SignOut", "Account");
@@ -140,7 +144,8 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ManagerInfo([FromForm]ChangeInfoModel item)
+        [Route("/Manager/ManagerInfo")]
+        public async Task<string> ManagerInfoAsync([FromForm]ChangeInfoModel item)
         {
             
             var result = new BaseResult();
@@ -148,7 +153,7 @@ namespace Czar.Cms.Admin.Controllers
             {
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
-                result = _service.UpdateManagerInfo(item);
+                result = await _service.UpdateManagerInfoAsync(item);
                 _httpContextAccessor.HttpContext.Session.SetString("NickName", item.NickName ?? "匿名");
                 _httpContextAccessor.HttpContext.Session.SetString("Email", item.Email ?? "");
                 _httpContextAccessor.HttpContext.Session.SetString("Avatar", item.Avatar ?? "/images/userface1.jpg");
