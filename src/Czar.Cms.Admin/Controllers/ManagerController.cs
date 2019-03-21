@@ -38,9 +38,9 @@ namespace Czar.Cms.Admin.Controllers
         }
 
 
-        public string LoadData([FromQuery]ManagerRequestModel model)
+        public async Task<string> LoadData([FromQuery]ManagerRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadDataAsync(model));
+            return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
         [HttpGet]
@@ -125,8 +125,7 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result);
         }
 
-        [Route("/Manager/ManagerInfo")]
-        public async Task<IActionResult> ManagerInfoAsync()
+        public async Task<IActionResult> ManagerInfo()
         {
             var Id = User.Claims.FirstOrDefault(x => x.Type == "Id");
             if (Id == null)

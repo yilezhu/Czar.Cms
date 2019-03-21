@@ -35,10 +35,10 @@ namespace Czar.Cms.Repository.SqlServer
             _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
 
-        public int ChangeDisplayStatusById(int id, bool status)
+        public async Task<Int32> ChangeDisplayStatusByIdAsync(int id, bool status)
         {
             string sql = "update Menu set IsDisplay=@IsDisplay where  Id=@Id";
-            return _dbConnection.Execute(sql, new
+            return await _dbConnection.ExecuteAsync(sql, new
             {
                 IsDisplay = status ? 1 : 0,
                 Id = id,
@@ -63,19 +63,19 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
-        public bool GetDisplayStatusById(int id)
+        public async Task<Boolean> GetDisplayStatusByIdAsync(int id)
         {
             string sql = "select IsDisplay from Menu where Id=@Id and IsDelete=0";
-            return _dbConnection.QueryFirstOrDefault<bool>(sql, new
+            return await _dbConnection.QueryFirstOrDefaultAsync<bool>(sql, new
             {
                 Id = id,
             });
         }
 
-        public bool IsExistsName(string Name)
+        public async Task<Boolean> IsExistsNameAsync(string Name)
         {
             string sql = "select Id from Menu where Name=@Name and IsDelete=0";
-            var result = _dbConnection.Query<int>(sql, new
+            var result = await _dbConnection.QueryAsync<int>(sql, new
             {
                 Name = Name,
             });
@@ -89,10 +89,10 @@ namespace Czar.Cms.Repository.SqlServer
             }
         }
 
-        public bool IsExistsName(string Name, Int32 Id)
+        public async Task<Boolean> IsExistsNameAsync(string Name, Int32 Id)
         {
             string sql = "select Id from Menu where Name=@Name and Id <> @Id and IsDelete=0";
-            var result = _dbConnection.Query<int>(sql, new
+            var result = await _dbConnection.QueryAsync<int>(sql, new
             {
                 Name = Name,
                 Id=Id,
