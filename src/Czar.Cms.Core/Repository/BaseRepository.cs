@@ -71,63 +71,63 @@ namespace Czar.Cms.Core.Repository
         #endregion
 
         #region 异步
-        public async Task<T> GetAsync(TKey id)
+        public  Task<T> GetAsync(TKey id)
         {
-            return await _dbConnection.GetAsync<T>(id);
+            return  _dbConnection.GetAsync<T>(id);
         }
 
-        public async Task<T> GetAsync(string conditions, object parameters = null) => await _dbConnection.QueryFirstOrDefaultAsync<T>(conditions, parameters);
+        public  Task<T> GetAsync(string conditions, object parameters = null) =>  _dbConnection.QueryFirstOrDefaultAsync<T>(conditions, parameters);
 
 
-        public async Task<IEnumerable<T>> GetListAsync()
+        public  Task<IEnumerable<T>> GetListAsync()
         {
-            return await _dbConnection.GetListAsync<T>();
+            return  _dbConnection.GetListAsync<T>();
         }
 
-        public async Task<IEnumerable<T>> GetListAsync(object whereConditions)
+        public  Task<IEnumerable<T>> GetListAsync(object whereConditions)
         {
-            return await _dbConnection.GetListAsync<T>(whereConditions);
+            return  _dbConnection.GetListAsync<T>(whereConditions);
         }
 
-        public async Task<IEnumerable<T>> GetListAsync(string conditions, object parameters = null)
+        public  Task<IEnumerable<T>> GetListAsync(string conditions, object parameters = null)
         {
-            return await _dbConnection.GetListAsync<T>(conditions, parameters);
+            return  _dbConnection.GetListAsync<T>(conditions, parameters);
         }
-        public async Task<IEnumerable<T>> GetListPagedAsync(int pageNumber, int rowsPerPage, string conditions, string orderby, object parameters = null)
+        public  Task<IEnumerable<T>> GetListPagedAsync(int pageNumber, int rowsPerPage, string conditions, string orderby, object parameters = null)
         {
-            return await _dbConnection.GetListPagedAsync<T>(pageNumber, rowsPerPage, conditions, orderby, parameters);
+            return  _dbConnection.GetListPagedAsync<T>(pageNumber, rowsPerPage, conditions, orderby, parameters);
         }
-        public async Task<int?> InsertAsync(T entity)
+        public  Task<int?> InsertAsync(T entity)
         {
-            return await _dbConnection.InsertAsync(entity);
+            return  _dbConnection.InsertAsync(entity);
         }
-        public async Task<int> UpdateAsync(T entity)
+        public  Task<int> UpdateAsync(T entity)
         {
-            return await _dbConnection.UpdateAsync(entity);
+            return  _dbConnection.UpdateAsync(entity);
         }
-        public async Task<int> DeleteAsync(TKey id)
+        public  Task<int> DeleteAsync(TKey id)
         {
-            return await _dbConnection.DeleteAsync<T>(id);
-        }
-
-        public async Task<int> DeleteAsync(T entity)
-        {
-            return await _dbConnection.DeleteAsync<T>(entity);
+            return  _dbConnection.DeleteAsync<T>(id);
         }
 
-
-        public async Task<int> DeleteListAsync(object whereConditions, IDbTransaction transaction = null, int? commandTimeout = null)
+        public  Task<int> DeleteAsync(T entity)
         {
-            return await _dbConnection.DeleteListAsync<T>(whereConditions, transaction, commandTimeout);
+            return  _dbConnection.DeleteAsync<T>(entity);
         }
 
-        public async Task<int> DeleteListAsync(string conditions, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null)
+
+        public  Task<int> DeleteListAsync(object whereConditions, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            return await DeleteListAsync(conditions, parameters, transaction, commandTimeout);
+            return  _dbConnection.DeleteListAsync<T>(whereConditions, transaction, commandTimeout);
         }
-        public async Task<int> RecordCountAsync(string conditions = "", object parameters = null)
+
+        public  Task<int> DeleteListAsync(string conditions, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null)
         {
-            return await _dbConnection.RecordCountAsync<T>(conditions, parameters);
+            return  DeleteListAsync(conditions, parameters, transaction, commandTimeout);
+        }
+        public  Task<int> RecordCountAsync(string conditions = "", object parameters = null)
+        {
+            return  _dbConnection.RecordCountAsync<T>(conditions, parameters);
         }
         #endregion
 
