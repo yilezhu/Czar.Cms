@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
@@ -35,7 +36,7 @@ namespace Czar.Cms.Services
             _mapper = mapper;
         }
 
-        public BaseResult AddOrModify(MenuAddOrModifyModel item)
+        public async Task<BaseResult> AddOrModifyAsync(MenuAddOrModifyModel item)
         {
             var result = new BaseResult();
             Menu model;
@@ -46,7 +47,7 @@ namespace Czar.Cms.Services
                 model.AddManagerId = 1;
                 model.IsDelete = false;
                 model.AddTime = DateTime.Now;
-                if (_repository.Insert(model) > 0)
+                if (await _repository.InsertAsync(model) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -60,13 +61,13 @@ namespace Czar.Cms.Services
             else
             {
                 //TODO Modify
-                model = _repository.Get(item.Id);
+                model = await _repository.GetAsync(item.Id);
                 if (model != null)
                 {
                     _mapper.Map(item, model);
                     model.ModifyManagerId = 1;
                     model.ModifyTime = DateTime.Now;
-                    if (_repository.Update(model) > 0)
+                    if (await _repository.UpdateAsync(model) > 0)
                     {
                         result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                         result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -87,7 +88,7 @@ namespace Czar.Cms.Services
         }
 
 
-        public BaseResult DeleteIds(int[] Ids)
+        public async Task<BaseResult> DeleteIdsAsync(int[] Ids)
         {
             var result = new BaseResult();
             if (Ids.Count() == 0)
@@ -98,7 +99,7 @@ namespace Czar.Cms.Services
             }
             else
             {
-                var count = _repository.DeleteLogical(Ids);
+                var count = await _repository.DeleteLogicalAsync(Ids);
                 if (count > 0)
                 {
                     //成功
@@ -134,14 +135,14 @@ namespace Czar.Cms.Services
             };
         }
 
-        public BaseResult ChangeDisplayStatus(ChangeStatusModel model)
+        public async Task<BaseResult> ChangeDisplayStatusAsync(ChangeStatusModel model)
         {
             var result = new BaseResult();
             //判断状态是否发生变化，没有则修改，有则返回状态已变化无法更改状态的提示
-            var isLock = _repository.GetDisplayStatusById(model.Id);
+            var isLock = await _repository.GetDisplayStatusByIdAsync(model.Id);
             if (isLock == !model.Status)
             {
-                var count = _repository.ChangeDisplayStatusById(model.Id, model.Status);
+                var count = await _repository.ChangeDisplayStatusByIdAsync(model.Id, model.Status);
                 if (count > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
@@ -166,16 +167,16 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="Name"></param>
         /// <returns></returns>
-        public BooleanResult IsExistsName(MenuAddOrModifyModel item)
+        public async Task<BooleanResult> IsExistsNameAsync(MenuAddOrModifyModel item)
         {
             bool data = false;
             if (item.Id > 0)
             {
-                data = _repository.IsExistsName(item.Name, item.Id);
+                data =await _repository.IsExistsNameAsync(item.Name, item.Id);
             }
             else
             {
-                data = _repository.IsExistsName(item.Name);
+                data =await _repository.IsExistsNameAsync(item.Name);
 
             }
             var result = new BooleanResult {

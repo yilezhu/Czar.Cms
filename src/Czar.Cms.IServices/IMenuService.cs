@@ -15,6 +15,7 @@ using Czar.Cms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.IServices
 {
@@ -32,28 +33,28 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="item">新增或者修改试图实体</param>
         /// <returns>结果实体</returns>
-        BaseResult AddOrModify(MenuAddOrModifyModel model);
+        Task<BaseResult> AddOrModifyAsync(MenuAddOrModifyModel model);
 
         /// <summary>
         /// 批量删除
         /// </summary>
         /// <param name="Ids">主键id数组</param>
         /// <returns>结果实体</returns>
-        BaseResult DeleteIds(int[] Ids);
+        Task<BaseResult> DeleteIdsAsync(int[] Ids);
 
         /// <summary>
         /// 更改显示的状态
         /// </summary>
         /// <param name="item">改变状态实体</param>
         /// <returns></returns>
-        BaseResult ChangeDisplayStatus(ChangeStatusModel item);
+        Task<BaseResult> ChangeDisplayStatusAsync(ChangeStatusModel item);
 
         /// <summary>
         /// 判断是否存在名为Name的菜单
         /// </summary>
         /// <param name="Name"></param>
         /// <returns></returns>
-        BooleanResult IsExistsName(MenuAddOrModifyModel item);
+        Task<BooleanResult> IsExistsNameAsync(MenuAddOrModifyModel item);
 
         /// <summary>
         /// 根据父节点返回列表

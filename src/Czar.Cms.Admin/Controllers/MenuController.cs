@@ -39,14 +39,14 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]MenuAddOrModifyModel item)
+        public async Task<string> AddOrModify([FromForm]MenuAddOrModifyModel item)
         {
             var result = new BaseResult();
             MenuValidation validationRules = new MenuValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.AddOrModify(item);
+                result = await _service.AddOrModifyAsync(item);
             }
             else
             {
@@ -58,21 +58,21 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] menuId)
+        public async Task<string> Delete(int[] menuId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIds(menuId));
+            return JsonHelper.ObjectToJSON(await _service.DeleteIdsAsync(menuId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string ChangeDisplayStatus([FromForm]ChangeStatusModel item)
+        public async Task<string> ChangeDisplayStatus([FromForm]ChangeStatusModel item)
         {
             var result = new BaseResult();
             ManagerLockStatusModelValidation validationRules = new ManagerLockStatusModelValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.ChangeDisplayStatus(item);
+                result = await _service.ChangeDisplayStatusAsync(item);
             }
             else
             {
@@ -83,9 +83,9 @@ namespace Czar.Cms.Admin.Controllers
         }
 
         [HttpGet]
-        public string IsExistsName([FromQuery]MenuAddOrModifyModel item)
+        public async Task<string> IsExistsName([FromQuery]MenuAddOrModifyModel item)
         {
-            var result = _service.IsExistsName(item);
+            var result = await _service.IsExistsNameAsync(item);
             return JsonHelper.ObjectToJSON(result);
         }
 

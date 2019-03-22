@@ -37,7 +37,7 @@ namespace Czar.Cms.IRepository
         /// </summary>
         /// <param name="id">主键</param>
         /// <returns></returns>
-        Boolean GetDisplayStatusById(Int32 id);
+        Task<Boolean> GetDisplayStatusByIdAsync(Int32 id);
 
         /// <summary>
         /// 修改显示状态
@@ -45,14 +45,14 @@ namespace Czar.Cms.IRepository
         /// <param name="id">主键</param>
         /// <param name="status">更改后的状态</param>
         /// <returns></returns>
-        Int32 ChangeDisplayStatusById(Int32 id, bool status);
+        Task<Int32> ChangeDisplayStatusByIdAsync(Int32 id, bool status);
 
         /// <summary>
         /// 是否存在
         /// </summary>
         /// <param name="Name">别名</param>
         /// <returns></returns>
-        Boolean IsExistsName(string Name);
+        Task<Boolean> IsExistsNameAsync(string Name);
 
         /// <summary>
         /// 是否存在
@@ -60,7 +60,7 @@ namespace Czar.Cms.IRepository
         /// <param name="Name">别名</param>
         /// <param name="Id">主键</param>
         /// <returns></returns>
-        Boolean IsExistsName(string Name,Int32 Id);
+        Task<Boolean> IsExistsNameAsync(string Name,Int32 Id);
 
     }
 }

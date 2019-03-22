@@ -78,7 +78,7 @@ namespace Czar.Cms.Admin.Controllers
             #endregion
 
             model.Ip = HttpContext.GetClientUserIp();
-            var manager = _service.SignIn(model);
+            var manager = await _service.SignInAsync(model);
             if (manager == null)
             {
                 result.ResultCode = ResultCodeAddMsgKeys.SignInPasswordOrUserNameErrorCode;

@@ -33,7 +33,7 @@ namespace Czar.Cms.Repository.SqlServer
             }
             _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
         }
-
+        
         public int ChangeLockStatusById(int id, bool status)
         {
             string sql = "update [Manager] set IsLock=@IsLock where  Id=@Id";
@@ -90,33 +90,33 @@ namespace Czar.Cms.Repository.SqlServer
             });
         }
 
-        public string GetPasswordById(Int32 Id)
+        public async Task<string> GetPasswordByIdAsync(Int32 Id)
         {
             string sql = "select Password from Manager where Id=@Id and IsDelete=0";
-            return  _dbConnection.QueryFirstOrDefault<string>(sql, new
+            return await  _dbConnection.QueryFirstOrDefaultAsync<string>(sql, new
             {
                 Id = Id,
             });
         }
 
-        public int ChangePasswordById(Int32 Id, string Password)
+        public async Task<int> ChangePasswordByIdAsync(Int32 Id, string Password)
         {
             string sql = "update Manager set Password=@Password where Id = @Id";
-            return  _dbConnection.Execute(sql, new
+            return await _dbConnection.ExecuteAsync(sql, new
             {
                 Password= Password,
                 Id = Id
             });
         }
 
-        public Manager GetManagerContainRoleNameById(int id)
+        public async Task<Manager> GetManagerContainRoleNameByIdAsync(int id)
         {
             string sql = @"SELECT   mr.RoleName, m.Id, m.RoleId, m.UserName, m.Password, m.Avatar, m.NickName, m.Mobile, m.Email, m.LoginCount, 
                 m.LoginLastIp, m.LoginLastTime, m.AddManagerId, m.AddTime, m.ModifyManagerId, m.ModifyTime, m.IsLock, 
                 m.IsDelete, m.Remark
 FROM      Manager AS m INNER JOIN
                 ManagerRole AS mr ON m.RoleId = mr.Id where m.Id=@Id and m.IsDelete=0 ";
-            return _dbConnection.QueryFirstOrDefault<Manager>(sql, new
+            return await _dbConnection.QueryFirstOrDefaultAsync<Manager>(sql, new
             {
                 Id = id
             });

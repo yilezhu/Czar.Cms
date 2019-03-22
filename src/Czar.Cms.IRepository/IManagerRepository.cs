@@ -67,16 +67,16 @@ namespace Czar.Cms.IRepository
         /// </summary>
         /// <param name="Id">主键</param>
         /// <returns></returns>
-        string GetPasswordById(Int32 Id);
+        Task<string> GetPasswordByIdAsync(Int32 Id);
 
         /// <summary>
         /// 通过主键获取密码
         /// </summary>
         /// <param name="Id">主键</param>
         /// <returns></returns>
-        int ChangePasswordById(Int32 Id,string Password);
+        Task<int> ChangePasswordByIdAsync(Int32 Id,string Password);
 
-        Manager GetManagerContainRoleNameById(int id);
+        Task<Manager> GetManagerContainRoleNameByIdAsync(int id);
 
 
     }
