@@ -16,6 +16,7 @@ using Czar.Cms.IServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -23,13 +24,13 @@ namespace Czar.Cms.Admin.Controllers
     {
         private readonly IManagerService _service;
         private readonly IManagerRoleService _roleService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMemoryCache _cache;
 
-        public ManagerController(IManagerService service, IManagerRoleService roleService, IHttpContextAccessor httpContextAccessor)
+        public ManagerController(IManagerService service, IManagerRoleService roleService, IMemoryCache cache)
         {
             _service = service;
             _roleService = roleService;
-            _httpContextAccessor = httpContextAccessor;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -153,10 +154,10 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = await _service.UpdateManagerInfoAsync(item);
-                _httpContextAccessor.HttpContext.Session.SetString("NickName", item.NickName ?? "匿名");
-                _httpContextAccessor.HttpContext.Session.SetString("Email", item.Email ?? "");
-                _httpContextAccessor.HttpContext.Session.SetString("Avatar", item.Avatar ?? "/images/userface1.jpg");
-                _httpContextAccessor.HttpContext.Session.SetString("Mobile", item.Mobile ?? "");
+                _cache.Set("NickName", item.NickName ?? "匿名", TimeSpan.FromMinutes(15));
+                _cache.Set("Email", item.Email ?? "", TimeSpan.FromMinutes(15));
+                _cache.Set("Avatar", item.Avatar ?? "/images/userface1.jpg", TimeSpan.FromMinutes(15));
+                _cache.Set("Mobile", item.Mobile ?? "", TimeSpan.FromMinutes(15));
             }
             else
             {

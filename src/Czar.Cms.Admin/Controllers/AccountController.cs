@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Czar.Cms.Core.Helper;
 using System.IO;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Http;
 using Czar.Cms.ViewModels;
 using Czar.Cms.IServices;
@@ -24,12 +25,12 @@ namespace Czar.Cms.Admin.Controllers
         private readonly string ManagerSignInErrorTimes = "ManagerSignInErrorTimes";
         private readonly int MaxErrorTimes = 3;
         private readonly IManagerService _service;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMemoryCache _cache;
 
-        public AccountController(IManagerService service, IHttpContextAccessor httpContextAccessor)
+        public AccountController(IManagerService service, IMemoryCache cache)
         {
             _service = service;
-            _httpContextAccessor = httpContextAccessor;
+            _cache = cache;
         }
 
         public IActionResult Index()
@@ -106,13 +107,12 @@ namespace Czar.Cms.Admin.Controllers
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
-                
-                _httpContextAccessor.HttpContext.Session.SetInt32("Id", manager.Id);
-                _httpContextAccessor.HttpContext.Session.SetInt32("RoleId", manager.RoleId);
-                _httpContextAccessor.HttpContext.Session.SetString("NickName", manager.NickName??"匿名");
-                _httpContextAccessor.HttpContext.Session.SetString("Email", manager.Email??"");
-                _httpContextAccessor.HttpContext.Session.SetString("Avatar", manager.Avatar ?? "/images/userface1.jpg");
-                _httpContextAccessor.HttpContext.Session.SetString("Mobile", manager.Mobile??"");
+                _cache.Set("Id", manager.Id, TimeSpan.FromMinutes(15));
+                _cache.Set("RoleId", manager.RoleId, TimeSpan.FromMinutes(15));
+                _cache.Set("NickName", manager.NickName ?? "匿名", TimeSpan.FromMinutes(15));
+                _cache.Set("Email", manager.Email ?? "", TimeSpan.FromMinutes(15));
+                _cache.Set("Avatar", manager.Avatar ?? "/images/userface1.jpg", TimeSpan.FromMinutes(15));
+                _cache.Set("Mobile", manager.Mobile ?? "");
             }
             return JsonHelper.ObjectToJSON(result);
         }

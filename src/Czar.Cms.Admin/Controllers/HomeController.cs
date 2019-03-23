@@ -11,18 +11,19 @@ using Czar.Cms.ViewModels;
 using Czar.Cms.IServices;
 using Czar.Cms.Core.Helper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Czar.Cms.Admin.Controllers
 {
     public class HomeController : BaseController
     {
         private readonly IManagerRoleService _managerRoleService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IMemoryCache _memoryCache;
 
-        public HomeController(IManagerRoleService managerRoleService, IHttpContextAccessor httpContextAccessor)
+        public HomeController(IManagerRoleService managerRoleService, IMemoryCache memoryCache)
         {
             _managerRoleService = managerRoleService;
-            _httpContextAccessor = httpContextAccessor;
+            _memoryCache = memoryCache;
         }
 
 
@@ -33,8 +34,8 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = _httpContextAccessor.HttpContext.Session.GetString("NickName");
-            ViewData["Avatar"] = _httpContextAccessor.HttpContext.Session.GetString("Avatar");
+            ViewData["NickName"] = _memoryCache.Get("NickName");
+            ViewData["Avatar"] = _memoryCache.Get("Avatar");
 
             return View();
         }
