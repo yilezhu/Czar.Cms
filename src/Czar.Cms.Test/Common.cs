@@ -11,6 +11,7 @@
 *└──────────────────────────────────────────────────────────────┘
 */
 using Czar.Cms.Core.CodeGenerator;
+using Czar.Cms.Core.Helper;
 using Czar.Cms.Core.Models;
 using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
@@ -52,6 +53,8 @@ namespace Czar.Cms.Test
             services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<CodeGenerator>();
+            services.AddLogging();
+            services.AddSingleton<DelegateHelper>();
             return services.BuildServiceProvider(); //构建服务提供程序
         }
 

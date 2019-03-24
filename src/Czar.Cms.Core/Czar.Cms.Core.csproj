@@ -35,6 +35,7 @@
     <PackageReference Include="Dapper.SimpleCRUD" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="MySql.Data" Version="8.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />

@@ -10,6 +10,7 @@ using Czar.Cms.Repository.SqlServer;
 using Czar.Cms.Core.Models;
 using Czar.Cms.Core.CodeGenerator;
 using Czar.Cms.Core.Options;
+using Czar.Cms.Core.Helper;
 
 namespace Czar.Cms.Test
 {
@@ -28,6 +29,8 @@ namespace Czar.Cms.Test
             var codeGenerator = serviceProvider.GetRequiredService<CodeGenerator>();
             codeGenerator.GenerateTemplateCodesFromDatabase(true);
             Assert.Equal("SQLServer", DatabaseType.SqlServer.ToString(), ignoreCase: true);
+
+
 
         }
 
