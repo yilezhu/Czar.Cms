@@ -24,13 +24,11 @@ namespace Czar.Cms.Admin.Controllers
     {
         private readonly IManagerService _service;
         private readonly IManagerRoleService _roleService;
-        private readonly IMemoryCache _cache;
 
-        public ManagerController(IManagerService service, IManagerRoleService roleService, IMemoryCache cache)
+        public ManagerController(IManagerService service, IManagerRoleService roleService)
         {
             _service = service;
             _roleService = roleService;
-            _cache = cache;
         }
 
         public IActionResult Index()
@@ -154,10 +152,11 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = await _service.UpdateManagerInfoAsync(item);
-                _cache.Set("NickName", item.NickName ?? "匿名", TimeSpan.FromMinutes(15));
-                _cache.Set("Email", item.Email ?? "", TimeSpan.FromMinutes(15));
-                _cache.Set("Avatar", item.Avatar ?? "/images/userface1.jpg", TimeSpan.FromMinutes(15));
-                _cache.Set("Mobile", item.Mobile ?? "", TimeSpan.FromMinutes(15));
+                CacheHelper.Set("NickName", item.NickName ?? "匿名", 15*60);
+                CacheHelper.Set("Email", item.Email ?? "", 15*60);
+                CacheHelper.Set("Avatar", item.Avatar ?? "/images/userface1.jpg", 15 * 60);
+                CacheHelper.Set("Mobile", item.Mobile ?? "", 15 * 60);
+
             }
             else
             {

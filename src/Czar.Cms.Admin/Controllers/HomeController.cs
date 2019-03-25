@@ -18,12 +18,10 @@ namespace Czar.Cms.Admin.Controllers
     public class HomeController : BaseController
     {
         private readonly IManagerRoleService _managerRoleService;
-        private readonly IMemoryCache _memoryCache;
 
-        public HomeController(IManagerRoleService managerRoleService, IMemoryCache memoryCache)
+        public HomeController(IManagerRoleService managerRoleService)
         {
             _managerRoleService = managerRoleService;
-            _memoryCache = memoryCache;
         }
 
 
@@ -34,8 +32,8 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = _memoryCache.Get("NickName");
-            ViewData["Avatar"] = _memoryCache.Get("Avatar");
+            ViewData["NickName"] = CacheHelper.Get("NickName");
+            ViewData["Avatar"] = CacheHelper.Get("Avatar");
 
             return View();
         }

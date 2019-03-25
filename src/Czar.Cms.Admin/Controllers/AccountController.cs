@@ -25,12 +25,10 @@ namespace Czar.Cms.Admin.Controllers
         private readonly string ManagerSignInErrorTimes = "ManagerSignInErrorTimes";
         private readonly int MaxErrorTimes = 3;
         private readonly IManagerService _service;
-        private readonly IMemoryCache _cache;
 
-        public AccountController(IManagerService service, IMemoryCache cache)
+        public AccountController(IManagerService service)
         {
             _service = service;
-            _cache = cache;
         }
 
         public IActionResult Index()
@@ -107,12 +105,12 @@ namespace Czar.Cms.Admin.Controllers
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
-                _cache.Set("Id", manager.Id, TimeSpan.FromMinutes(15));
-                _cache.Set("RoleId", manager.RoleId, TimeSpan.FromMinutes(15));
-                _cache.Set("NickName", manager.NickName ?? "匿名", TimeSpan.FromMinutes(15));
-                _cache.Set("Email", manager.Email ?? "", TimeSpan.FromMinutes(15));
-                _cache.Set("Avatar", manager.Avatar ?? "/images/userface1.jpg", TimeSpan.FromMinutes(15));
-                _cache.Set("Mobile", manager.Mobile ?? "");
+                CacheHelper.Set("Id", manager.Id, 15*60);
+                CacheHelper.Set("RoleId", manager.RoleId, 15 * 60);
+                CacheHelper.Set("NickName", manager.NickName ?? "匿名", 15 * 60);
+                CacheHelper.Set("Email", manager.Email ?? "", 15 * 60);
+                CacheHelper.Set("Avatar", manager.Avatar ?? "/images/userface1.jpg", 15 * 60);
+                CacheHelper.Set("Mobile", manager.Mobile ?? "", 15 * 60);
             }
             return JsonHelper.ObjectToJSON(result);
         }
