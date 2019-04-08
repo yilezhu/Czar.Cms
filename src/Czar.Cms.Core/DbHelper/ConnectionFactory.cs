@@ -7,6 +7,7 @@ using Czar.Cms.Core.Extensions;
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using Npgsql;
+using Dapper;
 
 namespace Czar.Cms.Core.DbHelper
 {
@@ -52,9 +53,11 @@ namespace Czar.Cms.Core.DbHelper
                     break;
                 case DatabaseType.MySQL:
                     connection = new MySqlConnection(strConn);
+                    SimpleCRUD.SetDialect(SimpleCRUD.Dialect.MySQL);
                     break;
                 case DatabaseType.PostgreSQL:
                     connection = new NpgsqlConnection(strConn);
+                    SimpleCRUD.SetDialect(SimpleCRUD.Dialect.PostgreSQL);
                     break;
                 default:
                     throw new ArgumentNullException($"这是我的错，还不支持的{dbType.ToString()}数据库类型");
