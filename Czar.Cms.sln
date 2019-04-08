@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Test", "src\Czar.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Quartz", "src\Czar.Cms.Quartz\Czar.Cms.Quartz.csproj", "{8ABC4036-4BDC-4139-B91C-6215164CE94F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Czar.Cms.Job", "src\Czar.Cms.Job\Czar.Cms.Job.csproj", "{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Czar.Cms.Job", "src\Czar.Cms.Job\Czar.Cms.Job.csproj", "{45EC5E92-DD94-4F72-9F38-2C8D91959A7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

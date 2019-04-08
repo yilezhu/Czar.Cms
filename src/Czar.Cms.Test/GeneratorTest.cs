@@ -29,9 +29,6 @@ namespace Czar.Cms.Test
             var codeGenerator = serviceProvider.GetRequiredService<CodeGenerator>();
             codeGenerator.GenerateTemplateCodesFromDatabase(true);
             Assert.Equal("SQLServer", DatabaseType.SqlServer.ToString(), ignoreCase: true);
-
-
-
         }
 
       

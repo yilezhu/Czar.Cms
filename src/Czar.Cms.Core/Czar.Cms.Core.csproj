@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="CodeTemplate\FluentValidationTemplate.txt" />
     <None Remove="CodeTemplate\IRepositoryTemplate.txt" />
     <None Remove="CodeTemplate\IServicesTemplate.txt" />
     <None Remove="CodeTemplate\ModelTemplate.txt" />
@@ -21,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="CodeTemplate\FluentValidationTemplate.txt" />
     <EmbeddedResource Include="CodeTemplate\IServicesTemplate.txt" />
     <EmbeddedResource Include="CodeTemplate\IRepositoryTemplate.txt" />
     <EmbeddedResource Include="CodeTemplate\ModelTemplate.txt">
