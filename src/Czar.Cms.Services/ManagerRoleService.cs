@@ -156,7 +156,9 @@ namespace Czar.Cms.Services
             }
             return new TableDataModel
             {
-                count = _repository.RecordCount(conditions),
+                count = _repository.RecordCount(conditions,new {
+                    Key = model.Key,
+                }),
                 data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc",new {
                     Key=model.Key,
                 }),

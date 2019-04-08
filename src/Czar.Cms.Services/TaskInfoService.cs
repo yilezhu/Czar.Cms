@@ -68,7 +68,7 @@ namespace Czar.Cms.Services
 
             return new TableDataModel
             {
-                count = await _repository.RecordCountAsync(conditions),
+                count = await _repository.RecordCountAsync(conditions,new { Key = model.Key}),
                 data = await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new
                 {
                     Key = model.Key,

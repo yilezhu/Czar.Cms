@@ -141,7 +141,7 @@ namespace Czar.Cms.Services
             });
             return new TableDataModel
             {
-                count = await _repository.RecordCountAsync(conditions),
+                count = await _repository.RecordCountAsync(conditions, model),
                 data = viewList,
             };
         }
