@@ -67,7 +67,7 @@ namespace Czar.Cms.Core.CodeGenerator
                     GenerateEntity(table, isCoveredExsited);
                     if (table.Columns.Any(c => c.IsPrimaryKey))
                     {
-                        var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+                        var pkTypeName = table.Columns.FirstOrDefault(m => m.IsPrimaryKey)?.CSharpType;
                         GenerateIRepository(table, pkTypeName, isCoveredExsited);
                         GenerateRepository(table, pkTypeName, isCoveredExsited);
                     }
@@ -86,7 +86,7 @@ namespace Czar.Cms.Core.CodeGenerator
         private void GenerateEntity(DbTable table, bool isCoveredExsited = true)
         {
            
-            var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+            var pkTypeName = table.Columns.FirstOrDefault(m => m.IsPrimaryKey)?.CSharpType;
             var sb = new StringBuilder();
             foreach (var column in table.Columns)
             {
