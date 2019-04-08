@@ -28,13 +28,13 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public string LoadData([FromQuery]MenuRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadData(model));
+            return JsonHelper.ObjectToJSON(_service.LoadDataAsync(model));
         }
 
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            return View(_service.GetChildListByParentId(0));
+            return View(_service.GetChildListByParentIdAsync(0));
         }
 
         [HttpPost]
@@ -92,7 +92,7 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public string LoadDataWithParentId([FromQuery]int ParentId=-1)
         {
-            return JsonHelper.ObjectToJSON(_service.GetChildListByParentId(ParentId));
+            return JsonHelper.ObjectToJSON(_service.GetChildListByParentIdAsync(ParentId));
         }
     }
 }

@@ -50,11 +50,11 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-
-        public string GetMenu()
+        [ActionName("GetMenu")]
+        public async Task<string> GetMenuAsync()
         {
             var roleId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var navViewTree = _managerRoleService.GetMenusByRoleId(Int32.Parse(roleId)).GenerateTree(x => x.Id, x => x.ParentId);
+            var navViewTree =(await _managerRoleService.GetMenusByRoleIdAsync(Int32.Parse(roleId))).GenerateTree(x => x.Id, x => x.ParentId);
             return JsonHelper.ObjectToJSON(navViewTree);
         }
 

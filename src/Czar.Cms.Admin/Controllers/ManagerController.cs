@@ -45,7 +45,7 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public IActionResult AddOrModify()
         {
-            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel
+            var roleList = _roleService.GetListByConditionAsync(new ManagerRoleRequestModel
             {
                 Key = null
             });
