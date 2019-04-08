@@ -123,7 +123,7 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and DisplayName like '%@Key%'";
+                conditions += "and DisplayName like '%@Key%'";
             }
            
             return new TableDataModel

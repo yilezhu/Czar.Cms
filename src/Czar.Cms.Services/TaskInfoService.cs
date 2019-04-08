@@ -63,7 +63,7 @@ namespace Czar.Cms.Services
             string conditions = "";
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"where Name like '%@Key%'";
+                conditions += "where Name like '%@Key%'";
             }
 
             return new TableDataModel
