@@ -42,10 +42,10 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
-        [HttpGet]
-        public IActionResult AddOrModify()
+        [HttpGet,ActionName("AddOrModify")]
+        public async Task<IActionResult> AddOrModifyAsync()
         {
-            var roleList = _roleService.GetListByConditionAsync(new ManagerRoleRequestModel
+            var roleList =await _roleService.GetListByConditionAsync(new ManagerRoleRequestModel
             {
                 Key = null
             });
@@ -72,11 +72,11 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result);
         }
 
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] roleId)
+        public async Task<string> DeleteAsync(int[] roleId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIdsAsync(roleId));
+            return JsonHelper.ObjectToJSON(await _service.DeleteIdsAsync(roleId));
         }
 
         [HttpPost]

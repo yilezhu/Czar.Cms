@@ -32,10 +32,10 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-        
-        public string LoadData([FromQuery]ManagerRoleRequestModel model)
+        [ActionName("LoadData")]
+        public async Task<string> LoadDataAsync([FromQuery]ManagerRoleRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadDataAsync(model));
+            return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
         [HttpGet]

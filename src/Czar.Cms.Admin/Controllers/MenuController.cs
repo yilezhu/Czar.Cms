@@ -25,10 +25,10 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-        [HttpGet]
-        public string LoadData([FromQuery]MenuRequestModel model)
+        [HttpGet,ActionName("LoadData")]
+        public async Task<string> LoadDataAsync([FromQuery]MenuRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadDataAsync(model));
+            return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
         [HttpGet]

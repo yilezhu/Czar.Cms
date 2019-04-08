@@ -83,11 +83,12 @@ VALUES   (@RoleId,@MenuId, '')";
                      roleId = await _dbConnection.InsertAsync(model, tran);
                     if (roleId > 0 && model.MenuIds?.Count() > 0)
                     {
-                        model.MenuIds.AsParallel().ForAll(async r => {
+                        Parallel.ForEach(model.MenuIds, async t =>
+                        {
                             await _dbConnection.ExecuteAsync(insertPermissionSql, new
                             {
-                                RoleId = roleId,
-                                MenuId = r,
+                                RoleId = model.Id,
+                                MenuId = t,
                             }, tran);
                         });
                     }
@@ -128,13 +129,15 @@ VALUES   (@RoleId,@MenuId, '')";
                             RoleId = model.Id,
                           
                         }, tran);
-                        model.MenuIds.AsParallel().ForAll(async t => {
+                        Parallel.ForEach(model.MenuIds, async t =>
+                        {
                             await _dbConnection.ExecuteAsync(insertPermissionSql, new
                             {
                                 RoleId = model.Id,
                                 MenuId = t,
                             }, tran);
                         });
+                       
                     }
                     tran.Commit();
                 }

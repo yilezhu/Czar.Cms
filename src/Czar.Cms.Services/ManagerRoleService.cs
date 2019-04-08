@@ -176,11 +176,12 @@ namespace Czar.Cms.Services
             if (menuList?.Count() > 0)
             {
                 var menuNavViewList = new List<MenuNavView>();
-                menuList.AsParallel().ForAll(x =>
+                Parallel.ForEach(menuList, x =>
                 {
                     var navView = _mapper.Map<MenuNavView>(x);
                     menuNavViewList.Add(navView);
                 });
+          
                 return menuNavViewList;
             }
             else
