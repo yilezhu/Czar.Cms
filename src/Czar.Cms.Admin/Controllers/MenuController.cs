@@ -31,10 +31,10 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
-        [HttpGet]
-        public IActionResult AddOrModify()
+        [HttpGet,ActionName("AddOrModify")]
+        public async Task<IActionResult> AddOrModifyAsync()
         {
-            return View(_service.GetChildListByParentIdAsync(0));
+            return View(await _service.GetChildListByParentIdAsync(0));
         }
 
         [HttpPost]
@@ -89,10 +89,10 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result);
         }
 
-        [HttpGet]
-        public string LoadDataWithParentId([FromQuery]int ParentId=-1)
+        [HttpGet,ActionName("LoadDataWithParentId")]
+        public async Task<string> LoadDataWithParentIdAsync([FromQuery]int ParentId=-1)
         {
-            return JsonHelper.ObjectToJSON(_service.GetChildListByParentIdAsync(ParentId));
+            return JsonHelper.ObjectToJSON(await _service.GetChildListByParentIdAsync(ParentId));
         }
     }
 }
