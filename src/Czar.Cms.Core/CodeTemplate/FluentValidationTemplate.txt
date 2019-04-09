@@ -43,7 +43,7 @@ namespace {FluentValidationNamespace}
 {
     public class {ModelName}Validation:AbstractValidator<{ModelName}>
     {
-        public RNS_BornQueryCommandValidation()
+        public {ModelName}Validation()
         {
             CascadeMode = CascadeMode.StopOnFirstFailure;
 {ModelValidation}

@@ -239,7 +239,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 //{
                 //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
                 //}
-                sb.AppendLine($"\t\tpublic {column.CSharpType} Id " + "{get;set;}");
+                sb.AppendLine($"\t\tpublic {column.CSharpType} {column.ColName} " + "{get;set;}");
             }
             else
             {
@@ -297,7 +297,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 sbMessage.Append("不能为空");
             }
 
-            if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0)
+            if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0 &&column.CSharpType.ToLower()== "string")
             {
                 sb.Append($".MaximumLength({column.ColumnLength.Value})");
                 sbMessage.Append($"且最大长度不能超过{column.ColumnLength.Value}");
