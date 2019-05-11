@@ -106,13 +106,12 @@ namespace Czar.Cms.Admin.Controllers
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
-                
-                _httpContextAccessor.HttpContext.Session.SetInt32("Id", manager.Id);
-                _httpContextAccessor.HttpContext.Session.SetInt32("RoleId", manager.RoleId);
-                _httpContextAccessor.HttpContext.Session.SetString("NickName", manager.NickName??"匿名");
-                _httpContextAccessor.HttpContext.Session.SetString("Email", manager.Email??"");
-                _httpContextAccessor.HttpContext.Session.SetString("Avatar", manager.Avatar ?? "/images/userface1.jpg");
-                _httpContextAccessor.HttpContext.Session.SetString("Mobile", manager.Mobile??"");
+                CacheHelper.Set("Id", manager.Id, 15*60);
+                CacheHelper.Set("RoleId", manager.RoleId, 15 * 60);
+                CacheHelper.Set("NickName", manager.NickName ?? "匿名", 15 * 60);
+                CacheHelper.Set("Email", manager.Email ?? "", 15 * 60);
+                CacheHelper.Set("Avatar", manager.Avatar ?? "/images/userface1.jpg", 15 * 60);
+                CacheHelper.Set("Mobile", manager.Mobile ?? "", 15 * 60);
             }
             return JsonHelper.ObjectToJSON(result);
         }
