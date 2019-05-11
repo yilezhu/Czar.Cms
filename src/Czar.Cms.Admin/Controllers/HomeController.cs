@@ -32,9 +32,8 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = CacheHelper.Get("NickName");
-            ViewData["Avatar"] = CacheHelper.Get("Avatar");
-
+            ViewData["NickName"] = User.Claims.FirstOrDefault(x => x.Type == "NickName")?.Value;
+            ViewData["Avatar"] = User.Claims.FirstOrDefault(x => x.Type == "Avatar")?.Value;
             return View();
         }
 
@@ -54,7 +53,7 @@ namespace Czar.Cms.Admin.Controllers
         public async Task<string> GetMenuAsync()
         {
             var roleId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var navViewTree =(await _managerRoleService.GetMenusByRoleIdAsync(Int32.Parse(roleId))).GenerateTree(x => x.Id, x => x.ParentId);
+            var navViewTree = (await _managerRoleService.GetMenusByRoleIdAsync(Int32.Parse(roleId))).GenerateTree(x => x.Id, x => x.ParentId);
             return JsonHelper.ObjectToJSON(navViewTree);
         }
 

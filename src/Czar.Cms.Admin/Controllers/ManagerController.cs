@@ -152,11 +152,6 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = await _service.UpdateManagerInfoAsync(item);
-                CacheHelper.Set("NickName", item.NickName ?? "匿名", 15*60);
-                CacheHelper.Set("Email", item.Email ?? "", 15*60);
-                CacheHelper.Set("Avatar", item.Avatar ?? "/images/userface1.jpg", 15 * 60);
-                CacheHelper.Set("Mobile", item.Mobile ?? "", 15 * 60);
-
             }
             else
             {

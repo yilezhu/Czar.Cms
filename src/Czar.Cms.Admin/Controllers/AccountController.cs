@@ -100,18 +100,14 @@ namespace Czar.Cms.Admin.Controllers
                     new Claim("LoginCount",manager.LoginCount.ToString()),
                     new Claim("LoginLastIp",manager.LoginLastIp),
                     new Claim("LoginLastTime",manager.LoginLastTime?.ToString("yyyy-MM-dd HH:mm:ss")),
+                    new Claim("NickName",manager.NickName ?? "匿名"),
+                    new Claim("Avatar",manager.Avatar ?? "/images/userface1.jpg"),
                 };
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
-                CacheHelper.Set("Id", manager.Id, 15*60);
-                CacheHelper.Set("RoleId", manager.RoleId, 15 * 60);
-                CacheHelper.Set("NickName", manager.NickName ?? "匿名", 15 * 60);
-                CacheHelper.Set("Email", manager.Email ?? "", 15 * 60);
-                CacheHelper.Set("Avatar", manager.Avatar ?? "/images/userface1.jpg", 15 * 60);
-                CacheHelper.Set("Mobile", manager.Mobile ?? "", 15 * 60);
             }
             return JsonHelper.ObjectToJSON(result);
         }

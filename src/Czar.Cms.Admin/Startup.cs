@@ -57,11 +57,11 @@ namespace Czar.Cms.Admin
            {
                options.LoginPath = "/Account/Index";
                options.LogoutPath = "/Account/Logout";
-               options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+               options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
            });
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.Cookie.HttpOnly = true;
             });
             services.AddAntiforgery(options =>
