@@ -29,7 +29,7 @@ namespace Czar.Cms.Core.Helper
         {
             if (key != null)
             {
-                cache.Set(key, value);
+                Set(key, value, 60 * 5);
             }
         }
         /// <summary>

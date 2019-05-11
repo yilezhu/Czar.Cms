@@ -23,13 +23,11 @@ namespace Czar.Cms.Admin.Controllers
     {
         private readonly IManagerService _service;
         private readonly IManagerRoleService _roleService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ManagerController(IManagerService service, IManagerRoleService roleService, IHttpContextAccessor httpContextAccessor)
+        public ManagerController(IManagerService service, IManagerRoleService roleService)
         {
             _service = service;
             _roleService = roleService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -153,10 +151,8 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = await _service.UpdateManagerInfoAsync(item);
-                _httpContextAccessor.HttpContext.Session.SetString("NickName", item.NickName ?? "匿名");
-                _httpContextAccessor.HttpContext.Session.SetString("Email", item.Email ?? "");
-                _httpContextAccessor.HttpContext.Session.SetString("Avatar", item.Avatar ?? "/images/userface1.jpg");
-                _httpContextAccessor.HttpContext.Session.SetString("Mobile", item.Mobile ?? "");
+                CacheHelper.Set("NickName", item.NickName ?? "匿名");
+                CacheHelper.Set("Avatar", item.Avatar ?? "/images/userface1.jpg");
             }
             else
             {

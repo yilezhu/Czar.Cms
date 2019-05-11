@@ -17,12 +17,10 @@ namespace Czar.Cms.Admin.Controllers
     public class HomeController : BaseController
     {
         private readonly IManagerRoleService _managerRoleService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HomeController(IManagerRoleService managerRoleService, IHttpContextAccessor httpContextAccessor)
+        public HomeController(IManagerRoleService managerRoleService)
         {
             _managerRoleService = managerRoleService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -33,9 +31,8 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = _httpContextAccessor.HttpContext.Session.GetString("NickName");
-            ViewData["Avatar"] = _httpContextAccessor.HttpContext.Session.GetString("Avatar");
-
+            ViewData["NickName"] = CacheHelper.Get<string>("NickName");
+            ViewData["Avatar"] = CacheHelper.Get<string>("Avatar");
             return View();
         }
 
