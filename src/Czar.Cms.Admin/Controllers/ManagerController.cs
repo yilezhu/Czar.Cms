@@ -16,6 +16,7 @@ using Czar.Cms.IServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -41,10 +42,10 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
-        [HttpGet]
-        public IActionResult AddOrModify()
+        [HttpGet,ActionName("AddOrModify")]
+        public async Task<IActionResult> AddOrModifyAsync()
         {
-            var roleList = _roleService.GetListByCondition(new ManagerRoleRequestModel
+            var roleList =await _roleService.GetListByConditionAsync(new ManagerRoleRequestModel
             {
                 Key = null
             });
@@ -71,11 +72,11 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result);
         }
 
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] roleId)
+        public async Task<string> DeleteAsync(int[] roleId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIdsAsync(roleId));
+            return JsonHelper.ObjectToJSON(await _service.DeleteIdsAsync(roleId));
         }
 
         [HttpPost]
@@ -151,8 +152,11 @@ namespace Czar.Cms.Admin.Controllers
                 item.ModifyManagerId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "Id")?.Value);
                 item.ModifyTime = DateTime.Now;
                 result = await _service.UpdateManagerInfoAsync(item);
-                CacheHelper.Set("NickName", item.NickName ?? "匿名");
-                CacheHelper.Set("Avatar", item.Avatar ?? "/images/userface1.jpg");
+                CacheHelper.Set("NickName", item.NickName ?? "匿名", 15*60);
+                CacheHelper.Set("Email", item.Email ?? "", 15*60);
+                CacheHelper.Set("Avatar", item.Avatar ?? "/images/userface1.jpg", 15 * 60);
+                CacheHelper.Set("Mobile", item.Mobile ?? "", 15 * 60);
+
             }
             else
             {

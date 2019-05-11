@@ -51,20 +51,20 @@ namespace Czar.Cms.IRepository
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
-        int? InsertByTrans(ManagerRole model);
+        Task<int?> InsertByTransAsync(ManagerRole model);
 
         /// <summary>
         /// 事务修改，并保存关联表数据
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
-        int UpdateByTrans(ManagerRole model);
+        Task<int> UpdateByTransAsync(ManagerRole model);
 
         /// <summary>
         /// 通过角色ID获取角色分配的菜单列表
         /// </summary>
         /// <param name="roleId">角色主键</param>
         /// <returns></returns>
-        List<Menu> GetMenusByRoleId(int roleId);
+        Task<List<Menu>> GetMenusByRoleIdAsync(int roleId);
     }
 }

@@ -32,10 +32,10 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-        
-        public string LoadData([FromQuery]ManagerRoleRequestModel model)
+        [ActionName("LoadData")]
+        public async Task<string> LoadDataAsync([FromQuery]ManagerRoleRequestModel model)
         {
-            return JsonHelper.ObjectToJSON(_service.LoadData(model));
+            return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
 
         [HttpGet]
@@ -48,16 +48,16 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("AddOrModify")]
         [ValidateAntiForgeryToken]
-        public string AddOrModify([FromForm]ManagerRoleAddOrModifyModel item)
+        public async Task<string> AddOrModifyAsync([FromForm]ManagerRoleAddOrModifyModel item)
         {
             var result = new BaseResult();
             ManagerRoleValidation validationRules = new ManagerRoleValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {
-                result = _service.AddOrModify(item);
+                result =await _service.AddOrModifyAsync(item);
             }
             else
             {
@@ -67,11 +67,11 @@ namespace Czar.Cms.Admin.Controllers
             return JsonHelper.ObjectToJSON(result) ;
         }
 
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public string Delete(int[] roleId)
+        public async Task<string> DeleteAsync(int[] roleId)
         {
-            return JsonHelper.ObjectToJSON(_service.DeleteIds(roleId)) ;
+            return JsonHelper.ObjectToJSON(await _service.DeleteIdsAsync(roleId)) ;
         }
     }
 }

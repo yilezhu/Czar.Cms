@@ -70,7 +70,7 @@ namespace Czar.Cms.Repository.SqlServer
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
-        public int? InsertByTrans(ManagerRole model)
+        public async Task<int?> InsertByTransAsync(ManagerRole model)
         {
             int? roleId = 0;
             string insertPermissionSql = @"INSERT INTO RolePermission
@@ -80,14 +80,14 @@ VALUES   (@RoleId,@MenuId, '')";
             {
                 try
                 {
-                     roleId = _dbConnection.Insert(model, tran);
+                     roleId = await _dbConnection.InsertAsync(model, tran);
                     if (roleId > 0 && model.MenuIds?.Count() > 0)
                     {
                         foreach (var item in model.MenuIds)
                         {
-                            _dbConnection.Execute(insertPermissionSql, new
+                            await _dbConnection.ExecuteAsync(insertPermissionSql, new
                             {
-                                RoleId = roleId,
+                                RoleId = model.Id,
                                 MenuId = item,
                             }, tran);
                         }
@@ -110,7 +110,7 @@ VALUES   (@RoleId,@MenuId, '')";
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns></returns>
-        public int UpdateByTrans(ManagerRole model)
+        public async Task<int> UpdateByTransAsync(ManagerRole model)
         {
             int result = 0;
             string insertPermissionSql = @"INSERT INTO RolePermission
@@ -121,17 +121,17 @@ VALUES   (@RoleId,@MenuId, '')";
             {
                 try
                 {
-                    result = _dbConnection.Update(model, tran);
+                    result = await _dbConnection.UpdateAsync(model, tran);
                     if (result > 0 && model.MenuIds?.Count() > 0)
                     {
-                        _dbConnection.Execute(deletePermissionSql, new
+                        await _dbConnection.ExecuteAsync(deletePermissionSql, new
                         {
                             RoleId = model.Id,
                           
                         }, tran);
                         foreach (var item in model.MenuIds)
                         {
-                            _dbConnection.Execute(insertPermissionSql, new
+                            await _dbConnection.ExecuteAsync(insertPermissionSql, new
                             {
                                 RoleId = model.Id,
                                 MenuId = item,
@@ -156,16 +156,16 @@ VALUES   (@RoleId,@MenuId, '')";
         /// </summary>
         /// <param name="roleId">角色主键</param>
         /// <returns></returns>
-        public List<Menu> GetMenusByRoleId(int roleId)
+        public async Task<List<Menu>> GetMenusByRoleIdAsync(int roleId)
         {
             string sql = @"SELECT   m.Id, m.ParentId, m.Name, m.DisplayName, m.IconUrl, m.LinkUrl, m.Sort, rp.Permission, m.IsDisplay, m.IsSystem, 
                 m.AddManagerId, m.AddTime, m.ModifyManagerId, m.ModifyTime, m.IsDelete
 FROM      RolePermission AS rp INNER JOIN
                 Menu AS m ON rp.MenuId = m.Id
 WHERE   (rp.RoleId = @RoleId) AND (m.IsDelete = 0)";
-            return _dbConnection.Query<Menu>(sql, new {
+            return (await _dbConnection.QueryAsync<Menu>(sql, new {
                 RoleId = roleId,
-            }).ToList();
+            })).AsList();
 
         }
     }

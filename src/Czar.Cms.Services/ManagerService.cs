@@ -129,7 +129,7 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and (UserName like '%@Key%' or NickName like '%@Key%' or Remark like '%@Key%' or Mobile like '%@Key%' or Email like '%@Key%')";
+                conditions += "and (UserName like '%@Key%' or NickName like '%@Key%' or Remark like '%@Key%' or Mobile like '%@Key%' or Email like '%@Key%')";
             }
             var list = (await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", model)).ToList();
             var viewList = new List<ManagerListModel>();
@@ -141,7 +141,7 @@ namespace Czar.Cms.Services
             });
             return new TableDataModel
             {
-                count = await _repository.RecordCountAsync(conditions),
+                count = await _repository.RecordCountAsync(conditions, model),
                 data = viewList,
             };
         }

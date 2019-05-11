@@ -18,10 +18,12 @@ using Czar.Cms.IRepository;
 using Czar.Cms.IServices;
 using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Services
 {
@@ -43,7 +45,7 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="item">新增或者修改试图实体</param>
         /// <returns>结果实体</returns>
-        public BaseResult AddOrModify(ManagerRoleAddOrModifyModel item)
+        public async Task<BaseResult> AddOrModifyAsync(ManagerRoleAddOrModifyModel item)
         {
             var result = new BaseResult();
             ManagerRole managerRole;
@@ -54,7 +56,7 @@ namespace Czar.Cms.Services
                 managerRole.AddManagerId = 1;
                 managerRole.IsDelete = false;
                 managerRole.AddTime = DateTime.Now;
-                if (_repository.InsertByTrans(managerRole) > 0)
+                if (await _repository.InsertByTransAsync(managerRole) > 0)
                 {
                     result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                     result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -68,13 +70,13 @@ namespace Czar.Cms.Services
             else
             {
                 //TODO Modify
-                managerRole = _repository.Get(item.Id);
+                managerRole = await _repository.GetAsync(item.Id);
                 if (managerRole != null)
                 {
                     _mapper.Map(item, managerRole);
                     managerRole.ModifyManagerId = 1;
                     managerRole.ModifyTime = DateTime.Now;
-                    if (_repository.UpdateByTrans(managerRole) > 0)
+                    if (await _repository.UpdateByTransAsync(managerRole) > 0)
                     {
                         result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                         result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -100,7 +102,7 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="roleId">角色主键id</param>
         /// <returns>结果实体</returns>
-        public BaseResult DeleteIds(int[] roleId)
+        public async Task<BaseResult> DeleteIdsAsync(int[] roleId)
         {
             var result = new BaseResult();
             if (roleId.Count() == 0)
@@ -111,7 +113,7 @@ namespace Czar.Cms.Services
             }
             else
             {
-                var count = _repository.DeleteLogical(roleId);
+                var count = await _repository.DeleteLogicalAsync(roleId);
                 if (count > 0)
                 {
                     //成功
@@ -128,16 +130,17 @@ namespace Czar.Cms.Services
             return result;
         }
 
-        public List<ManagerRole> GetListByCondition(ManagerRoleRequestModel model)
+        public async Task<List<ManagerRole>> GetListByConditionAsync(ManagerRoleRequestModel model)
         {
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
                 conditions += $"and RoleName like '%@Key%'";
             }
-            return _repository.GetList(conditions,new {
-                Key=model.Key,
-            }).ToList();
+            return (await _repository.GetListAsync(conditions, new
+            {
+                Key = model.Key,
+            })).AsList();
         }
 
 
@@ -147,36 +150,44 @@ namespace Czar.Cms.Services
         /// </summary>
         /// <param name="model">查询实体</param>
         /// <returns></returns>
-        public TableDataModel LoadData(ManagerRoleRequestModel model)
+        public async Task<TableDataModel> LoadDataAsync(ManagerRoleRequestModel model)
         {
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and RoleName like '%@Key%'";
+                conditions += "and RoleName like '%@Key%'";
             }
             return new TableDataModel
             {
-                count = _repository.RecordCount(conditions),
-                data = _repository.GetListPaged(model.Page, model.Limit, conditions, "Id desc",new {
-                    Key=model.Key,
+                count = await _repository.RecordCountAsync(conditions, new
+                {
+                    Key = model.Key,
+                }),
+                data = await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new
+                {
+                    Key = model.Key,
                 }),
             };
         }
 
-        public List<MenuNavView> GetMenusByRoleId(int roleId)
+        public async Task<List<MenuNavView>> GetMenusByRoleIdAsync(int roleId)
         {
-            var menuList = _repository.GetMenusByRoleId(roleId);
-            if (menuList?.Count() == 0)
+            var menuList = await _repository.GetMenusByRoleIdAsync(roleId);
+            if (menuList?.Count() > 0)
+            {
+                var menuNavViewList = new List<MenuNavView>();
+                foreach (var item in menuList)
+                {
+                    var navView = _mapper.Map<MenuNavView>(item);
+                    menuNavViewList.Add(navView);
+                }
+                return menuNavViewList;
+            }
+            else
             {
                 return null;
             }
-            var menuNavViewList = new List<MenuNavView>();
-            menuList.ForEach(x =>
-            {
-                var navView =_mapper.Map<MenuNavView>(x);
-                menuNavViewList.Add(navView);
-            });
-            return menuNavViewList;
+
         }
     }
 }

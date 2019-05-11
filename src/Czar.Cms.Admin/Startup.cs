@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -43,7 +44,7 @@ namespace Czar.Cms.Admin
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<DbOption>("CzarCms", Configuration.GetSection("DbOpion"));
-
+            services.AddMemoryCache();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

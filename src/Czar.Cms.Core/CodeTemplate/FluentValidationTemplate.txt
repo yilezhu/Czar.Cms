@@ -23,53 +23,27 @@
 
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：{Comment}接口实现                                                    
-*│　作    者：{Author}                                            
-*│　版    本：1.0    模板代码自动生成                                                
-*│　创建时间：{GeneratorTime}                             
+*│　描    述：{Comment}                                                    
+*│　作    者：{Author}                                              
+*│　版    本：1.0   模板代码自动生成                                              
+*│　创建时间：{GeneratorTime}                           
 *└──────────────────────────────────────────────────────────────┘
 */
-using Czar.Cms.Core.DbHelper;
-using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
-using Czar.Cms.IRepository;
 using Czar.Cms.Models;
-using Dapper;
-using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
+using FluentValidation;
 
-namespace {RepositoryNamespace}
+namespace {FluentValidationNamespace}
 {
-    public class {ModelName}Repository:BaseRepository<{ModelName},{KeyTypeName}>, I{ModelName}Repository
+    public class {ModelName}Validation:AbstractValidator<{ModelName}>
     {
-        public {ModelName}Repository(IOptionsSnapshot<DbOption> options)
+        public {ModelName}Validation()
         {
-            _dbOption =options.Get("CzarCms");
-            if (_dbOption == null)
-            {
-                throw new ArgumentNullException(nameof(DbOption));
-            }
-            _dbConnection = ConnectionFactory.CreateConnection(_dbOption.DbType, _dbOption.ConnectionString);
+            CascadeMode = CascadeMode.StopOnFirstFailure;
+{ModelValidation}
         }
-
-		public int DeleteLogical(int[] ids)
-        {
-            string sql = "update {ModelName} set IsDelete=1 where Id in @Ids";
-            return _dbConnection.Execute(sql, new
-            {
-                Ids = ids
-            });
-        }
-
-        public async Task<int> DeleteLogicalAsync(int[] ids)
-        {
-            string sql = "update {ModelName} set IsDelete=1 where Id in @Ids";
-            return await _dbConnection.ExecuteAsync(sql, new
-            {
-                Ids = ids
-            });
-        }
-
     }
 }
+

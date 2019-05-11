@@ -26,7 +26,7 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="model">查询实体</param>
         /// <returns>table数据</returns>
-        TableDataModel LoadData(MenuRequestModel model);
+        Task<TableDataModel> LoadDataAsync(MenuRequestModel model);
 
         /// <summary>
         /// 新增或者修改服务
@@ -61,6 +61,6 @@ namespace Czar.Cms.IServices
         /// </summary>
         /// <param name="ParentId"></param>
         /// <returns></returns>
-        List<Menu> GetChildListByParentId(int ParentId);
+        Task<List<Menu>> GetChildListByParentIdAsync(int ParentId);
     }
 }

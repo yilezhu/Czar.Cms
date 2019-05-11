@@ -11,6 +11,7 @@
 *└──────────────────────────────────────────────────────────────┘
 */
 using Czar.Cms.Core.CodeGenerator;
+using Czar.Cms.Core.Helper;
 using Czar.Cms.Core.Models;
 using Czar.Cms.Core.Options;
 using Czar.Cms.Core.Repository;
@@ -35,7 +36,9 @@ namespace Czar.Cms.Test
             var services = new ServiceCollection();
             services.Configure<CodeGenerateOption>(options =>
             {
-                options.ConnectionString = "Data Source=.;Initial Catalog=CzarCms;User ID=sa;Password=1;Persist Security Info=True;Max Pool Size=50;Min Pool Size=0;Connection Lifetime=300;";
+                options.ConnectionString = "Data Source=192.168.1.118;Initial Catalog=Rnrs;User ID=sa;Password=Ahph65167235;Persist Security Info=True;Max Pool Size=50;Min Pool Size=0;Connection Lifetime=300;";
+                //options.ConnectionString = "Data Source=.;Initial Catalog=CzarCms;User ID=sa;Password=1;Persist Security Info=True;Max Pool Size=50;Min Pool Size=0;Connection Lifetime=300;";
+
                 options.DbType = DatabaseType.SqlServer.ToString();//数据库类型是SqlServer,其他数据类型参照枚举DatabaseType
                 options.Author = "yilezhu";//作者名称
                 options.OutputPath = "C:\\CzarCmsCodeGenerator";//模板代码生成的路径
@@ -52,6 +55,8 @@ namespace Czar.Cms.Test
             services.AddScoped<IArticleCategoryRepository, ArticleCategoryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<CodeGenerator>();
+            services.AddLogging();
+            services.AddSingleton<DelegateHelper>();
             return services.BuildServiceProvider(); //构建服务提供程序
         }
 

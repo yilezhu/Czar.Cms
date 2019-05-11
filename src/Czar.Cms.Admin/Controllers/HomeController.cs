@@ -11,6 +11,7 @@ using Czar.Cms.ViewModels;
 using Czar.Cms.IServices;
 using Czar.Cms.Core.Helper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Czar.Cms.Admin.Controllers
 {
@@ -31,8 +32,9 @@ namespace Czar.Cms.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            ViewData["NickName"] = CacheHelper.Get<string>("NickName");
-            ViewData["Avatar"] = CacheHelper.Get<string>("Avatar");
+            ViewData["NickName"] = CacheHelper.Get("NickName");
+            ViewData["Avatar"] = CacheHelper.Get("Avatar");
+
             return View();
         }
 
@@ -48,11 +50,11 @@ namespace Czar.Cms.Admin.Controllers
             return View();
         }
 
-
-        public string GetMenu()
+        [ActionName("GetMenu")]
+        public async Task<string> GetMenuAsync()
         {
             var roleId = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var navViewTree = _managerRoleService.GetMenusByRoleId(Int32.Parse(roleId)).GenerateTree(x => x.Id, x => x.ParentId);
+            var navViewTree =(await _managerRoleService.GetMenusByRoleIdAsync(Int32.Parse(roleId))).GenerateTree(x => x.Id, x => x.ParentId);
             return JsonHelper.ObjectToJSON(navViewTree);
         }
 

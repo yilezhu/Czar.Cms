@@ -63,17 +63,17 @@ namespace Czar.Cms.Core.CodeGenerator
             if (tables != null && tables.Any())
             {
                 foreach (var table in tables)
-                {  
+                {
                     GenerateEntity(table, isCoveredExsited);
                     if (table.Columns.Any(c => c.IsPrimaryKey))
                     {
-                        var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+                        var pkTypeName = table.Columns.FirstOrDefault(m => m.IsPrimaryKey)?.CSharpType;
                         GenerateIRepository(table, pkTypeName, isCoveredExsited);
                         GenerateRepository(table, pkTypeName, isCoveredExsited);
                     }
-                    GenerateIServices(table,isCoveredExsited);
+                    GenerateIServices(table, isCoveredExsited);
                     GenerateServices(table, isCoveredExsited);
-
+                    GenerateFluentValidation(table, isCoveredExsited);
                 }
             }
         }
@@ -85,8 +85,8 @@ namespace Czar.Cms.Core.CodeGenerator
         /// <param name="isCoveredExsited">是否覆盖</param>
         private void GenerateEntity(DbTable table, bool isCoveredExsited = true)
         {
-           
-            var pkTypeName = table.Columns.First(m => m.IsPrimaryKey).CSharpType;
+
+            var pkTypeName = table.Columns.FirstOrDefault(m => m.IsPrimaryKey)?.CSharpType;
             var sb = new StringBuilder();
             foreach (var column in table.Columns)
             {
@@ -109,7 +109,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 .Replace("{Author}", _options.Author)
                 .Replace("{Comment}", table.TableComment)
                 .Replace("{ModelName}", table.TableName)
-                .Replace("{ModelProperties}","");
+                .Replace("{ModelProperties}", "");
             WriteAndSave(pathP, contentP);
             #endregion
         }
@@ -145,7 +145,7 @@ namespace Czar.Cms.Core.CodeGenerator
         /// <param name="modelTypeName"></param>
         /// <param name="keyTypeName"></param>
         /// <param name="ifExsitedCovered"></param>
-        private void GenerateServices(DbTable table,  bool ifExsitedCovered = true)
+        private void GenerateServices(DbTable table, bool ifExsitedCovered = true)
         {
             var repositoryPath = _options.OutputPath + Delimiter + "Services";
             if (!Directory.Exists(repositoryPath))
@@ -239,7 +239,7 @@ namespace Czar.Cms.Core.CodeGenerator
                 //{
                 //    sb.AppendLine("\t\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");
                 //}
-                sb.AppendLine($"\t\tpublic {column.CSharpType} Id " + "{get;set;}");
+                sb.AppendLine($"\t\tpublic {column.CSharpType} {column.ColName} " + "{get;set;}");
             }
             else
             {
@@ -265,9 +265,78 @@ namespace Czar.Cms.Core.CodeGenerator
                 }
 
                 sb.AppendLine($"\t\tpublic {colType} {column.ColName} " + "{get;set;}");
-        }
+            }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 生成验证
+        /// </summary>
+        /// <param name="tableName">表名</param>
+        /// <param name="column">列</param>
+        /// <returns></returns>
+        private static string GenerateFluentValidationProperty(string tableName, DbTableColumn column)
+        {
+            var sb = new StringBuilder();
+            var sbMessage = new StringBuilder();
+            if (!column.Comment.IsNullOrWhiteSpace())
+            {
+                sb.AppendLine("\t\t\t// " + column.Comment);
+                sbMessage.Append(column.Comment);
+            }
+            else
+            {
+                sb.AppendLine("\t\t\t// " + column.ColName);
+                sbMessage.Append(column.ColName);
+            }
+            sb.Append($"\t\t\tRuleFor(x => x.{column.ColName})");
+            if (!column.IsNullable)
+            {
+                sb.Append($".NotEmpty()");
+                sbMessage.Append("不能为空");
+            }
+
+            if (column.ColumnLength.HasValue && column.ColumnLength.Value > 0 &&column.CSharpType.ToLower()== "string")
+            {
+                sb.Append($".MaximumLength({column.ColumnLength.Value})");
+                sbMessage.Append($"且最大长度不能超过{column.ColumnLength.Value}");
+            }
+            sb.Append($".WithMessage(\"{ sbMessage.ToString()}\");");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 生成验证代码
+        /// </summary>
+        /// <param name="table">表名</param>
+        /// <param name="isCoveredExsited">是否覆盖</param>
+        private void GenerateFluentValidation(DbTable table, bool isCoveredExsited = true)
+        {
+            var repositoryPath = _options.OutputPath + Delimiter + "FluentValidation";
+            if (!Directory.Exists(repositoryPath))
+            {
+                Directory.CreateDirectory(repositoryPath);
+            }
+            var fullPath = repositoryPath + Delimiter + table.TableName + "Validation.cs";
+            if (File.Exists(fullPath) && !isCoveredExsited)
+                return;
+            var sb = new StringBuilder();
+            foreach (var column in table.Columns)
+            {
+                var tmp = GenerateFluentValidationProperty(table.TableName, column);
+                sb.AppendLine(tmp);
+            }
+          
+            var content = ReadTemplate("FluentValidationTemplate.txt");
+            content = content.Replace("{GeneratorTime}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                .Replace("{FluentValidationNamespace}", _options.ModelsNamespace)
+                .Replace("{Author}", _options.Author)
+                .Replace("{Comment}", table.TableComment)
+                .Replace("{ModelName}", table.TableName)
+                .Replace("{ModelValidation}", sb.ToString());
+            WriteAndSave(fullPath, content);
+            
         }
 
         /// <summary>
@@ -276,7 +345,7 @@ namespace Czar.Cms.Core.CodeGenerator
         /// <param name="table">表信息</param>
         /// <param name="path">实体路径</param>
         /// <param name="pathP">部分类路径</param>
-        private void GenerateModelpath(DbTable table,out string path,out string pathP)
+        private void GenerateModelpath(DbTable table, out string path, out string pathP)
         {
             var modelPath = _options.OutputPath + Delimiter + "Models"; ;
             if (!Directory.Exists(modelPath))
@@ -295,8 +364,8 @@ namespace Czar.Cms.Core.CodeGenerator
             fullPath.Append(table.TableName);
             fullPath.Append(".cs");
             pathP = fullPath.ToString();
-            path = fullPath.Replace("Partial"+Delimiter, "").ToString();
-  
+            path = fullPath.Replace("Partial" + Delimiter, "").ToString();
+
         }
 
         /// <summary>

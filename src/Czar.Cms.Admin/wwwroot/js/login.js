@@ -75,7 +75,7 @@ layui.use(['form', 'layer', 'jquery'], function () {
                 return '密码首尾不能出现下划线\'_\'';
             }
             if (value.length > 32 || value.length < 4) {
-                return '验证码长度必须符合规则';
+                return '密码长度必须符合规则';
             }
         }
     });

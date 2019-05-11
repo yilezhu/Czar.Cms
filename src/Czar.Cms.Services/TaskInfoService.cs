@@ -63,12 +63,12 @@ namespace Czar.Cms.Services
             string conditions = "";
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"where Name like '%@Key%'";
+                conditions += "where Name like '%@Key%'";
             }
 
             return new TableDataModel
             {
-                count = await _repository.RecordCountAsync(conditions),
+                count = await _repository.RecordCountAsync(conditions,new { Key = model.Key}),
                 data = await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new
                 {
                     Key = model.Key,
