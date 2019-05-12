@@ -45,8 +45,8 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         }
     });
 
-    //添加用户
-    function addManager(edit) {
+    //添加文章
+    function addArticle(edit) {
         var tit = "添加文章";
         if (edit) {
             tit = "编辑文章";
@@ -55,40 +55,43 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             title: tit,
             type: 2,
             anim: 1,
-            area: ['500px', '90%'],
             content: "/Article/AddOrModify/",
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
                     body.find("#Id").val(edit.Id);
-                    body.find(".UserName").val(edit.UserName);
-                    body.find(".NickName").val(edit.NickName);
-                    body.find(".RoleId").val(edit.RoleId);
-                    body.find(".Mobile").val(edit.Mobile);
-                    body.find(".Email").val(edit.Email);
-                    body.find("input:checkbox[name='IsLock']").prop("checked", edit.IsLock);
-                    body.find(".Remark").text(edit.Remark);
+                    //body.find(".UserName").val(edit.UserName);
+                    //body.find(".NickName").val(edit.NickName);
+                    //body.find(".RoleId").val(edit.RoleId);
+                    //body.find(".Mobile").val(edit.Mobile);
+                    //body.find(".Email").val(edit.Email);
+                    //body.find("input:checkbox[name='IsLock']").prop("checked", edit.IsLock);
+                    //body.find(".Remark").text(edit.Remark);
                     form.render();
                 }
             }
         });
+        layui.layer.full(index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize", function () {
+            layui.layer.full(index);
+        })
     }
     $(".addArticle_btn").click(function () {
-        addManager();
+        addArticle();
     });
 
     //批量删除
     $(".delAll_btn").click(function () {
         var checkStatus = table.checkStatus('articleListTable'),
             data = checkStatus.data,
-            managerId = [];
+            Ids = [];
         if (data.length > 0) {
             for (var i in data) {
-                managerId.push(data[i].Id);
+                Ids.push(data[i].Id);
             }
             layer.confirm('确定删除选中的文章？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(managerId);
+                del(Ids);
             });
         } else {
             layer.msg("请选择需要删除的文章");
@@ -101,7 +104,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             data = obj.data;
 
         if (layEvent === 'edit') { //编辑
-            addManager(data);
+            addArticle(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此文章？', { icon: 3, title: '提示信息' }, function (index) {
                 del(data.Id);
@@ -109,7 +112,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         }
     });
 
-    form.on('switch(IsLock)', function (data) {
+    form.on('switch(IsPublish)', function (data) {
         var tipText = '确定锁定当前文章吗？';
         if (!data.elem.checked) {
             tipText = '确定启用当前文章吗？';
@@ -123,7 +126,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 layer.close(index);
             }
         }, function (index) {
-            changeLockStatus(data.value, data.elem.checked);
+            changePublishStatus(data.value, data.elem.checked);
             layer.close(index);
         }, function (index) {
             data.elem.checked = !data.elem.checked;
@@ -132,11 +135,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     });
 
-    function del(managerId) {
+    function del(Ids) {
         $.ajax({
             type: 'POST',
             url: '/Article/Delete/',
-            data: { managerId: managerId },
+            data: { Ids: Ids },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
@@ -155,11 +158,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     }
 
-    function changeLockStatus(managerId,status) {
+    function changePublishStatus(id,status) {
         $.ajax({
             type: 'POST',
-            url: '/Article/ChangeLockStatus/',
-            data: { Id: managerId, Status: status },
+            url: '/Article/ChangePublishStatus/',
+            data: { Id: id, Status: status },
             dataType: "json",
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
