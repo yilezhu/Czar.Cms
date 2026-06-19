@@ -74,13 +74,11 @@ namespace Czar.Cms.Admin.Controllers
             var list = await _service.GetListByIdsAsync(Ids);
             if (list?.Count > 0)
             {
-                list.ForEach(async x =>
-                {
-                    await _scheduleCenter.StopJobAsync(x.Name,x.Group);
-                });
-                result= await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Stopped);
+                var tasks = list.Select(x => _scheduleCenter.StopJobAsync(x.Name, x.Group)).ToList();
+                await Task.WhenAll(tasks);
+                result = await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Stopped);
             }
-            
+
             return JsonHelper.ObjectToJSON(result);
         }
 
@@ -94,10 +92,8 @@ namespace Czar.Cms.Admin.Controllers
             var list = await _service.GetListByIdsAsync(Ids);
             if (list?.Count > 0)
             {
-                list.ForEach(async x =>
-                {
-                    await _scheduleCenter.AddJobAsync(x.Name, x.Group,x.ClassName,x.Assembly,x.Cron);
-                });
+                var tasks = list.Select(x => _scheduleCenter.AddJobAsync(x.Name, x.Group, x.ClassName, x.Assembly, x.Cron)).ToList();
+                await Task.WhenAll(tasks);
                 result = await _service.UpdateStatusByIdsAsync(Ids, (int)TaskInfoStatus.Running);
             }
             return JsonHelper.ObjectToJSON(result);

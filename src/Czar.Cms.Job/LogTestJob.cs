@@ -1,39 +1,40 @@
-﻿/**
+/**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：                                                    
-*│　作    者：yilezhu                                             
-*│　版    本：1.0                                                 
-*│　创建时间：2019/3/18 15:36:03                             
+*│　描    述：
+*│　作    者：yilezhu
+*│　版    本：1.0
+*│　创建时间：2019/3/18 15:36:03
 *└──────────────────────────────────────────────────────────────┘
 *┌──────────────────────────────────────────────────────────────┐
-*│　命名空间： Czar.Cms.Job                                   
-*│　类    名： LogTestJob                                      
+*│　命名空间： Czar.Cms.Job
+*│　类    名： LogTestJob
 *└──────────────────────────────────────────────────────────────┘
 */
-using NLog;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Czar.Cms.Job
 {
     public class LogTestJob : IJob
     {
-        public static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<LogTestJob> _logger;
 
-     
+        public LogTestJob(ILogger<LogTestJob> logger)
+        {
+            _logger = logger;
+        }
+
         public async Task Execute(IJobExecutionContext context)
         {
             JobDataMap dataMap = context.JobDetail.JobDataMap;
             string serverName = dataMap.GetString("ServerName");
             if (string.IsNullOrEmpty(serverName))
             {
-                serverName = "kong";
+                serverName = "unknown";
             }
-            logger.Error($"Hello, {serverName},at {DateTime.Now.ToString()}");
+            _logger.LogError("Hello, {ServerName}, at {Time}", serverName, DateTime.Now);
             await Task.CompletedTask;
         }
     }
