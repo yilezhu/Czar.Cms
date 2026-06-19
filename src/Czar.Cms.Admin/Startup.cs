@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Alexinea.Autofac.Extensions.DependencyInjection;
+using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Czar.Cms.Admin.Filter;
 using Czar.Cms.Admin.Validation;
@@ -18,6 +18,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using AutoMapper;
@@ -32,9 +33,8 @@ namespace Czar.Cms.Admin
     public class Startup
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            env.ConfigureNLog("Nlog.config");
             Configuration = configuration;
         }
 
@@ -75,17 +75,14 @@ namespace Czar.Cms.Admin
             {
                 option.Filters.Add(new GlobalExceptionFilter());
             })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddControllersAsServices()
                 .AddFluentValidation(fv =>
                 {
                     //程序集方式引入
                     fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>();
-                    //去掉其他的验证，只使用FluentValidation的验证规则
-                    fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                 });
             //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile
-            services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddSingleton<ScheduleCenter>();
             var builder = new ContainerBuilder();
             builder.Populate(services);
@@ -101,9 +98,9 @@ namespace Czar.Cms.Admin
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app
-            , IHostingEnvironment env
+            , IWebHostEnvironment env
             , ILoggerFactory loggerFactory
-            ,IApplicationLifetime applicationLifetime)
+            ,IHostApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
