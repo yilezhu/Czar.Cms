@@ -71,9 +71,10 @@ namespace Czar.Cms.Admin
                 options.HeaderName = "X-CSRF-TOKEN-yilezhu";
                 options.SuppressXFrameOptionsHeader = false;
             });
+            services.AddScoped<GlobalExceptionFilter>();
             services.AddMvc(option =>
             {
-                option.Filters.Add(new GlobalExceptionFilter());
+                option.Filters.Add(typeof(GlobalExceptionFilter));
                 option.Filters.Add(typeof(PermissionFilter));
             })
                 .AddControllersAsServices()

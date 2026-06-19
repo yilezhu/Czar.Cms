@@ -8,7 +8,9 @@
 */
 using Czar.Cms.IServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -106,31 +108,57 @@ namespace Czar.Cms.Admin.Filter
             // 6. 当前请求路径匹配
             var actionName = (routeData.Values["action"] ?? "").ToString();
             var currentPath = $"/{controllerName}/{actionName}".Trim();
+            var httpMethod = httpContext.Request.Method;
 
-            // 7. 判定：当前控制器主路径 /Controller 也视为匹配
-            if (!allowedPaths.Contains(currentPath) &&
-                !allowedPaths.Contains($"/{controllerName}"))
+            // 7. 校验结果判定
+            bool basePathAllowed = allowedPaths.Contains(currentPath) || allowedPaths.Contains($"/{controllerName}");
+            if (!basePathAllowed)
             {
-                // 拒绝访问 —— AJAX 请求返回 JSON 403，其他请求返回跳转首页
-                var isAjax = string.Equals(httpContext.Request.Headers["X-Requested-With"], "XMLHttpRequest",
-                               StringComparison.OrdinalIgnoreCase);
-                if (isAjax)
+                DenyAccess(context, httpContext);
+                return;
+            }
+
+            // 8. 对于 POST/PUT/DELETE 等写操作，检查是否标记了 [OperatePermission]
+            //    如果标记了，需要该操作的 Menu.LinkUrl 包含对应的操作名
+            if (httpMethod.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+                httpMethod.Equals("PUT", StringComparison.OrdinalIgnoreCase) ||
+                httpMethod.Equals("DELETE", StringComparison.OrdinalIgnoreCase))
+            {
+                var endpoint = context.ActionDescriptor.EndpointMetadata;
+                var operateAttr = endpoint.FirstOrDefault(m => m is OperatePermissionAttribute) as OperatePermissionAttribute;
+                if (operateAttr != null)
                 {
-                    context.Result = new ContentResult
+                    // 操作级权限：根据 Menu.Permission 字段校验
+                    var operatePath = $"/{controllerName}/{operateAttr.OperateName ?? actionName}".Trim();
+                    if (!allowedPaths.Contains(operatePath))
                     {
-                        Content = System.Text.Json.JsonSerializer.Serialize(new
-                        {
-                            ResultCode = 403,
-                            ResultMsg = "您没有权限执行此操作"
-                        }),
-                        ContentType = "application/json",
-                        StatusCode = 403
-                    };
+                        DenyAccess(context, httpContext);
+                        return;
+                    }
                 }
-                else
+            }
+        }
+
+        private static void DenyAccess(AuthorizationFilterContext context, HttpContext httpContext)
+        {
+            var isAjax = string.Equals(httpContext.Request.Headers["X-Requested-With"], "XMLHttpRequest",
+                           StringComparison.OrdinalIgnoreCase);
+            if (isAjax)
+            {
+                context.Result = new ContentResult
                 {
-                    context.Result = new RedirectToRouteResult(new { controller = "Home", action = "Index", area = "" });
-                }
+                    Content = System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        ResultCode = 403,
+                        ResultMsg = "您没有权限执行此操作"
+                    }),
+                    ContentType = "application/json",
+                    StatusCode = 403
+                };
+            }
+            else
+            {
+                context.Result = new RedirectToRouteResult(new { controller = "Home", action = "Index", area = "" });
             }
         }
 

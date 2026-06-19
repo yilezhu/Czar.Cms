@@ -47,9 +47,9 @@ namespace Czar.Cms.Services
             Manager manager;
             if (item.Id == 0)
             {
-                //TODO ADD
+                // 新增用户：使用 BCrypt Hash 存储密码
                 manager = _mapper.Map<Manager>(item);
-                manager.Password = AESEncryptHelper.Encode(CzarCmsKeys.DefaultPassword, CzarCmsKeys.AesEncryptKeys);
+                manager.Password = PasswordHelper.HashPassword(CzarCmsKeys.DefaultPassword);
                 manager.LoginCount = 0;
                 manager.AddManagerId = 1;
                 manager.IsDelete = false;
@@ -174,33 +174,41 @@ namespace Czar.Cms.Services
         }
 
         /// <summary>
-        /// 登录操作，成功则写日志
+        /// 登录操作：使用 BCrypt 兼容验证（支持旧 AES 格式自动升级）
         /// </summary>
-        /// <param name="model">登陆实体</param>
-        /// <returns>状态</returns>
         public async Task<Manager> SignInAsync(LoginModel model)
         {
-            model.Password = AESEncryptHelper.Encode(model.Password.Trim(), CzarCmsKeys.AesEncryptKeys);
-            model.UserName = model.UserName.Trim();
-            string conditions = $"select * from {nameof(Manager)} where IsDelete=0 ";//未删除的
-            conditions += $"and (UserName = @UserName or Mobile =@UserName or Email =@UserName) and Password=@Password";
-            var manager = await _repository.GetAsync(conditions, model);
-            if (manager != null)
+            var trimmedUserName = model.UserName.Trim();
+            string conditions = $"select * from {nameof(Manager)} where IsDelete=0 " +
+                                $"and (UserName = @UserName or Mobile = @UserName or Email = @UserName)";
+            var manager = await _repository.GetAsync(conditions, new { UserName = trimmedUserName });
+            if (manager == null) return null;
+
+            // 兼容验证：支持旧 AES 格式和新的 BCrypt 格式
+            var verifyResult = PasswordHelper.Verify(model.Password.Trim(), manager.Password);
+            if (!verifyResult.IsValid) return null;
+
+            // 登录成功，更新登录信息
+            manager.LoginLastIp = model.Ip;
+            manager.LoginCount += 1;
+            manager.LoginLastTime = DateTime.Now;
+
+            // 如果是旧 AES 格式验证通过的，自动升级为 BCrypt
+            if (verifyResult.NeedsRehash)
             {
-                manager.LoginLastIp = model.Ip;
-                manager.LoginCount += 1;
-                manager.LoginLastTime = DateTime.Now;
-                await _repository.UpdateAsync(manager);
-               await _managerLogRepository.InsertAsync(new ManagerLog()
-                {
-                    ActionType = CzarCmsEnums.ActionEnum.SignIn.ToString(),
-                    AddManageId = manager.Id,
-                    AddManagerNickName = manager.NickName,
-                    AddTime = DateTime.Now,
-                    AddIp = model.Ip,
-                    Remark = "用户登录"
-                });
+                manager.Password = PasswordHelper.HashPassword(model.Password.Trim());
             }
+
+            await _repository.UpdateAsync(manager);
+            await _managerLogRepository.InsertAsync(new ManagerLog()
+            {
+                ActionType = CzarCmsEnums.ActionEnum.SignIn.ToString(),
+                AddManageId = manager.Id,
+                AddManagerNickName = manager.NickName,
+                AddTime = DateTime.Now,
+                AddIp = model.Ip,
+                Remark = "用户登录"
+            });
             return manager;
         }
 
@@ -225,32 +233,30 @@ namespace Czar.Cms.Services
         }
 
         /// <summary>
-        /// 修改密码
+        /// 修改密码：使用 BCrypt 验证和存储
         /// </summary>
-        /// <param name="model">修改密码实体</param>
-        /// <returns>结果</returns>
         public async Task<BaseResult> ChangePasswordAsync(ChangePasswordModel model)
         {
             BaseResult result = new BaseResult();
-            string oldPwd = await _repository.GetPasswordByIdAsync(model.Id);//数据库中的密码
-            if (oldPwd == AESEncryptHelper.Encode(model.OldPassword, CzarCmsKeys.AesEncryptKeys))
-            {
-                var count = await _repository.ChangePasswordByIdAsync(model.Id, AESEncryptHelper.Encode(model.NewPassword.Trim(), CzarCmsKeys.AesEncryptKeys));
-                if (count > 0)
-                {
-                    result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
-                    result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
-                }
-                else
-                {
-                    result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
-                    result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
-                }
-            }
-            else
+            string oldStoredPwd = await _repository.GetPasswordByIdAsync(model.Id);
+            var verifyResult = PasswordHelper.Verify(model.OldPassword, oldStoredPwd);
+            if (!verifyResult.IsValid)
             {
                 result.ResultCode = ResultCodeAddMsgKeys.PasswordOldErrorCode;
                 result.ResultMsg = ResultCodeAddMsgKeys.PasswordOldErrorMsg;
+                return result;
+            }
+            var newHash = PasswordHelper.HashPassword(model.NewPassword.Trim());
+            var count = await _repository.ChangePasswordByIdAsync(model.Id, newHash);
+            if (count > 0)
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
+            }
+            else
+            {
+                result.ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode;
+                result.ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg;
             }
             return result;
         }

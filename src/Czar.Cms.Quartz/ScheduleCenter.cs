@@ -15,12 +15,51 @@ using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Czar.Cms.Quartz
 {
+    /// <summary>
+    /// 允许加载的 Job 程序集白名单（仅这些程序集中的 Job 类可被调度）
+    /// </summary>
+    internal static class JobAssemblyWhiteList
+    {
+        public static readonly HashSet<string> Allowed = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Czar.Cms.Job",
+        };
+
+        /// <summary>
+        /// 从 Windows 绝对路径或完整 DLL 路径中提取程序集短名
+        /// </summary>
+        public static string ExtractAssemblyName(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return input;
+            // 如果包含路径分隔符，取文件名去掉扩展名
+            if (input.Contains('/') || input.Contains('\\') || input.Contains('.'))
+            {
+                var name = Path.GetFileNameWithoutExtension(input);
+                // 去掉 .dll 后缀（如果有）
+                if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+                    name = Path.GetFileNameWithoutExtension(name);
+                return name;
+            }
+            return input;
+        }
+
+        /// <summary>
+        /// 验证程序集名称是否在白名单中
+        /// </summary>
+        public static bool IsAllowed(string assemblyShortName)
+        {
+            return Allowed.Contains(assemblyShortName);
+        }
+    }
+
     public class ScheduleCenter : IDisposable
     {
         private readonly ILogger<ScheduleCenter> _logger;
@@ -57,6 +96,18 @@ namespace Czar.Cms.Quartz
                     return result;
                 }
 
+                // 智能提取程序集短名（兼容数据库中存 Windows 绝对路径的旧数据）
+                var shortAssemblyName = JobAssemblyWhiteList.ExtractAssemblyName(jobAssemblyName);
+
+                // 安全校验：仅允许白名单中的程序集，防止 RCE 风险
+                if (!JobAssemblyWhiteList.IsAllowed(shortAssemblyName))
+                {
+                    result.ResultCode = -5;
+                    result.ResultMsg = $"程序集「{shortAssemblyName}」不在允许列表中，拒绝加载";
+                    _logger.LogWarning("拒绝加载未授权程序集: {Assembly}", shortAssemblyName);
+                    return result;
+                }
+
                 var jobKey = new JobKey(jobName, jobGroup);
                 if (await _scheduler.CheckExists(jobKey))
                 {
@@ -64,7 +115,7 @@ namespace Czar.Cms.Quartz
                     await _scheduler.DeleteJob(jobKey);
                 }
 
-                Assembly assembly = Assembly.Load(new AssemblyName(jobAssemblyName));
+                Assembly assembly = Assembly.Load(new AssemblyName(shortAssemblyName));
                 Type jobType = assembly.GetType(jobNamespaceAndClassName);
                 if (jobType == null)
                 {

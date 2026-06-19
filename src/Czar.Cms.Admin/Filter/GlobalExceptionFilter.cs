@@ -14,26 +14,28 @@
 using Czar.Cms.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using NLog;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Czar.Cms.Admin.Filter
 {
-    public class GlobalExceptionFilter: IExceptionFilter
+    public class GlobalExceptionFilter : IExceptionFilter
     {
-       public static Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<GlobalExceptionFilter> _logger;
+
+        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger)
+        {
+            _logger = logger;
+        }
 
         public void OnException(ExceptionContext filterContext)
         {
-            logger.Error(filterContext.Exception);
+            _logger.LogError(filterContext.Exception, "全局异常捕获");
             var result = new BaseResult()
             {
-                ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode,//系统异常代码
-                ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg,//系统异常信息
+                ResultCode = ResultCodeAddMsgKeys.CommonExceptionCode,
+                ResultMsg = ResultCodeAddMsgKeys.CommonExceptionMsg,
             };
             filterContext.Result = new ObjectResult(result);
             filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

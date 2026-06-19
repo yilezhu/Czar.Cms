@@ -63,7 +63,7 @@ namespace Czar.Cms.Admin.Controllers
 
             // 3. 生成文件名与目录（跨平台路径）
             var dir = DateTime.Now.ToString("yyyyMMdd");
-            var newFileName = $"{DateTime.Now:yyyyMMddHHmmssfff}{new Random().Next(1000, 9999)}{extName}";
+            var newFileName = $"{DateTime.Now:yyyyMMddHHmmssfff}{Guid.NewGuid():N}{extName}";
             var uploadDir = Path.Combine(_hostEnv.WebRootPath, "upload", dir);
             var targetPath = Path.Combine(uploadDir, newFileName);
 
