@@ -76,6 +76,7 @@ namespace Czar.Cms.Admin
             // 注册 FluentValidation 验证器
             services.AddMvc(option =>
             {
+                option.EnableEndpointRouting = false;
                 option.Filters.Add(typeof(GlobalExceptionFilter));
                 option.Filters.Add(typeof(PermissionFilter));
             })

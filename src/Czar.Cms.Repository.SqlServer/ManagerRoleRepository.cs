@@ -97,7 +97,7 @@ VALUES   (@RoleId,@MenuId, '')";
                 catch (Exception ex)
                 {
                     tran.Rollback();
-                    throw ex;
+                    throw;
                 }
                
             }
@@ -140,10 +140,10 @@ VALUES   (@RoleId,@MenuId, '')";
                     }
                     tran.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     tran.Rollback();
-                    throw ex;
+                    throw;
                 }
 
             }
