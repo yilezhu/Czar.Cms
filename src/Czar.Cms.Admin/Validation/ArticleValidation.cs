@@ -16,7 +16,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public ArticleValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(x => x.CategoryId).GreaterThan(0).WithMessage("请选择文章分类");
             RuleFor(x => x.Title).NotEmpty().WithMessage("文章标题不能为空")

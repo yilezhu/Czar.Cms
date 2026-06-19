@@ -13,6 +13,6 @@ namespace Czar.Cms.ViewModels
         /// <summary>
         /// 搜索关键字
         /// </summary>
-        public string Key { get; set; }
+        public new string Key { get; set; }
     }
 }

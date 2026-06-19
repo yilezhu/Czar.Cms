@@ -13,7 +13,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public ManagerValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(x => x.UserName).NotEmpty().Length(5, 32).WithMessage("登陆ID不能为空并且长度不能超过32个字符");
             RuleFor(x => x.RoleId).NotNull().WithMessage("用户所属角色不能为空") ;

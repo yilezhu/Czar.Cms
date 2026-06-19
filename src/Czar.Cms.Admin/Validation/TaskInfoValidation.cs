@@ -10,7 +10,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public TaskInfoValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("任务别名不能为空")

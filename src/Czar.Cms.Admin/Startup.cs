@@ -8,6 +8,7 @@ using Czar.Cms.Admin.Filter;
 using Czar.Cms.Admin.Validation;
 using Czar.Cms.Core.Options;
 using Czar.Cms.Repository.SqlServer;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -26,16 +27,17 @@ using Czar.Cms.Services;
 using Czar.Cms.IServices;
 using Czar.Cms.Quartz;
 using Czar.Cms.ViewModels;
-using NLog;
 
 namespace Czar.Cms.Admin
 {
     public class Startup
     {
-        private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        private readonly ILogger<Startup> _logger;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -71,7 +73,7 @@ namespace Czar.Cms.Admin
                 options.HeaderName = "X-CSRF-TOKEN-yilezhu";
                 options.SuppressXFrameOptionsHeader = false;
             });
-            services.AddScoped<GlobalExceptionFilter>();
+            // 注册 FluentValidation 验证器
             services.AddMvc(option =>
             {
                 option.Filters.Add(typeof(GlobalExceptionFilter));
@@ -80,7 +82,6 @@ namespace Czar.Cms.Admin
                 .AddControllersAsServices()
                 .AddFluentValidation(fv =>
                 {
-                    //程序集方式引入
                     fv.RegisterValidatorsFromAssemblyContaining<ManagerRoleValidation>();
                 });
             //DI了AutoMapper中需要用到的服务，其中包括AutoMapper的配置类 Profile
@@ -98,11 +99,16 @@ namespace Czar.Cms.Admin
             return new AutofacServiceProvider(builder.Build());
         }
 
+        // NLog 5.x: ConfigureLogging 会被框架自动调用
+        public void ConfigureLogging(ILoggingBuilder loggingBuilder)
+        {
+            loggingBuilder.AddNLog();
+        }
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app
             , IWebHostEnvironment env
-            , ILoggerFactory loggerFactory
-            ,IHostApplicationLifetime applicationLifetime)
+            , IHostApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -151,15 +157,13 @@ namespace Czar.Cms.Admin
             catch (Exception ex)
             {
 
-                logger.Error(ex, nameof(Startup));
+                _logger.LogError(ex, nameof(Startup));
             }
             
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
             app.UseAuthentication();
-            //add NLog to ASP.NET Core
-            loggerFactory.AddNLog();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

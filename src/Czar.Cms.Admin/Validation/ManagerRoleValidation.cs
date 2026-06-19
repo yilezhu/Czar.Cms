@@ -12,7 +12,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public ManagerRoleValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(x => x.RoleName).NotEmpty().Length(1, 64).WithMessage("角色名称不能为空并且长度不能超过64个字符");
             RuleFor(x => x.RoleType).NotNull().InclusiveBetween(1,2).WithMessage("角色类型格式不正确") ;

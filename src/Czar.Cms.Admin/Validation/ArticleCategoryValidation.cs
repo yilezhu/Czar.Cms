@@ -16,7 +16,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public ArticleCategoryValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
 
             RuleFor(x => x.Title).NotEmpty().WithMessage("分类名称不能为空")
                 .Length(2, 128).WithMessage("分类名称长度必须在2到128个字符之间");

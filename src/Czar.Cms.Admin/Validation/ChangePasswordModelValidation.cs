@@ -13,7 +13,7 @@ namespace Czar.Cms.Admin.Validation
     {
         public ChangePasswordModelValidation()
         {
-            CascadeMode = CascadeMode.StopOnFirstFailure;
+            CascadeMode = CascadeMode.Stop;
             RuleFor(x => x.Id).NotNull().GreaterThan(0).WithMessage("用户信息获取异常");
             RuleFor(x => x.OldPassword).NotEmpty().Length(4, 32).WithMessage("旧密码不能为空且长度必须符合规则");
             RuleFor(x => x.NewPassword).NotEmpty().Length(4, 32).WithMessage("新密码不能为空且长度必须符合规则")
