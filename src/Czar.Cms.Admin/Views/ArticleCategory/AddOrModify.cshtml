@@ -1,43 +1,31 @@
-@model Czar.Cms.ViewModels.ArticleAddOrModifyModel
+@model Czar.Cms.ViewModels.ArticleCategoryAddOrModifyModel
 @{
-    ViewData["Title"] = "文章编辑";
+    ViewData["Title"] = "文章分类编辑";
 }
 <form class="layui-form" asp-action="AddOrModify" method="post">
     @Html.HiddenFor(x => x.Id)
     <div class="layui-form-item">
-        <label class="layui-form-label">文章标题</label>
+        <label class="layui-form-label">分类名称</label>
         <div class="layui-input-block">
-            <input asp-for="Title" class="layui-input" lay-verify="required" placeholder="请输入文章标题" />
+            <input asp-for="Title" class="layui-input" lay-verify="required" placeholder="请输入分类名称" autocomplete="off" />
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">文章分类</label>
+        <label class="layui-form-label">父分类ID</label>
         <div class="layui-input-block">
-            <input asp-for="CategoryId" class="layui-input" placeholder="请输入文章分类ID" value="@(Model != null && Model.CategoryId > 0 ? Model.CategoryId : 0)" />
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">封面图</label>
-        <div class="layui-input-block">
-            <input asp-for="ImageUrl" class="layui-input" placeholder="封面图URL" />
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">作者</label>
-        <div class="layui-input-block">
-            <input asp-for="Author" class="layui-input" placeholder="请输入作者" />
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">来源</label>
-        <div class="layui-input-block">
-            <input asp-for="Source" class="layui-input" placeholder="请输入文章来源" />
+            <input asp-for="ParentId" class="layui-input" placeholder="0表示顶级" value="@(Model != null ? Model.ParentId : 0)" />
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">排序</label>
         <div class="layui-input-block">
             <input asp-for="Sort" class="layui-input" placeholder="数字越小越靠前" value="@(Model != null ? Model.Sort : 0)" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类图标</label>
+        <div class="layui-input-block">
+            <input asp-for="ImageUrl" class="layui-input" placeholder="图标URL" />
         </div>
     </div>
     <div class="layui-form-item">
@@ -49,28 +37,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">SEO关键字</label>
         <div class="layui-input-block">
-            <input asp-for="SeoKeyword" class="layui-input" placeholder="SEO关键字（多个用逗号分隔）" />
+            <input asp-for="SeoKeywords" class="layui-input" placeholder="SEO关键字" />
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">SEO描述</label>
         <div class="layui-input-block">
-            <textarea asp-for="SeoDescription" class="layui-textarea" placeholder="请输入SEO描述"></textarea>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">文章内容</label>
-        <div class="layui-input-block">
-            <textarea asp-for="Content" class="layui-textarea" rows="15" placeholder="请输入文章内容"></textarea>
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">设置项</label>
-        <div class="layui-input-block">
-            <input asp-for="IsTop" type="checkbox" title="置顶" lay-skin="primary" />
-            <input asp-for="IsSlide" type="checkbox" title="轮播" lay-skin="primary" />
-            <input asp-for="IsRed" type="checkbox" title="热门" lay-skin="primary" />
-            <input asp-for="IsPublish" type="checkbox" title="发布" lay-skin="primary" />
+            <textarea asp-for="SeoDescription" class="layui-textarea" placeholder="SEO描述"></textarea>
         </div>
     </div>
     <div class="layui-form-item">

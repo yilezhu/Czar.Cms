@@ -62,5 +62,12 @@ namespace Czar.Cms.IServices
         /// <param name="ParentId"></param>
         /// <returns></returns>
         Task<List<Menu>> GetChildListByParentIdAsync(int ParentId);
+
+        /// <summary>
+        /// 根据角色ID获取该角色所拥有的所有菜单（含权限校验，用于过滤器与导航）
+        /// </summary>
+        /// <param name="roleId">角色主键</param>
+        /// <returns>菜单列表</returns>
+        Task<IEnumerable<Menu>> GetMenusByRoleIdAsync(int roleId);
     }
 }

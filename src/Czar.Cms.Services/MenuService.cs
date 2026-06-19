@@ -200,5 +200,13 @@ namespace Czar.Cms.Services
             })).ToList();
            
         }
+
+        /// <summary>
+        /// 根据角色ID获取该角色所拥有的所有菜单（用于权限校验和左侧导航）
+        /// </summary>
+        public async Task<IEnumerable<Menu>> GetMenusByRoleIdAsync(int roleId)
+        {
+            return await _repository.GetMenusByRoleIdAsync(roleId);
+        }
     }
 }

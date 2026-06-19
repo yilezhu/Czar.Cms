@@ -1,44 +1,40 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：文章管理控制器                                                    
-*│　作    者：yilezhu                                              
+*│　描    述：文章分类控制器                                                    
+*│　作    者：yilezhu                                             
 *│　版    本：1.0                                                 
-*│　创建时间：2019-05-12                                                    
+*│　创建时间：2019/3/7 16:50:56                             
 *└──────────────────────────────────────────────────────────────┘
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Czar.Cms.Admin.Validation;
 using Czar.Cms.Core.Helper;
 using Czar.Cms.IServices;
-using Czar.Cms.IRepository;
 using Czar.Cms.Models;
 using Czar.Cms.ViewModels;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Czar.Cms.Admin.Controllers
 {
-    public class ArticleController : BaseController
+    public class ArticleCategoryController : BaseController
     {
-        private readonly IArticleService _service;
-        private readonly IArticleRepository _repository;
+        private readonly IArticleCategoryService _service;
 
-        public ArticleController(IArticleService service, IArticleRepository repository)
+        public ArticleCategoryController(IArticleCategoryService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        // GET: Article
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<string> LoadData([FromQuery]ArticleRequestModel model)
+        [ActionName("LoadData")]
+        public async Task<string> LoadDataAsync([FromQuery] ArticleCategoryRequestModel model)
         {
             return JsonHelper.ObjectToJSON(await _service.LoadDataAsync(model));
         }
@@ -46,27 +42,21 @@ namespace Czar.Cms.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddOrModify(int id)
         {
-            var model = new ArticleAddOrModifyModel();
+            var model = new ArticleCategoryAddOrModifyModel();
             if (id > 0)
             {
-                var dbItem = await _repository.GetAsync(id);
+                var list = await _service.GetAllListAsync();
+                var dbItem = list.FirstOrDefault(p => p.Id == id);
                 if (dbItem != null)
                 {
                     model.Id = dbItem.Id;
-                    model.CategoryId = dbItem.CategoryId;
                     model.Title = dbItem.Title;
-                    model.ImageUrl = dbItem.ImageUrl;
-                    model.Content = dbItem.Content;
+                    model.ParentId = dbItem.ParentId;
                     model.Sort = dbItem.Sort;
-                    model.Author = dbItem.Author;
-                    model.Source = dbItem.Source;
+                    model.ImageUrl = dbItem.ImageUrl;
                     model.SeoTitle = dbItem.SeoTitle;
-                    model.SeoKeyword = dbItem.SeoKeyword;
+                    model.SeoKeywords = dbItem.SeoKeywords;
                     model.SeoDescription = dbItem.SeoDescription;
-                    model.IsTop = dbItem.IsTop;
-                    model.IsSlide = dbItem.IsSlide;
-                    model.IsRed = dbItem.IsRed;
-                    model.IsPublish = dbItem.IsPublish;
                 }
             }
             return View(model);
@@ -74,10 +64,10 @@ namespace Czar.Cms.Admin.Controllers
 
         [HttpPost, ActionName("AddOrModify")]
         [ValidateAntiForgeryToken]
-        public async Task<string> AddOrModifyAsync([FromForm]ArticleAddOrModifyModel item)
+        public async Task<string> AddOrModifyAsync([FromForm] ArticleCategoryAddOrModifyModel item)
         {
             var result = new BaseResult();
-            var validationRules = new ArticleValidation();
+            ArticleCategoryValidation validationRules = new ArticleCategoryValidation();
             ValidationResult results = validationRules.Validate(item);
             if (results.IsValid)
             {

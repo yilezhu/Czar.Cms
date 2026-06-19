@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>文章管理</title>
+    <title>文章分类管理</title>
     <link rel="stylesheet" href="~/layui/css/layui.css">
     <style>
         body { padding: 10px; }
@@ -15,9 +15,9 @@
     <div class="layui-form layui-form-pane" style="margin-bottom:10px;">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">关键字</label>
-                <div class="layui-input-inline" style="width: 260px;">
-                    <input id="txtKey" class="layui-input" placeholder="请输入文章标题关键字" />
+                <label class="layui-form-label">分类名称</label>
+                <div class="layui-input-inline" style="width: 200px;">
+                    <input id="txtKey" class="layui-input" placeholder="请输入关键字" />
                 </div>
             </div>
             <div class="layui-inline">
@@ -50,18 +50,12 @@
                 cols: [[
                     { type: 'checkbox', fixed: 'left' },
                     { field: 'Id', title: 'ID', width: 70, sort: true, align: 'center' },
-                    { field: 'Title', title: '标题', width: 320 },
-                    { field: 'CategoryId', title: '分类ID', width: 90, align: 'center' },
-                    { field: 'Author', title: '作者', width: 120 },
-                    { field: 'Source', title: '来源', width: 120 },
+                    { field: 'Title', title: '分类名称', width: 200 },
+                    { field: 'ParentTitle', title: '父级分类', width: 200 },
+                    { field: 'ClassLayer', title: '层级', width: 80, align: 'center' },
                     { field: 'Sort', title: '排序', width: 80, align: 'center' },
-                    { field: 'ViewCount', title: '浏览', width: 90, align: 'center' },
-                    {
-                        field: 'IsPublish', title: '发布', width: 80, align: 'center',
-                        templet: function (d) { return d.IsPublish ? '<span style="color:#16b777;">是</span>' : '<span style="color:#999;">否</span>'; }
-                    },
-                    { field: 'AddTime', title: '添加时间', width: 180 },
-                    { toolbar: '#bar', title: '操作', width: 160, align: 'center', fixed: 'right' }
+                    { field: 'SeoTitle', title: 'SEO标题', width: 200 },
+                    { toolbar: '#bar', title: '操作', width: 180, align: 'center', fixed: 'right' }
                 ]]
             });
 
@@ -72,13 +66,13 @@
                 if (layEvent === 'edit') {
                     layer.open({
                         type: 2,
-                        title: '编辑文章',
-                        area: ['1100px', '720px'],
-                        content: 'Article/AddOrModify/' + data.Id
+                        title: '编辑文章分类',
+                        area: ['700px', '580px'],
+                        content: 'ArticleCategory/AddOrModify/' + data.Id
                     });
                 } else if (layEvent === 'del') {
-                    layer.confirm('确认要删除这条文章吗？', function (index) {
-                        $.post('Article/Delete', { ids: [data.Id] }, function (res) {
+                    layer.confirm('确认要删除这条数据吗？', function (index) {
+                        $.post('ArticleCategory/Delete', { ids: [data.Id] }, function (res) {
                             if (res.ResultCode === 0) {
                                 layer.msg('删除成功');
                                 table.reload('tableList');
@@ -100,9 +94,9 @@
             $('#btnAdd').on('click', function () {
                 layer.open({
                     type: 2,
-                    title: '新增文章',
-                    area: ['1100px', '720px'],
-                    content: 'Article/AddOrModify'
+                    title: '新增文章分类',
+                    area: ['700px', '580px'],
+                    content: 'ArticleCategory/AddOrModify'
                 });
             });
 
@@ -117,8 +111,8 @@
                     layer.msg('请至少选择一条数据');
                     return;
                 }
-                layer.confirm('确定要删除选中的 ' + ids.length + ' 条文章吗？', function (index) {
-                    $.post('Article/Delete', { ids: ids }, function (res) {
+                layer.confirm('确定要删除选中的 ' + ids.length + ' 条数据吗？', function (index) {
+                    $.post('ArticleCategory/Delete', { ids: ids }, function (res) {
                         if (res.ResultCode === 0) {
                             layer.msg('删除成功');
                             table.reload('tableList');

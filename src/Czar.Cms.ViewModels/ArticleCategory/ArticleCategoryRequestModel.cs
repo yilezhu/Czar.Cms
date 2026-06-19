@@ -1,31 +1,30 @@
 /**
 *┌──────────────────────────────────────────────────────────────┐
-*│　描    述：文章服务接口                                                    
+*│　描    述：文章分类分页请求模型                                                    
 *│　作    者：yilezhu                                             
 *│　版    本：1.0                                                 
-*│　创建时间：2019-03-07 16:50:56                             
+*│　创建时间：2019/3/7 16:50:56                             
 *└──────────────────────────────────────────────────────────────┘
 */
-using Czar.Cms.ViewModels;
-using System.Threading.Tasks;
+using System;
 
-namespace Czar.Cms.IServices
+namespace Czar.Cms.ViewModels
 {
-    public interface IArticleService
+    public class ArticleCategoryRequestModel
     {
         /// <summary>
-        /// 根据查询条件获取数据
+        /// 页码
         /// </summary>
-        Task<TableDataModel> LoadDataAsync(ArticleRequestModel model);
+        public int Page { get; set; } = 1;
 
         /// <summary>
-        /// 新增或修改
+        /// 每页数量
         /// </summary>
-        Task<BaseResult> AddOrModifyAsync(ArticleAddOrModifyModel model);
+        public int Limit { get; set; } = 10;
 
         /// <summary>
-        /// 批量逻辑删除
+        /// 关键字搜索
         /// </summary>
-        Task<BaseResult> DeleteIdsAsync(int[] Ids);
+        public string Key { get; set; }
     }
 }

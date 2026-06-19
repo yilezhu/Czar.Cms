@@ -18,6 +18,7 @@ using Czar.Cms.Models;
 using Dapper;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -105,6 +106,19 @@ namespace Czar.Cms.Repository.SqlServer
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 根据角色ID获取该角色所拥有的所有菜单（用于权限校验和左侧导航）
+        /// </summary>
+        public async Task<IEnumerable<Menu>> GetMenusByRoleIdAsync(int roleId)
+        {
+            string sql = @"select m.Id,m.ParentId,m.Name,m.DisplayName,m.IconUrl,m.LinkUrl,m.Sort,
+                                  m.Permission,m.IsDisplay,m.IsSystem
+                           from Menu m
+                           inner join RolePermission rp on m.Id = rp.MenuId
+                           where rp.RoleId=@RoleId and m.IsDelete=0 and m.IsDisplay=1";
+            return await _dbConnection.QueryAsync<Menu>(sql, new { RoleId = roleId });
         }
     }
 }

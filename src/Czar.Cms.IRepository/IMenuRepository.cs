@@ -13,6 +13,7 @@
 using Czar.Cms.Core.Repository;
 using Czar.Cms.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Czar.Cms.IRepository
@@ -62,5 +63,11 @@ namespace Czar.Cms.IRepository
         /// <returns></returns>
         Task<Boolean> IsExistsNameAsync(string Name,Int32 Id);
 
+        /// <summary>
+        /// 根据角色ID获取该角色所拥有的所有菜单
+        /// </summary>
+        /// <param name="roleId">角色主键</param>
+        /// <returns>菜单列表</returns>
+        Task<IEnumerable<Menu>> GetMenusByRoleIdAsync(int roleId);
     }
 }

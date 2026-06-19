@@ -74,6 +74,7 @@ namespace Czar.Cms.Admin
             services.AddMvc(option =>
             {
                 option.Filters.Add(new GlobalExceptionFilter());
+                option.Filters.Add(typeof(PermissionFilter));
             })
                 .AddControllersAsServices()
                 .AddFluentValidation(fv =>
