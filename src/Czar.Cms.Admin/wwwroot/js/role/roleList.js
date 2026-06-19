@@ -103,8 +103,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 roleId.push(data[i].Id);
             }
             layer.confirm('确定删除选中的角色？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(roleId);
+                del(roleId, index);
             });
         } else {
             layer.msg("请选择需要删除的角色");
@@ -120,12 +119,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             addRole(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此角色？', { icon: 3, title: '提示信息' }, function (index) {
-                del(data.Id);
+                del(data.Id, index);
             });
         }
     });
 
-    function del(roleId) {
+    function del(roleId, confirmIndex) {
         $.ajax({
             type: 'POST',
             url: '/ManagerRole/Delete/',
@@ -134,12 +133,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
-            success: function (data) {//res为相应体,function为回调函数
+            success: function (data) {
                 layer.msg(data.ResultMsg, {
-                    time: 2000 //20s后自动关闭
+                    time: 2000
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
+                    layer.close(confirmIndex);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

@@ -135,11 +135,11 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += $"and RoleName like '%@Key%'";
+                conditions += "and RoleName like @Key";
             }
             return (await _repository.GetListAsync(conditions, new
             {
-                Key = model.Key,
+                Key = $"%{model.Key}%",
             })).AsList();
         }
 
@@ -155,17 +155,17 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += "and RoleName like '%@Key%'";
+                conditions += "and RoleName like @Key";
             }
             return new TableDataModel
             {
                 count = await _repository.RecordCountAsync(conditions, new
                 {
-                    Key = model.Key,
+                    Key = $"%{model.Key}%",
                 }),
                 data = await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new
                 {
-                    Key = model.Key,
+                    Key = $"%{model.Key}%",
                 }),
             };
         }

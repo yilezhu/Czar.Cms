@@ -87,8 +87,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 managerId.push(data[i].Id);
             }
             layer.confirm('确定删除选中的用户？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(managerId);
+                del(managerId, index);
             });
         } else {
             layer.msg("请选择需要删除的用户");
@@ -104,7 +103,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             addManager(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', { icon: 3, title: '提示信息' }, function (index) {
-                del(data.Id);
+                del(data.Id, index);
             });
         }
     });
@@ -132,7 +131,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     });
 
-    function del(managerId) {
+    function del(managerId, confirmIndex) {
         $.ajax({
             type: 'POST',
             url: '/Manager/Delete/',
@@ -141,12 +140,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
-            success: function (data) {//res为相应体,function为回调函数
+            success: function (data) {
                 layer.msg(data.ResultMsg, {
-                    time: 2000 //20s后自动关闭
+                    time: 2000
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
+                    layer.close(confirmIndex);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -164,12 +163,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
-            success: function (data) {//res为相应体,function为回调函数
+            success: function (data) {
                 layer.msg(data.ResultMsg, {
-                    time: 2000 //2s后自动关闭
+                    time: 2000
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {

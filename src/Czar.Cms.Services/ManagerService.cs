@@ -74,7 +74,7 @@ namespace Czar.Cms.Services
                     _mapper.Map(item, manager);
                     manager.ModifyManagerId = 1;
                     manager.ModifyTime = DateTime.Now;
-                    if (_repository.Update(manager) > 0)
+                    if (await _repository.UpdateAsync(manager) > 0)
                     {
                         result.ResultCode = ResultCodeAddMsgKeys.CommonObjectSuccessCode;
                         result.ResultMsg = ResultCodeAddMsgKeys.CommonObjectSuccessMsg;
@@ -129,9 +129,9 @@ namespace Czar.Cms.Services
             string conditions = "where IsDelete=0 ";//未删除的
             if (!model.Key.IsNullOrWhiteSpace())
             {
-                conditions += "and (UserName like '%@Key%' or NickName like '%@Key%' or Remark like '%@Key%' or Mobile like '%@Key%' or Email like '%@Key%')";
+                conditions += "and (UserName like @Key or NickName like @Key or Remark like @Key or Mobile like @Key or Email like @Key)";
             }
-            var list = (await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", model)).ToList();
+            var list = (await _repository.GetListPagedAsync(model.Page, model.Limit, conditions, "Id desc", new { Key = $"%{model.Key}%" })).ToList();
             var viewList = new List<ManagerListModel>();
             list?.ForEach(x =>
             {
@@ -141,7 +141,7 @@ namespace Czar.Cms.Services
             });
             return new TableDataModel
             {
-                count = await _repository.RecordCountAsync(conditions, model),
+                count = await _repository.RecordCountAsync(conditions, new { Key = $"%{model.Key}%" }),
                 data = viewList,
             };
         }
@@ -190,7 +190,7 @@ namespace Czar.Cms.Services
                 manager.LoginLastIp = model.Ip;
                 manager.LoginCount += 1;
                 manager.LoginLastTime = DateTime.Now;
-                _repository.Update(manager);
+                await _repository.UpdateAsync(manager);
                await _managerLogRepository.InsertAsync(new ManagerLog()
                 {
                     ActionType = CzarCmsEnums.ActionEnum.SignIn.ToString(),

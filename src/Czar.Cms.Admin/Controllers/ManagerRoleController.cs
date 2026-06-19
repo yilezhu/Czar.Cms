@@ -43,7 +43,7 @@ namespace Czar.Cms.Admin.Controllers
         {
             if (id > 0)
             {
-               ViewData["MenuIds"] = _rolePermissionService.GetIdsByRoleId(id).ArrayToString();
+               ViewData["MenuIdsInit"] = _rolePermissionService.GetIdsByRoleId(id).ArrayToString();
             }
             return View();
         }

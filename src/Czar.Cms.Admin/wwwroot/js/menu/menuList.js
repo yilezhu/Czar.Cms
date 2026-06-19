@@ -101,8 +101,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 roleId.push(data[i].Id);
             }
             layer.confirm('确定删除选中的菜单？', { icon: 3, title: '提示信息' }, function (index) {
-                //获取防伪标记
-                del(roleId);
+                del(roleId, index);
             });
         } else {
             layer.msg("请选择需要删除的菜单");
@@ -118,12 +117,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             addMenu(data);
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此菜单？', { icon: 3, title: '提示信息' }, function (index) {
-                del(data.Id);
+                del(data.Id, index);
             });
         }
     });
 
-    function del(menuId) {
+    function del(menuId, confirmIndex) {
         $.ajax({
             type: 'POST',
             url: '/Menu/Delete/',
@@ -132,12 +131,12 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
-            success: function (data) {//res为相应体,function为回调函数
+            success: function (data) {
                 layer.msg(data.ResultMsg, {
-                    time: 2000 //20s后自动关闭
+                    time: 2000
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
+                    layer.close(confirmIndex);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -178,12 +177,11 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             headers: {
                 "X-CSRF-TOKEN-yilezhu": $("input[name='AntiforgeryKey_yilezhu']").val()
             },
-            success: function (data) {//res为相应体,function为回调函数
+            success: function (data) {
                 layer.msg(data.ResultMsg, {
-                    time: 2000 //2s后自动关闭
+                    time: 2000
                 }, function () {
                     tableIns.reload();
-                    layer.close(index);
                 });
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
