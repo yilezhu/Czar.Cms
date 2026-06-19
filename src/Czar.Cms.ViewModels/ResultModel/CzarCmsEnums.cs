@@ -27,6 +27,10 @@ namespace Czar.Cms.ViewModels
             /// 登录
             /// </summary>
             SignIn,
+            /// <summary>
+            /// 登录失败
+            /// </summary>
+            LoginFail,
         }
 
     }

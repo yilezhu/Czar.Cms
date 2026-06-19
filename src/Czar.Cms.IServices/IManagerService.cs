@@ -57,6 +57,13 @@ namespace Czar.Cms.IServices
         Task<Manager> SignInAsync(LoginModel model);
 
         /// <summary>
+        /// 登录失败时记录操作日志
+        /// </summary>
+        /// <param name="model">登录实体（含用户名/IP）</param>
+        /// <param name="reason">失败原因描述</param>
+        Task SignInFailedAsync(LoginModel model, string reason);
+
+        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="model">修改密码实体</param>

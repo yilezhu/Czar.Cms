@@ -205,6 +205,26 @@ namespace Czar.Cms.Services
         }
 
         /// <summary>
+        /// 登录失败时记录操作日志
+        /// </summary>
+        public async Task SignInFailedAsync(LoginModel model, string reason)
+        {
+            // 先尝试根据用户名查找用户ID（不验证密码）
+            var conditions = $"select Id, NickName from {nameof(Manager)} where IsDelete=0 " +
+                             $"and (UserName = @UserName or Mobile = @UserName or Email = @UserName)";
+            var manager = await _repository.GetAsync(conditions, new { UserName = model.UserName, Password = "" });
+            await _managerLogRepository.InsertAsync(new ManagerLog()
+            {
+                ActionType = CzarCmsEnums.ActionEnum.LoginFail.ToString(),
+                AddManageId = manager?.Id ?? 0,
+                AddManagerNickName = manager?.NickName ?? model.UserName,
+                AddTime = DateTime.Now,
+                AddIp = model.Ip,
+                Remark = reason
+            });
+        }
+
+        /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="model">修改密码实体</param>

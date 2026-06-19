@@ -48,16 +48,17 @@ namespace Czar.Cms.Admin.Controllers
                 return JsonHelper.ObjectToJSON(result);
             }
             #endregion
-            #region 判断错误次数
-            var ErrorTimes = HttpContext.Session.GetInt32(ManagerSignInErrorTimes);
+            #region 判断错误次数（按用户名独立计数）
+            var sessionKey = $"{ManagerSignInErrorTimes}_{model.UserName}";
+            var ErrorTimes = HttpContext.Session.GetInt32(sessionKey);
             if (ErrorTimes == null)
             {
-                HttpContext.Session.SetInt32(ManagerSignInErrorTimes, 1);
+                HttpContext.Session.SetInt32(sessionKey, 1);
                 ErrorTimes = 1;
             }
             else
             {
-                HttpContext.Session.SetInt32(ManagerSignInErrorTimes, ErrorTimes.Value + 1);
+                HttpContext.Session.SetInt32(sessionKey, ErrorTimes.Value + 1);
             }
             if (ErrorTimes > MaxErrorTimes)
             {
@@ -80,16 +81,21 @@ namespace Czar.Cms.Admin.Controllers
             var manager = await _service.SignInAsync(model);
             if (manager == null)
             {
+                await _service.SignInFailedAsync(model, "密码错误");
                 result.ResultCode = ResultCodeAddMsgKeys.SignInPasswordOrUserNameErrorCode;
                 result.ResultMsg = ResultCodeAddMsgKeys.SignInPasswordOrUserNameErrorMsg;
             }
             else if (manager.IsLock)
             {
+                await _service.SignInFailedAsync(model, "账号已锁定");
                 result.ResultCode = ResultCodeAddMsgKeys.SignInUserLockedCode;
                 result.ResultMsg = ResultCodeAddMsgKeys.SignInUserLockedMsg;
             }
             else
             {
+                // 登录成功，清零该用户的登录错误次数
+                HttpContext.Session.SetInt32($"{ManagerSignInErrorTimes}_{model.UserName}", 0);
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, manager.UserName),
